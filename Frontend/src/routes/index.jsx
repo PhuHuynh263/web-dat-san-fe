@@ -12,7 +12,7 @@ import { dashboardRoutes } from "./dashboardRoutes";
 const router = createBrowserRouter([
   // --- Nhóm Route cho Client ---
   {
-    path: "/Home",
+    path: "/",
     element: <HomePage />,
     children: [
       {
