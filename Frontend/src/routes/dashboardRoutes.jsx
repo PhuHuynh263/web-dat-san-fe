@@ -3,7 +3,7 @@ import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import PeopleIcon from "@mui/icons-material/People";
 export const dashboardRoutes = [
   {
-    path: "/dashboard/owner", // Hoặc '/dashboard/overview'
+    path: "/owner", // Hoặc '/dashboard/overview'
     element: <DashBoard />,
     meta: {
       // index: true, // Đánh dấu đây là trang mặc định của dashboard
@@ -13,7 +13,7 @@ export const dashboardRoutes = [
     },
   },
   {
-    path: "/dashboard/admin",
+    path: "/admin",
     element: <DashBoard />,
     meta: {
       title: "Quản lý người dùng",
