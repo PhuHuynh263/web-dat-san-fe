@@ -1,4 +1,4 @@
-import DashBoard from "../pages/Dashboard/DashBoard";
+import DashBoard from "../pages/Admin/DashBoard";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 import PeopleIcon from "@mui/icons-material/People";
 export const dashboardRoutes = [

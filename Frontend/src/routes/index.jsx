@@ -3,8 +3,8 @@ import { createBrowserRouter } from "react-router-dom";
 // Import Layouts
 
 // Import Pages
-import HomePage from "../pages/Client/HomePage/HomePage";
-import DashBoard from "../pages/Dashboard/DashBoard";
+import HomePage from "../pages/Client/HomePage/index.jsx";
+import DashBoard from "../pages/Admin/DashBoard.jsx";
 
 // Import Dashboard Routes
 import { dashboardRoutes } from "./dashboardRoutes";
@@ -12,7 +12,7 @@ import { dashboardRoutes } from "./dashboardRoutes";
 const router = createBrowserRouter([
   // --- Nhóm Route cho Client ---
   {
-    path: "/Home",
+    path: "/",
     element: <HomePage />,
     children: [
       {
