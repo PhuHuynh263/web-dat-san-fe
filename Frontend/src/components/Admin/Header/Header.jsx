@@ -5,19 +5,43 @@ import Box from '@mui/material/Box';
 import MenuIcon from '@mui/icons-material/Menu';
 import { drawerWidth } from '../Sidebar/Sidebar';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import PersonIcon from '@mui/icons-material/Person';
-import { Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
+import Badge from '@mui/material/Badge';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 function Header() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const [anchorElMess, setAnchorElMess] = React.useState(null);
+  const [anchorElNoti, setAnchorElNoti] = React.useState(null);
+  const [anchorElAcc, setAnchorElAcc] = React.useState(null);
+  const openMess = Boolean(anchorElMess);
+  const openAcc = Boolean(anchorElAcc);
+  const openNoti = Boolean(anchorElNoti);
+
+  const handleClickAcc = (event) => {
+    setAnchorElAcc(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+
+  const handleClickMess = (event) => {
+    setAnchorElMess(event.currentTarget);
+  };
+
+  const handleClickNoti = (event) => {
+    setAnchorElNoti(event.currentTarget);
+  };
+  const handleCloseMess = () => {
+    setAnchorElMess(null);
+  };
+  const handleCloseNoti = () => {
+    setAnchorElNoti(null);
+  };
+  const handleCloseAcc = () => {
+    setAnchorElAcc(null);
   };
 
   return (
@@ -75,35 +99,353 @@ function Header() {
 
         {/* Menu */}
         <Box sx={{ flexGrow: 1 }} />
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box
-            id='basic-button'
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup='true'
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-          >
-            <PersonIcon sx={{ color: '#003C7A', mr: 1 }} />
-            <Typography variant='body1' sx={{ color: '#003C7A' }}>
-              Message
-            </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 1,
+          }}
+        >
+          {/* Message */}
+          <Box>
+            <Box
+              id='basic-button-mess'
+              aria-controls={openMess ? 'basic-menu-mess' : undefined}
+              aria-haspopup='true'
+              aria-expanded={openMess ? 'true' : undefined}
+              onClick={handleClickMess}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                p: 2,
+                borderRadius: 2,
+                '&:hover': { backgroundColor: '#F5F5F5 ' },
+                width: '200px',
+              }}
+            >
+              <Badge
+                badgeContent={2}
+                color='primary'
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                sx={{
+                  '& .MuiBadge-standard': {
+                    display: openMess ? 'none' : 'block',
+                  },
+                }}
+              >
+                <EmailIcon sx={{ color: '#003C7A', mr: 1 }} />
+              </Badge>
+              <Typography
+                variant='body1'
+                sx={{ color: '#003C7A', fontSize: '1.2rem' }}
+              >
+                Message
+                {openMess ? <ExpandLess /> : <ExpandMore />}
+              </Typography>
+            </Box>
+            <Menu
+              id='basic-menu-mess'
+              anchorEl={anchorElMess}
+              open={openMess}
+              onClose={handleCloseMess}
+              slotProps={{
+                list: {
+                  'aria-labelledby': 'basic-button-mess',
+                },
+              }}
+            >
+              <MenuItem onClick={handleCloseMess}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Avatar sx={{ bgcolor: '#003C7A', mr: 2 }} />
+                  <Box sx={{ borderLeft: '1px solid #ccc', pl: 2 }}>
+                    <Typography
+                      variant='subtitle1'
+                      sx={{
+                        fontWeight: 'bold',
+                        borderBottom: '1px solid #ccc',
+                        pb: 0.1,
+                      }}
+                    >
+                      Jhon send you a message
+                    </Typography>
+                    <Typography
+                      variant='body2'
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      15 minutes ago.
+                    </Typography>
+                  </Box>
+                </Box>
+              </MenuItem>
+              <MenuItem onClick={handleCloseMess}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Avatar sx={{ bgcolor: '#003C7A', mr: 2 }} />
+                  <Box sx={{ borderLeft: '1px solid #ccc', pl: 2 }}>
+                    <Typography
+                      variant='subtitle1'
+                      sx={{
+                        fontWeight: 'bold',
+                        borderBottom: '1px solid #ccc',
+                        pb: 0.1,
+                      }}
+                    >
+                      Jhon send you a message
+                    </Typography>
+                    <Typography
+                      variant='body2'
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      15 minutes ago.
+                    </Typography>
+                  </Box>
+                </Box>
+              </MenuItem>
+              <MenuItem onClick={handleCloseMess}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Avatar sx={{ bgcolor: '#003C7A', mr: 2 }} />
+                  <Box sx={{ borderLeft: '1px solid #ccc', pl: 2 }}>
+                    <Typography
+                      variant='subtitle1'
+                      sx={{
+                        fontWeight: 'bold',
+                        borderBottom: '1px solid #ccc',
+                        pb: 0.1,
+                      }}
+                    >
+                      Jhon send you a message
+                    </Typography>
+                    <Typography
+                      variant='body2'
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      15 minutes ago.
+                    </Typography>
+                  </Box>
+                </Box>
+              </MenuItem>
+            </Menu>
           </Box>
-          <Menu
-            id='basic-menu'
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            slotProps={{
-              list: {
-                'aria-labelledby': 'basic-button',
-              },
-            }}
-          >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
-          </Menu>
+
+          {/* Notification */}
+          <Box>
+            <Box
+              id='basic-button-noti'
+              aria-controls={openNoti ? 'basic-menu-noti' : undefined}
+              aria-haspopup='true'
+              aria-expanded={openNoti ? 'true' : undefined}
+              onClick={handleClickNoti}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                p: 2,
+                borderRadius: 2,
+                '&:hover': { backgroundColor: '#F5F5F5 ' },
+                width: '200px',
+              }}
+            >
+              <Badge
+                badgeContent={2}
+                color='primary'
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                sx={{
+                  '& .MuiBadge-standard': {
+                    display: openNoti ? 'none' : 'block',
+                  },
+                }}
+              >
+                <NotificationsNoneIcon sx={{ color: '#003C7A', mr: 1 }} />
+              </Badge>
+              <Typography
+                variant='body1'
+                sx={{ color: '#003C7A', fontSize: '1.2rem' }}
+              >
+                Notification
+                {openNoti ? <ExpandLess /> : <ExpandMore />}
+              </Typography>
+            </Box>
+            <Menu
+              id='basic-menu-noti'
+              anchorEl={anchorElNoti}
+              open={openNoti}
+              onClose={handleCloseNoti}
+              slotProps={{
+                list: {
+                  'aria-labelledby': 'basic-button-noti',
+                },
+              }}
+            >
+              <MenuItem onClick={handleCloseNoti}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    p: 1,
+                    borderBottom: '1px solid #ccc',
+                  }}
+                >
+                  <Typography
+                    variant='subtitle1'
+                    sx={{
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Profile updated successfully
+                  </Typography>
+                  <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+                    15 minutes ago.
+                  </Typography>
+                </Box>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNoti}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    p: 1,
+                    borderBottom: '1px solid #ccc',
+                  }}
+                >
+                  <Typography
+                    variant='subtitle1'
+                    sx={{
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Profile updated successfully
+                  </Typography>
+                  <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+                    15 minutes ago.
+                  </Typography>
+                </Box>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNoti}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    p: 1,
+                    borderBottom: '1px solid #ccc',
+                  }}
+                >
+                  <Typography
+                    variant='subtitle1'
+                    sx={{
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Profile updated successfully
+                  </Typography>
+                  <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+                    15 minutes ago.
+                  </Typography>
+                </Box>
+              </MenuItem>
+            </Menu>
+          </Box>
+
+          {/* Account */}
+          <Box>
+            <Box
+              id='basic-button-acc'
+              aria-controls={openAcc ? 'basic-menu-acc' : undefined}
+              aria-haspopup='true'
+              aria-expanded={openAcc ? 'true' : undefined}
+              onClick={handleClickAcc}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                p: 2,
+                borderRadius: 2,
+                '&:hover': { backgroundColor: '#F5F5F5 ' },
+                width: '200px',
+              }}
+            >
+              <AccountCircleIcon sx={{ color: '#003C7A', mr: 1 }} />
+              <Typography
+                variant='body1'
+                sx={{ color: '#003C7A', fontSize: '1.2rem' }}
+              >
+                Account
+                {openAcc ? <ExpandLess /> : <ExpandMore />}
+              </Typography>
+            </Box>
+            <Menu
+              id='basic-menu-acc'
+              anchorEl={anchorElAcc}
+              open={openAcc}
+              onClose={handleCloseAcc}
+              slotProps={{
+                list: {
+                  'aria-labelledby': 'basic-button-acc',
+                },
+              }}
+              sx={{
+                '& .MuiMenuItem-root': {
+                  width: '200px',
+                  mb: 1,
+                },
+              }}
+            >
+              <MenuItem onClick={handleCloseAcc}>
+                <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+                  My Account
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseAcc}>
+                <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+                  Settings
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseAcc}>
+                <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+                  Log out
+                </Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
         </Box>
       </Toolbar>
     </AppBar>
