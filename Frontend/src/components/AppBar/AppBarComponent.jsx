@@ -1,23 +1,23 @@
-import * as React from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import AppBar from "@mui/material/AppBar";
-import Container from "@mui/material/Container";
-import Toolbar from "@mui/material/Toolbar";
-import Box from "@mui/material/Box";
-import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
-import Typography from "@mui/material/Typography";
+import * as React from 'react';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import AppBar from '@mui/material/AppBar';
+import Container from '@mui/material/Container';
+import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import Typography from '@mui/material/Typography';
 
 const MENU_ITEMS_STYLE = {
-  fontSize: "1rem",
-  fontWeight: "bold",
-  color: "text.primary",
-  cursor: "pointer",
+  fontSize: '1rem',
+  fontWeight: 'bold',
+  color: 'text.primary',
+  cursor: 'pointer',
   ml: 2,
-  ":hover": { color: "primary.main" },
+  ':hover': { color: 'primary.main' },
 };
 
-const servicesList = ["Football", "Basketball", "Tennis", "Pickleball"];
+const servicesList = ['Đá Banh', 'Cầu Lông', 'Quần Vợt', 'Pickleball'];
 
 function AppBarComponent() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -29,24 +29,24 @@ function AppBarComponent() {
     setAnchorEl(null);
   };
   return (
-    <AppBar sx={{ position: "static", backgroundColor: "white" }}>
-      <Container sx={{ maxWidth: "xl", backgroundColor: "white" }}>
+    <AppBar sx={{ position: 'static', backgroundColor: 'white' }}>
+      <Container sx={{ maxWidth: 'xl', backgroundColor: 'white' }}>
         <Toolbar>
           {/* Logo */}
           <Box
-            sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
           >
             <SportsSoccerIcon
-              sx={{ color: "primary.main", fontSize: 40, cursor: "pointer" }}
+              sx={{ color: 'primary.main', fontSize: 40, cursor: 'pointer' }}
             />
             <Typography
-              variant="span"
+              variant='span'
               sx={{
-                fontSize: "1.2rem",
-                fontWeight: "bold",
+                fontSize: '1.2rem',
+                fontWeight: 'bold',
                 ml: 1,
-                color: "primary.main",
-                cursor: "pointer",
+                color: 'primary.main',
+                cursor: 'pointer',
               }}
             >
               FootyFanatics
@@ -55,75 +55,75 @@ function AppBarComponent() {
 
           {/* Action Button Login/Register */}
           <Box
-            sx={{ flexGrow: 0, ml: 2, color: "text.secondary", fontSize: 14 }}
+            sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
           >
-            <Typography variant="span" sx={{ cursor: "pointer" }}>
+            <Typography variant='span' sx={{ cursor: 'pointer' }}>
               Login
             </Typography>
-            {" / "}
-            <Typography variant="span" sx={{ cursor: "pointer" }}>
+            {' / '}
+            <Typography variant='span' sx={{ cursor: 'pointer' }}>
               Register
             </Typography>
           </Box>
 
           {/* Menu */}
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {/* Home */}
             <Typography
-              variant="span"
+              variant='span'
               sx={{
-                fontSize: "1rem",
-                fontWeight: "bold",
-                color: "primary.main",
-                cursor: "pointer",
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                color: 'primary.main',
+                cursor: 'pointer',
               }}
             >
-              Home
+              Trang Chủ
             </Typography>
 
             {/* About */}
             <Typography
-              variant="span"
+              variant='span'
               sx={{
                 ...MENU_ITEMS_STYLE,
               }}
             >
-              About
+              Giới Thiệu
             </Typography>
 
             {/* Contact */}
             <Typography
-              variant="span"
+              variant='span'
               sx={{
                 ...MENU_ITEMS_STYLE,
               }}
             >
-              Contact
+              Liên Hệ
             </Typography>
 
             {/* Services */}
             <Typography
-              variant="span"
+              variant='span'
               sx={{
                 ...MENU_ITEMS_STYLE,
               }}
-              id="basic-button"
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
+              id='basic-button'
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
               onClick={handleClick}
             >
-              Services
+              Dịch Vụ
             </Typography>
             <Menu
-              id="basic-menu"
+              id='basic-menu'
               anchorEl={anchorEl}
               open={open}
               onClose={handleClose}
               slotProps={{
                 list: {
-                  "aria-labelledby": "basic-button",
+                  'aria-labelledby': 'basic-button',
                 },
               }}
             >
@@ -136,12 +136,12 @@ function AppBarComponent() {
 
             {/* News */}
             <Typography
-              variant="span"
+              variant='span'
               sx={{
                 ...MENU_ITEMS_STYLE,
               }}
             >
-              News
+              Tin Tức
             </Typography>
           </Box>
         </Toolbar>
