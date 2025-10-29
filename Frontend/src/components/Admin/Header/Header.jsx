@@ -3,7 +3,11 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import MenuIcon from '@mui/icons-material/Menu';
+<<<<<<< HEAD
 import { drawerWidth } from 'src/components/Admin/Sidebar/Sidebar';
+=======
+import { drawerWidth } from '../Sidebar/Sidebar';
+>>>>>>> dashboard-header
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
