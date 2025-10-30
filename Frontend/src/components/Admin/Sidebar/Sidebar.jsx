@@ -14,10 +14,18 @@ import PersonIcon from "@mui/icons-material/Person";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { NavLink } from "react-router-dom";
 
 export const drawerWidth = 300;
+const activeLinkStyle = {
+  backgroundColor: "primary.main",
+  color: "white",
+  "& .MuiListItemIcon-root": {
+    color: "white",
+  },
+};
 
-function Sidebar() {
+function Sidebar({ isOpen }) {
   const [openUserManage, setOpenUserManage] = useState(false);
   const [openReportManage, setOpenReportManage] = useState(false);
   const handleClickUserManage = () => {
@@ -29,17 +37,37 @@ function Sidebar() {
   return (
     <>
       <Drawer
+        open={isOpen}
         variant="permanent"
         sx={{
-          position: "relative",
-          width: drawerWidth,
+          width: isOpen ? drawerWidth : 0,
           flexShrink: 0,
+          // Style cho paper bên trong Drawer
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
+            width: isOpen ? drawerWidth : 0,
+            flexShrink: 0,
             boxSizing: "border-box",
             backgroundColor: darken("#003C7A", 0.1),
             color: "white",
+            // Thêm hiệu ứng transition cho việc đóng/mở
+            transition: (theme) =>
+              theme.transitions.create("width", {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
+            overflowX: "hidden", // Quan trọng: Ẩn nội dung khi thu nhỏ
           },
+          // 3. Style đặc biệt khi Sidebar đóng
+          ...(!isOpen && {
+            "& .MuiDrawer-paper": {
+              transition: (theme) =>
+                theme.transitions.create("width", {
+                  easing: theme.transitions.easing.sharp,
+                  duration: theme.transitions.duration.leavingScreen,
+                }),
+              width: 0, // Chiều rộng bằng 0 khi đóng
+            },
+          }),
         }}
       >
         <Box sx={{ overflow: "auto" }}>
@@ -48,10 +76,9 @@ function Sidebar() {
               display: "flex",
               alignItems: "center",
               width: "100%",
-              height: 80,
+              height: 64,
               color: "white",
               pl: 2,
-              mt: 1,
               mb: 1,
               boxShadow: 1,
               backgroundColor: "#003C7A",
@@ -76,7 +103,10 @@ function Sidebar() {
               bgcolor: "#003C7A",
               boxShadow: 1,
               "& .MuiListItemButton-root": {
-                "&:focus": { backgroundColor: "primary.main", color: "white" },
+                "&:focus": {
+                  backgroundColor: "primary.main",
+                  color: "white",
+                },
                 "&:hover": { bgcolor: "primary.main", color: "white" },
                 "& .MuiListItemIcon-root": { color: "inherit" },
                 height: 30,
@@ -85,19 +115,31 @@ function Sidebar() {
             }}
             component="nav"
           >
-            <ListItemButton>
+            <ListItemButton
+              component={NavLink}
+              to="/admin/dashboard"
+              style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+            >
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="TỔNG QUAN" />
             </ListItemButton>
-            <ListItemButton>
+            <ListItemButton
+              component={NavLink}
+              to="/admin/pitches"
+              style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+            >
               <ListItemIcon>
                 <SportsSoccerIcon />
               </ListItemIcon>
               <ListItemText primary="QUẢN LÝ SÂN BÓNG" />
             </ListItemButton>
-            <ListItemButton>
+            <ListItemButton
+              component={NavLink}
+              to="/admin/bookings"
+              style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+            >
               <ListItemIcon>
                 <LocalShippingIcon />
               </ListItemIcon>
@@ -112,13 +154,27 @@ function Sidebar() {
             </ListItemButton>
             <Collapse in={openUserManage} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
+                <ListItemButton
+                  component={NavLink}
+                  to="/admin/owners"
+                  sx={{ pl: 4 }}
+                  style={({ isActive }) =>
+                    isActive ? activeLinkStyle : undefined
+                  }
+                >
                   <ListItemIcon>
                     <PersonOutlineIcon />
                   </ListItemIcon>
                   <ListItemText primary="Quản lý chủ sân" />
                 </ListItemButton>
-                <ListItemButton sx={{ pl: 4 }}>
+                <ListItemButton
+                  component={NavLink}
+                  to="/admin/customers"
+                  sx={{ pl: 4 }}
+                  style={({ isActive }) =>
+                    isActive ? activeLinkStyle : undefined
+                  }
+                >
                   <ListItemIcon>
                     <PersonOutlineIcon />
                   </ListItemIcon>
@@ -135,13 +191,27 @@ function Sidebar() {
             </ListItemButton>
             <Collapse in={openReportManage} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
+                <ListItemButton
+                  component={NavLink}
+                  to="/admin/reports/revenue"
+                  sx={{ pl: 4 }}
+                  style={({ isActive }) =>
+                    isActive ? activeLinkStyle : undefined
+                  }
+                >
                   <ListItemIcon>
                     <AssessmentIcon />
                   </ListItemIcon>
                   <ListItemText primary="Báo cáo Doanh thu" />
                 </ListItemButton>
-                <ListItemButton sx={{ pl: 4 }}>
+                <ListItemButton
+                  component={NavLink}
+                  to="/admin/reports/users"
+                  sx={{ pl: 4 }}
+                  style={({ isActive }) =>
+                    isActive ? activeLinkStyle : undefined
+                  }
+                >
                   <ListItemIcon>
                     <AssessmentIcon />
                   </ListItemIcon>
@@ -149,7 +219,11 @@ function Sidebar() {
                 </ListItemButton>
               </List>
             </Collapse>
-            <ListItemButton>
+            <ListItemButton
+              component={NavLink}
+              to="/admin/settings"
+              style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+            >
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
