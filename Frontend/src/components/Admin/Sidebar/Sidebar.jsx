@@ -1,19 +1,19 @@
-import { Box, Drawer, Toolbar, List, Typography, Button } from '@mui/material';
-import { useState } from 'react';
-import { darken } from '@mui/material/styles';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import PersonIcon from '@mui/icons-material/Person';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, Drawer, Toolbar, List, Typography, Button } from "@mui/material";
+import { useState } from "react";
+import { darken } from "@mui/material/styles";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import PersonIcon from "@mui/icons-material/Person";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export const drawerWidth = 300;
 
@@ -29,41 +29,41 @@ function Sidebar() {
   return (
     <>
       <Drawer
-        variant='permanent'
+        variant="permanent"
         sx={{
-          position: 'relative',
+          position: "relative",
           width: drawerWidth,
           flexShrink: 0,
-          '& .MuiDrawer-paper': {
+          "& .MuiDrawer-paper": {
             width: drawerWidth,
-            boxSizing: 'border-box',
-            backgroundColor: darken('#003C7A', 0.1),
-            color: 'white',
+            boxSizing: "border-box",
+            backgroundColor: darken("#003C7A", 0.1),
+            color: "white",
           },
         }}
       >
-        <Box sx={{ overflow: 'auto' }}>
+        <Box sx={{ overflow: "auto" }}>
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
               height: 80,
-              color: 'white',
+              color: "white",
               pl: 2,
               mt: 1,
               mb: 1,
               boxShadow: 1,
-              backgroundColor: '#003C7A',
+              backgroundColor: "#003C7A",
             }}
           >
             {/* Logo hoặc tiêu đề ở đây */}
-            <SportsSoccerIcon sx={{ mr: 1, fontSize: '2rem' }} />
+            <SportsSoccerIcon sx={{ mr: 1, fontSize: "2rem" }} />
             <Typography
-              variant='h5'
+              variant="h5"
               noWrap
-              component='div'
-              sx={{ fontWeight: 'bold' }}
+              component="div"
+              sx={{ fontWeight: "bold" }}
             >
               Quản Lý Sân Bóng
             </Typography>
@@ -71,57 +71,58 @@ function Sidebar() {
           <List
             sx={{
               mt: 0,
-              width: '100%',
+              width: "100%",
               maxWidth: 360,
-              bgcolor: '#003C7A',
+              bgcolor: "#003C7A",
               boxShadow: 1,
-              '& .MuiListItemButton-root': {
-                '&:focus': { backgroundColor: 'primary.main', color: 'white' },
-                '&:hover': { bgcolor: 'primary.main', color: 'white' },
-                '& .MuiListItemIcon-root': { color: 'inherit' },
+              "& .MuiListItemButton-root": {
+                "&:focus": { backgroundColor: "primary.main", color: "white" },
+                "&:hover": { bgcolor: "primary.main", color: "white" },
+                "& .MuiListItemIcon-root": { color: "inherit" },
+                height: 30,
                 mb: 2,
               },
             }}
-            component='nav'
+            component="nav"
           >
             <ListItemButton>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary='TỔNG QUAN' />
+              <ListItemText primary="TỔNG QUAN" />
             </ListItemButton>
             <ListItemButton>
               <ListItemIcon>
                 <SportsSoccerIcon />
               </ListItemIcon>
-              <ListItemText primary='QUẢN LÝ SÂN BÓNG' />
+              <ListItemText primary="QUẢN LÝ SÂN BÓNG" />
             </ListItemButton>
             <ListItemButton>
               <ListItemIcon>
                 <LocalShippingIcon />
               </ListItemIcon>
-              <ListItemText primary='QUẢN LÝ ĐƠN ĐẶT' />
+              <ListItemText primary="QUẢN LÝ ĐƠN ĐẶT" />
             </ListItemButton>
             <ListItemButton onClick={handleClickUserManage}>
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
-              <ListItemText primary='QUẢN LÝ NGƯỜI DÙNG' />
+              <ListItemText primary="QUẢN LÝ NGƯỜI DÙNG" />
               {openUserManage ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
-            <Collapse in={openUserManage} timeout='auto' unmountOnExit>
-              <List component='div' disablePadding>
+            <Collapse in={openUserManage} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
                 <ListItemButton sx={{ pl: 4 }}>
                   <ListItemIcon>
                     <PersonOutlineIcon />
                   </ListItemIcon>
-                  <ListItemText primary='Quản lý chủ sân' />
+                  <ListItemText primary="Quản lý chủ sân" />
                 </ListItemButton>
                 <ListItemButton sx={{ pl: 4 }}>
                   <ListItemIcon>
                     <PersonOutlineIcon />
                   </ListItemIcon>
-                  <ListItemText primary='Quản lý khách hàng' />
+                  <ListItemText primary="Quản lý khách hàng" />
                 </ListItemButton>
               </List>
             </Collapse>
@@ -129,22 +130,22 @@ function Sidebar() {
               <ListItemIcon>
                 <AssessmentIcon />
               </ListItemIcon>
-              <ListItemText primary='BÁO CÁO & THỐNG KÊ' />
+              <ListItemText primary="BÁO CÁO & THỐNG KÊ" />
               {openReportManage ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
-            <Collapse in={openReportManage} timeout='auto' unmountOnExit>
-              <List component='div' disablePadding>
+            <Collapse in={openReportManage} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
                 <ListItemButton sx={{ pl: 4 }}>
                   <ListItemIcon>
                     <AssessmentIcon />
                   </ListItemIcon>
-                  <ListItemText primary='Báo cáo Doanh thu' />
+                  <ListItemText primary="Báo cáo Doanh thu" />
                 </ListItemButton>
                 <ListItemButton sx={{ pl: 4 }}>
                   <ListItemIcon>
                     <AssessmentIcon />
                   </ListItemIcon>
-                  <ListItemText primary='Báo cáo Người dùng' />
+                  <ListItemText primary="Báo cáo Người dùng" />
                 </ListItemButton>
               </List>
             </Collapse>
@@ -152,19 +153,19 @@ function Sidebar() {
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
-              <ListItemText primary='CÀI ĐẶT' />
+              <ListItemText primary="CÀI ĐẶT" />
             </ListItemButton>
           </List>
         </Box>
         <Box
           sx={{
-            position: 'absolute',
+            position: "absolute",
             bottom: 0,
-            display: 'flex',
-            alignItems: 'flex-end',
-            width: '100%',
+            display: "flex",
+            alignItems: "flex-end",
+            width: "100%",
             height: 70,
-            color: 'text.primary',
+            color: "text.primary",
             marginBottom: 2,
           }}
         >
