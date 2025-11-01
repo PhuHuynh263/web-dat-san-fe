@@ -4,10 +4,10 @@ import { createBrowserRouter } from "react-router-dom";
 
 // Import Pages
 import HomePage from "../pages/Client/HomePage/index.jsx";
-import DashBoard from "../pages/Admin/DashBoard.jsx";
+import DashBoard from "../layouts/Admin/DashBoard.jsx";
 
 // Import Dashboard Routes
-import { dashboardRoutes } from "./dashboardRoutes";
+import { dashboardAdminRoutes } from "./dashboardRoutes.jsx";
 
 const router = createBrowserRouter([
   // --- Nhóm Route cho Client ---
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
   {
     element: <DashBoard />,
     // Optional: Thêm 1 element ErrorBoundary ở đây để bắt lỗi cho cả dashboard
-    children: dashboardRoutes.map((route) => ({
+    children: dashboardAdminRoutes.map((route) => ({
       path: route.path,
       element: route.element,
       // Để đơn giản, ta chỉ cần path và element ở đây

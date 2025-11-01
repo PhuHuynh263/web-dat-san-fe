@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import Header from '../../../components/Header/Header';
+import Header from '../../../components/Client/Header/Header';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import images from '../../../assets/images/images';
