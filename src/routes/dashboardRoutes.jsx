@@ -11,6 +11,7 @@ import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import SettingsIcon from "@mui/icons-material/Settings";
+import CommentIcon from "@mui/icons-material/Comment";
 
 // --- Import Page Components ---
 // Giả sử bạn đã tạo các component trang con này
@@ -22,6 +23,7 @@ import CustomerManagementPage from "../pages/Admin/CustomerManagementPage/Custom
 import RevenueReportPage from "../pages/Admin/RevenueReportPage/RevenueReportPage";
 import UserReportPage from "../pages/Admin/UserReportPage/UserReportPage";
 import SettingsPage from "../pages/Admin/SettingsPage/SettingsPage";
+import AssessmentManagement from "../pages/Admin/AssessmentManagement/AssessmentManagement";
 export const dashboardAdminRoutes = [
   {
     path: "/admin/dashboard",
@@ -47,6 +49,15 @@ export const dashboardAdminRoutes = [
     meta: {
       title: "QUẢN LÝ ĐƠN ĐẶT",
       icon: <ReceiptLongIcon />,
+      roles: ["admin"],
+    },
+  },
+  {
+    path: "/admin/assessment",
+    element: <AssessmentManagement />,
+    meta: {
+      title: "QUẢN LÝ ĐÁNH GIÁ",
+      icon: <CommentIcon />,
       roles: ["admin"],
     },
   },

@@ -14,6 +14,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import SettingsIcon from "@mui/icons-material/Settings";
+import CommentIcon from "@mui/icons-material/Comment";
 import { NavLink } from "react-router-dom";
 
 export const drawerWidth = 300;
@@ -144,6 +145,16 @@ function Sidebar({ isOpen }) {
                 <LocalShippingIcon />
               </ListItemIcon>
               <ListItemText primary="QUẢN LÝ ĐƠN ĐẶT" />
+            </ListItemButton>
+            <ListItemButton
+              component={NavLink}
+              to="/admin/assessment"
+              style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+            >
+              <ListItemIcon>
+                <CommentIcon />
+              </ListItemIcon>
+              <ListItemText primary="QUẢN LÝ ĐÁNH GIÁ" />
             </ListItemButton>
             <ListItemButton onClick={handleClickUserManage}>
               <ListItemIcon>
