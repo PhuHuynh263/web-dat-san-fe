@@ -23,7 +23,7 @@ import CustomerManagementPage from "../pages/Admin/CustomerManagementPage/Custom
 import RevenueReportPage from "../pages/Admin/RevenueReportPage/RevenueReportPage";
 import UserReportPage from "../pages/Admin/UserReportPage/UserReportPage";
 import SettingsPage from "../pages/Admin/SettingsPage/SettingsPage";
-import AssessmentManagement from "../pages/Admin/AssessmentManagement/AssessmentManagement";
+import AssessmentManagement from "../pages/Admin/AssessmentManagementPage/AssessmentManagementPage";
 export const dashboardAdminRoutes = [
   {
     path: "/admin/dashboard",
