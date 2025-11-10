@@ -107,33 +107,26 @@ function Sidebar({ isOpen, userRole }) {
       variant='permanent'
       open={isOpen}
       sx={{
-        width: drawerWidth, // Chiều rộng container thay đổi theo 'isOpen'
+        width: isOpen ? drawerWidth : 0,
         flexShrink: 0,
+        whiteSpace: 'nowrap',
         transition: (theme) =>
           theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
-            duration: isOpen
-              ? theme.transitions.duration.enteringScreen
-              : theme.transitions.duration.leavingScreen,
+            duration: theme.transitions.duration.enteringScreen,
           }),
 
         '& .MuiDrawer-paper': {
-          width: drawerWidth, // Chiều rộng của paper bên trong
+          width: isOpen ? drawerWidth : 0,
           boxSizing: 'border-box',
           backgroundColor: (theme) => darken(theme.palette.primary.minor, 0.2),
           color: 'white',
-          overflowX: 'hidden', // Quan trọng
-          // Style đóng/mở cho paper
+          overflowX: 'hidden',
           transition: (theme) =>
             theme.transitions.create('width', {
               easing: theme.transitions.easing.sharp,
-              duration: isOpen
-                ? theme.transitions.duration.enteringScreen
-                : theme.transitions.duration.leavingScreen,
+              duration: theme.transitions.duration.enteringScreen,
             }),
-          ...(!isOpen && {
-            width: 0, // Thu paper về 0 khi đóng
-          }),
         },
       }}
     >

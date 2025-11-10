@@ -10,52 +10,45 @@ const columns = [
     field: 'ten_chu_san',
     headerName: 'Tên chủ sân',
     width: 150,
-    editable: true,
+    editable: false,
   },
   {
-    field: 'yardName',
+    field: 'ten_san',
     headerName: 'Tên sân',
     width: 150,
-    editable: true,
+    editable: false,
   },
   {
     field: 'email',
     headerName: 'Email',
     type: 'email',
     width: 150,
-    editable: true,
-  },
-  {
-    field: 'password',
-    headerName: 'Mật khẩu',
-    type: 'password',
-    width: 150,
-    editable: true,
+    editable: false,
   },
 
   {
-    field: 'address',
+    field: 'dia_chi',
     headerName: 'Địa Chỉ',
     type: 'string',
     width: 150,
-    editable: true,
+    editable: false,
   },
   {
     field: 'avatar',
     headerName: 'Ảnh đại diện',
     type: 'image',
     width: 150,
-    editable: true,
+    editable: false,
   },
   {
-    field: 'phoneNumber',
+    field: 'so_dien_thoai',
     headerName: 'Số điện thoại',
     type: 'string',
     width: 150,
-    editable: true,
+    editable: false,
   },
   {
-    field: 'status',
+    field: 'trang_thai',
     headerName: 'Trạng thái',
     renderCell: (params) => (
       <Button
@@ -72,13 +65,13 @@ const columns = [
 ];
 
 function OwnerManagementPage() {
-  const [rows, setRows] = useState([]);
+  const [rows, list_chu_san] = useState([]);
 
   const layDataChuSan = () => {
     axios
       .get("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/data")
       .then((res) => {
-        setRows(res.data.data);
+        list_chu_san(res.data.data);
       })
       .catch((err) => {
         console.error("Lỗi khi lấy data:", err);
