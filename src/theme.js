@@ -1,22 +1,42 @@
 import { createTheme, darken } from '@mui/material/styles';
 
 const theme = createTheme({
+  client: {
+    palette: {
+      primary: {
+        main: '#df1b3f',
+        minor: '#fcb300',
+        contrastText: '#ffffff', // Màu chữ trên nền primary
+      },
+      secondary: {
+        main: '#19204e',
+        minor: '#d6d6d6',
+        contrastText: '#ffffff',
+      },
+      text: {
+        primary: '#ffffff', // Màu chữ chính
+        secondary: '#cccccc', // Màu chữ phụ
+      },
+    },
+  },
+
   palette: {
     primary: {
-      main: '#FF124C',
+      main: '#FF9B45',
+      minor: '#521C0D',
       contrastText: '#ffffff', // Màu chữ trên nền primary
     },
     secondary: {
-      main: '#003C7A',
+      main: '#D5451B',
       contrastText: '#ffffff',
     },
     background: {
-      default: '#f5f5f5',
+      default: '#F4E7E1',
       paper: '#ffffff', // Màu nền cho các component như Card, Paper
     },
     text: {
-      primary: '#1F2B3B', // Màu chữ chính
-      secondary: '#344054', // Màu chữ phụ
+      primary: '#ffffff', // Màu chữ chính
+      secondary: '#cccccc', // Màu chữ phụ
     },
   },
 
@@ -53,18 +73,18 @@ const theme = createTheme({
           textTransform: 'none', // Không tự động viết hoa chữ
           fontWeight: 600,
           padding: '10px 24px', // Tăng khoảng cách padding
-          width: '300px',
+          
         },
         // Ghi đè style cho biến thể 'contained' và màu 'primary'
         containedPrimary: {
           '&:hover': {
-            backgroundColor: darken('#FF124C', 0.1), // Làm màu đậm hơn một chút khi hover
+            backgroundColor: (theme) => darken(theme.client.palette.primary.main, 0.1), // Làm màu đậm hơn một chút khi hover
           },
         },
         // Ghi đè style cho biến thể 'contained' và màu 'secondary'
         containedSecondary: {
           '&:hover': {
-            backgroundColor: darken('#003C7A', 0.1),
+            backgroundColor: (theme) => darken(theme.client.palette.primary.main, 0.1),
           },
         },
       },

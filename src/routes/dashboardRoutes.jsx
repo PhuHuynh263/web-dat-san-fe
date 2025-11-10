@@ -12,22 +12,39 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CommentIcon from "@mui/icons-material/Comment";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import PersonIcon from "@mui/icons-material/Person";
+import PaymentIcon from '@mui/icons-material/Payment';
+import StyleIcon from '@mui/icons-material/Style';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
-// --- Import Page Components ---
-// Giả sử bạn đã tạo các component trang con này
-import OverviewPage from "../pages/Admin/OverviewPage/OverviewPage";
+// --- Import Admin Page Components ---
+import OverviewAdminPage from "../pages/Admin/OverViewAdminPage/OverviewAdminPage";
 import PitchManagementPage from "../pages/Admin/PitchManagementPage/PitchManagementPage";
 import BookingManagementPage from "../pages/Admin/BookingManagementPage/BookingManagementPage";
+import AssessmentManagement from "../pages/Admin/AssessmentManagementPage/AssessmentManagementPage";
 import OwnerManagementPage from "../pages/Admin/OwnerManagementPage/OwnerManagementPage";
 import CustomerManagementPage from "../pages/Admin/CustomerManagementPage/CustomerManagementPage";
-import RevenueReportPage from "../pages/Admin/RevenueReportPage/RevenueReportPage";
+import RevenueReportAdminPage from "../pages/Admin/RevenueReportAdminPage/RevenueReportAdminPage";
 import UserReportPage from "../pages/Admin/UserReportPage/UserReportPage";
-import SettingsPage from "../pages/Admin/SettingsPage/SettingsPage";
-import AssessmentManagement from "../pages/Admin/AssessmentManagementPage/AssessmentManagementPage";
-export const dashboardAdminRoutes = [
+import SettingsPage from "../pages/Admin/SettingsPage/SettingsPage"; // Giả sử đây là trang cài đặt chung
+
+// --- Import Owner Page Components ---
+import ManageBookingSchedulePage from "../pages/Owner/ManageBookingSchedulePage/ManageBookingSchedulePage";
+import ManageOrdersPage from "../pages/Owner/ManageOrdersPage/ManageOrdersPage";
+import OverviewOwnerPage from "../pages/Owner/OverViewOwnerPage/OverviewOwnerPage";
+import RevenueReportOwnerPage from "../pages/Owner/RevenueReportOwnerPage/RevenueReportOwnerPage";
+import ServicePaymentPage from "../pages/Owner/ServicePaymentPage/ServicePaymentPage";
+import SoccerFieldManagementPage from "../pages/Owner/SoccerFieldManagementPage/SoccerFieldManagementPage";
+import YardTypeManagementPage from "../pages/Owner/YardTypeManagementPage/YardTypeManagementPage";
+
+// === Đổi tên thành dashboardRoutes (chứa tất cả route) ===
+export const dashboardRoutes = [
+  
+  // =========== CÁC ROUTE CỦA ADMIN ============
   {
-    path: "/admin/dashboard",
-    element: <OverviewPage />,
+    path: "/admin/dashboard", // Đổi từ /dashboard để rõ ràng
+    element: <OverviewAdminPage />,
     meta: {
       title: "TỔNG QUAN",
       icon: <DashboardIcon />,
@@ -62,48 +79,135 @@ export const dashboardAdminRoutes = [
     },
   },
   {
-    path: "/admin/owners",
-    element: <OwnerManagementPage />,
+    // Mục cha cho Quản lý Người dùng (Admin)
     meta: {
-      title: "QUẢN LÝ CHỦ SÂN",
-      icon: <SupervisorAccountIcon />,
+      title: "QUẢN LÝ NGƯỜI DÙNG",
+      icon: <PersonIcon />,
       roles: ["admin"],
+    },
+    children: [
+      {
+        path: "/admin/owners",
+        element: <OwnerManagementPage />,
+        meta: {
+          title: "Quản lý chủ sân",
+          icon: <SupervisorAccountIcon />,
+          roles: ["admin"],
+        },
+      },
+      {
+        path: "/admin/customers",
+        element: <CustomerManagementPage />,
+        meta: {
+          title: "Quản lý khách hàng",
+          icon: <PeopleOutlineIcon />,
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
+  {
+    // Mục cha cho Báo cáo (Admin)
+    meta: {
+      title: "BÁO CÁO & THỐNG KÊ",
+      icon: <AssessmentIcon />,
+      roles: ["admin"],
+    },
+    children: [
+      {
+        path: "/admin/reports/revenue",
+        element: <RevenueReportAdminPage />,
+        meta: {
+          title: "Báo cáo Doanh thu",
+          icon: <BarChartIcon />,
+          roles: ["admin"],
+        },
+      },
+      {
+        path: "/admin/reports/users",
+        element: <UserReportPage />,
+        meta: {
+          title: "Báo cáo Người dùng",
+          icon: <QueryStatsIcon />,
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
+
+  // =========== CÁC ROUTE CỦA OWNER ============
+  {
+    path: "/owner/dashboard", // Route tổng quan riêng cho Owner
+    element: <OverviewOwnerPage />,
+    meta: {
+      title: "Tổng quan",
+      icon: <DashboardIcon />,
+      roles: ["owner"],
     },
   },
   {
-    path: "/admin/customers",
-    element: <CustomerManagementPage />,
+    path: "/owner/pitches",
+    element: <SoccerFieldManagementPage />,
     meta: {
-      title: "QUẢN LÝ KHÁCH HÀNG",
-      icon: <PeopleOutlineIcon />,
-      roles: ["admin"],
+      title: "Quản lý sân của tôi",
+      icon: <SportsSoccerIcon />,
+      roles: ["owner"],
     },
   },
   {
-    path: "/admin/reports/revenue",
-    element: <RevenueReportPage />,
+    path: "/owner/yard-types",
+    element: <YardTypeManagementPage />,
     meta: {
-      title: "BÁO CÁO DOANH THU",
+      title: "Quản lý loại sân",
+      icon: <StyleIcon />,
+      roles: ["owner"],
+    },
+  },
+  {
+    path: "/owner/schedule",
+    element: <ManageBookingSchedulePage />,
+    meta: {
+      title: "Quản lý lịch đặt",
+      icon: <EventAvailableIcon />,
+      roles: ["owner"],
+    },
+  },
+  {
+    path: "/owner/bookings",
+    element: <ManageOrdersPage />,
+    meta: {
+      title: "Quản lý đơn đặt",
+      icon: <ReceiptLongIcon />,
+      roles: ["owner"],
+    },
+  },
+  {
+    path: "/owner/reports/revenue",
+    element: <RevenueReportOwnerPage />,
+    meta: {
+      title: "Báo cáo doanh thu",
       icon: <BarChartIcon />,
-      roles: ["admin"],
+      roles: ["owner"],
     },
   },
   {
-    path: "/admin/reports/users",
-    element: <UserReportPage />,
+    path: "/owner/payment",
+    element: <ServicePaymentPage />,
     meta: {
-      title: "BÁO CÁO NGƯỜI DÙNG",
-      icon: <QueryStatsIcon />,
-      roles: ["admin"],
+      title: "Thanh toán dịch vụ",
+      icon: <PaymentIcon />,
+      roles: ["owner"],
     },
   },
+
+  // =========== CÁC ROUTE DÙNG CHUNG ============
   {
-    path: "/admin/settings",
+    path: "/dashboard/settings", // Route cài đặt chung
     element: <SettingsPage />,
     meta: {
       title: "CÀI ĐẶT",
       icon: <SettingsIcon />,
-      roles: ["admin"],
+      roles: ["admin", "owner"], // Cả hai đều có thể truy cập
     },
   },
 ];
