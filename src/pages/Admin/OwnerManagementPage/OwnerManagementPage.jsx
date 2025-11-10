@@ -1,11 +1,13 @@
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
   {
-    field: 'name',
+    field: 'ten_chu_san',
     headerName: 'Tên chủ sân',
     width: 150,
     editable: true,
@@ -69,20 +71,24 @@ const columns = [
   },
 ];
 
-const rows = [
-  { id: 1, name: 'Snow', yardName: 'Jon', age: 14 },
-  { id: 2, name: 'Lannister', yardName: 'Cersei', age: 31 },
-  { id: 3, name: 'Lannister', yardName: 'Jaime', age: 31 },
-  { id: 4, name: 'Stark', yardName: 'Arya', age: 11 },
-  { id: 5, name: 'Targaryen', yardName: 'Daenerys', age: null },
-  { id: 6, name: 'Melisandre', yardName: null, age: 150 },
-  { id: 7, name: 'Clifford', yardName: 'Ferrara', age: 44 },
-  { id: 8, name: 'Frances', yardName: 'Rossini', age: 36 },
-  { id: 9, name: 'Roxie', yardName: 'Harvey', age: 65 },
-];
-
-
 function OwnerManagementPage() {
+  const [rows, setRows] = useState([]);
+
+  const layDataChuSan = () => {
+    axios
+      .get("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/data")
+      .then((res) => {
+        setRows(res.data.data);
+      })
+      .catch((err) => {
+        console.error("Lỗi khi lấy data:", err);
+      });
+  };
+
+  useEffect(() => {
+    layDataChuSan();
+  }, []);
+
   return <>
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid
@@ -102,5 +108,7 @@ function OwnerManagementPage() {
     </Box>
   </>
 }
+
+
 
 export default OwnerManagementPage;
