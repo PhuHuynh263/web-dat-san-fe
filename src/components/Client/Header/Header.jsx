@@ -37,7 +37,11 @@ function Header() {
             sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
           >
             <SportsSoccerIcon
-              sx={{ color: 'primary.main', fontSize: 40, cursor: 'pointer' }}
+              sx={{
+                color: 'primary.main',
+                fontSize: 40,
+                cursor: 'pointer',
+              }}
             />
             <Typography
               variant='span'

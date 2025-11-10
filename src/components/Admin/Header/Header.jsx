@@ -1,19 +1,19 @@
-import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Box from "@mui/material/Box";
-import MenuIcon from "@mui/icons-material/Menu";
-import { drawerWidth } from "../Sidebar/Sidebar";
-import TextField from "@mui/material/TextField";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { Avatar, Typography } from "@mui/material";
-import EmailIcon from "@mui/icons-material/Email";
-import Badge from "@mui/material/Badge";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
+import MenuIcon from '@mui/icons-material/Menu';
+import { drawerWidth } from '../Sidebar/Sidebar';
+import TextField from '@mui/material/TextField';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { Avatar, darken, Typography } from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
+import Badge from '@mui/material/Badge';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function Header({ isOpen, onToggleSidebar }) {
   const [anchorElMess, setAnchorElMess] = React.useState(null);
@@ -44,18 +44,51 @@ function Header({ isOpen, onToggleSidebar }) {
     setAnchorElAcc(null);
   };
 
+  const STYLE_ICON = {
+    color: 'primary.minor',
+    fontSize: '2rem',
+    mr: 2,
+    cursor: 'pointer',
+  };
+
+  const STYLE_TYPO = {
+    color: 'primary.minor',
+    fontSize: '1.2rem',
+    display: { xs: 'none', md: 'none', xl: 'block' },
+  };
+
+  const STYLE_BTN_ACTION = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    p: 1,
+    m: 1,
+    borderRadius: 2,
+    '&:hover': {
+      backgroundColor: (theme) => darken(theme.palette.background.default, 0.1),
+    },
+    maxWidth: '200px',
+    minWidth: '50px',
+  };
+
+  const STYLE_AVA = {
+    bgcolor: 'primary.minor',
+    mr: 2,
+  };
+
   return (
     <AppBar
       sx={{
-        position: "fixed",
-        backgroundColor: "white",
-        justifyContent: "center",
+        position: 'fixed',
+        backgroundColor: 'background.default',
+        justifyContent: 'center',
         height: 64,
         boxShadow:
-          "0 2px 4px -1px rgba(0,0,0,0.06), 0 4px 5px 0 rgba(0,0,0,0.04)",
+          '0 2px 4px -1px rgba(0,0,0,0.06), 0 4px 5px 0 rgba(0,0,0,0.04)',
         // 2. Style động để Header co giãn theo Sidebar
         transition: (theme) =>
-          theme.transitions.create(["width", "margin"], {
+          theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
@@ -63,7 +96,7 @@ function Header({ isOpen, onToggleSidebar }) {
           width: `calc(100% - ${drawerWidth}px)`,
           marginLeft: `${drawerWidth}px`,
           transition: (theme) =>
-            theme.transitions.create(["width", "margin"], {
+            theme.transitions.create(['width', 'margin'], {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.enteringScreen,
             }),
@@ -74,40 +107,55 @@ function Header({ isOpen, onToggleSidebar }) {
         {/* Logo */}
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
             mr: 2,
           }}
         >
-          <MenuIcon
-            onClick={onToggleSidebar}
-            sx={{
-              color: "#003C7A",
-              fontSize: "2rem",
-              mr: 2,
-              cursor: "pointer",
-            }}
-          />
+          <MenuIcon onClick={onToggleSidebar} sx={STYLE_ICON} />
           <TextField
-            id="outlined-textarea"
-            label="Search"
-            placeholder="Search..."
-            size="small"
+            id='outlined-textarea'
+            label='Search'
+            placeholder='Search...'
+            size='small'
             sx={{
-              "& .MuiOutlinedInput-root": {
-                width: 400,
-                fontSize: 14,
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#003C7A", // Màu viền bạn muốn khi focus
-                  color: "#003C7A", // Màu chữ bạn muốn khi focus
+              // Đặt width ở cấp cao nhất
+              display: { xs: 'none', md: 'block' },
+              // Style cho label
+              '& .MuiInputLabel-root': {
+                color: 'primary.minor', // Label mặc định
+                '&.Mui-focused': {
+                  color: 'primary.minor', // Label khi focus
                 },
               },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "#003C7A",
+
+              // Style cho khung input
+              '& .MuiOutlinedInput-root': {
+                fontSize: 14,
+                width: 400,
+
+                // Style cho viền (notchedOutline)
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'primary.minor', // Viền mặc định
+                },
+
+                // Style khi hover
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'primary.minor', // Viền khi hover
+                },
+
+                // Style khi focus
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'primary.minor', // Viền khi focus
+                },
+
+                // Style cho chữ gõ vào
+                '& .MuiOutlinedInput-input': {
+                  color: 'primary.minor', // Màu chữ gõ vào
+                },
               },
-              display: { xs: "none", md: "block", xl: "block" },
             }}
           />
         </Box>
@@ -116,95 +164,83 @@ function Header({ isOpen, onToggleSidebar }) {
         <Box sx={{ flexGrow: 1 }} />
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           {/* Message */}
           <Box>
             <Box
-              id="basic-button-mess"
-              aria-controls={openMess ? "basic-menu-mess" : undefined}
-              aria-haspopup="true"
-              aria-expanded={openMess ? "true" : undefined}
+              id='basic-button-mess'
+              aria-controls={openMess ? 'basic-menu-mess' : undefined}
+              aria-haspopup='true'
+              aria-expanded={openMess ? 'true' : undefined}
               onClick={handleClickMess}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                p: 2,
-                borderRadius: 2,
-                "&:hover": { backgroundColor: "#F5F5F5 " },
-                maxWidth: "200px",
-                minWidth: "50px",
-              }}
+              sx={STYLE_BTN_ACTION}
             >
               <Badge
                 badgeContent={2}
-                color="primary"
+                // 1. (Tùy chọn) Bỏ prop 'color' nếu bạn muốn ghi đè hoàn toàn
+                // color="primary"
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
+                  vertical: 'top',
+                  horizontal: 'left',
                 }}
                 sx={{
-                  "& .MuiBadge-standard": {
-                    display: openMess ? "none" : "block",
+                  // Style cũ của bạn để ẩn/hiện
+                  '& .MuiBadge-standard': {
+                    display: openMess ? 'none' : 'block',
+                  },
+                  // 2. Thêm style mới để đổi màu
+                  '& .MuiBadge-badge': {
+                    backgroundColor: 'secondary.main', // <-- Thay 'green' bằng mã màu bạn muốn
+                    color: 'white', // (Tùy chọn) Đổi màu chữ bên trong badge
                   },
                 }}
               >
-                <EmailIcon
-                  sx={{ color: "#003C7A", mr: { xs: 0, md: 0, xl: 1 } }}
-                />
+                <EmailIcon sx={STYLE_ICON} />
               </Badge>
-              <Typography
-                variant="body1"
-                sx={{
-                  color: "#003C7A",
-                  fontSize: "1.2rem",
-                  display: { xs: "none", md: "none", xl: "block" },
-                }}
-              >
+              <Typography variant='body1' sx={STYLE_TYPO}>
                 Message
                 {openMess ? <ExpandLess /> : <ExpandMore />}
               </Typography>
             </Box>
             <Menu
-              id="basic-menu-mess"
+              id='basic-menu-mess'
               anchorEl={anchorElMess}
               open={openMess}
               onClose={handleCloseMess}
               slotProps={{
                 list: {
-                  "aria-labelledby": "basic-button-mess",
+                  'aria-labelledby': 'basic-button-mess',
                 },
               }}
             >
               <MenuItem onClick={handleCloseMess}>
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
-                  <Avatar sx={{ bgcolor: "#003C7A", mr: 2 }} />
-                  <Box sx={{ borderLeft: "1px solid #ccc", pl: 2 }}>
+                  <Avatar sx={STYLE_AVA} />
+                  <Box sx={{ borderLeft: '1px solid #ccc', pl: 2 }}>
                     <Typography
-                      variant="subtitle1"
+                      variant='subtitle1'
                       sx={{
-                        fontWeight: "bold",
-                        borderBottom: "1px solid #ccc",
+                        fontWeight: 'bold',
+                        borderBottom: '1px solid #ccc',
                         pb: 0.1,
                       }}
                     >
                       Jhon send you a message
                     </Typography>
                     <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
+                      variant='body2'
+                      sx={{ color: 'text.secondary' }}
                     >
                       15 minutes ago.
                     </Typography>
@@ -214,27 +250,27 @@ function Header({ isOpen, onToggleSidebar }) {
               <MenuItem onClick={handleCloseMess}>
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
-                  <Avatar sx={{ bgcolor: "#003C7A", mr: 2 }} />
-                  <Box sx={{ borderLeft: "1px solid #ccc", pl: 2 }}>
+                  <Avatar sx={STYLE_AVA} />
+                  <Box sx={{ borderLeft: '1px solid #ccc', pl: 2 }}>
                     <Typography
-                      variant="subtitle1"
+                      variant='subtitle1'
                       sx={{
-                        fontWeight: "bold",
-                        borderBottom: "1px solid #ccc",
+                        fontWeight: 'bold',
+                        borderBottom: '1px solid #ccc',
                         pb: 0.1,
                       }}
                     >
                       Jhon send you a message
                     </Typography>
                     <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
+                      variant='body2'
+                      sx={{ color: 'text.secondary' }}
                     >
                       15 minutes ago.
                     </Typography>
@@ -244,27 +280,27 @@ function Header({ isOpen, onToggleSidebar }) {
               <MenuItem onClick={handleCloseMess}>
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
-                  <Avatar sx={{ bgcolor: "#003C7A", mr: 2 }} />
-                  <Box sx={{ borderLeft: "1px solid #ccc", pl: 2 }}>
+                  <Avatar sx={STYLE_AVA} />
+                  <Box sx={{ borderLeft: '1px solid #ccc', pl: 2 }}>
                     <Typography
-                      variant="subtitle1"
+                      variant='subtitle1'
                       sx={{
-                        fontWeight: "bold",
-                        borderBottom: "1px solid #ccc",
+                        fontWeight: 'bold',
+                        borderBottom: '1px solid #ccc',
                         pb: 0.1,
                       }}
                     >
                       Jhon send you a message
                     </Typography>
                     <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
+                      variant='body2'
+                      sx={{ color: 'text.secondary' }}
                     >
                       15 minutes ago.
                     </Typography>
@@ -277,84 +313,73 @@ function Header({ isOpen, onToggleSidebar }) {
           {/* Notification */}
           <Box>
             <Box
-              id="basic-button-noti"
-              aria-controls={openNoti ? "basic-menu-noti" : undefined}
-              aria-haspopup="true"
-              aria-expanded={openNoti ? "true" : undefined}
+              id='basic-button-noti'
+              aria-controls={openNoti ? 'basic-menu-noti' : undefined}
+              aria-haspopup='true'
+              aria-expanded={openNoti ? 'true' : undefined}
               onClick={handleClickNoti}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                p: 2,
-                borderRadius: 2,
-                "&:hover": { backgroundColor: "#F5F5F5 " },
-                maxWidth: "200px",
-                minWidth: "50px",
-              }}
+              sx={STYLE_BTN_ACTION}
             >
               <Badge
                 badgeContent={2}
-                color="primary"
+                // 1. (Tùy chọn) Bỏ prop 'color' nếu bạn muốn ghi đè hoàn toàn
+                // color="primary"
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
+                  vertical: 'top',
+                  horizontal: 'left',
                 }}
                 sx={{
-                  "& .MuiBadge-standard": {
-                    display: openNoti ? "none" : "block",
+                  // Style cũ của bạn để ẩn/hiện
+                  '& .MuiBadge-standard': {
+                    display: openNoti ? 'none' : 'block',
+                  },
+                  // 2. Thêm style mới để đổi màu
+                  '& .MuiBadge-badge': {
+                    backgroundColor: 'secondary.main', // <-- Thay 'green' bằng mã màu bạn muốn
+                    color: 'white', // (Tùy chọn) Đổi màu chữ bên trong badge
                   },
                 }}
               >
-                <NotificationsNoneIcon
-                  sx={{ color: "#003C7A", mr: { xs: 0, md: 0, xl: 1 } }}
-                />
+                <NotificationsNoneIcon sx={STYLE_ICON} />
               </Badge>
-              <Typography
-                variant="body1"
-                sx={{
-                  color: "#003C7A",
-                  fontSize: "1.2rem",
-                  display: { xs: "none", md: "none", xl: "block" },
-                }}
-              >
+              <Typography variant='body1' sx={STYLE_TYPO}>
                 Notification
                 {openNoti ? <ExpandLess /> : <ExpandMore />}
               </Typography>
             </Box>
             <Menu
-              id="basic-menu-noti"
+              id='basic-menu-noti'
               anchorEl={anchorElNoti}
               open={openNoti}
               onClose={handleCloseNoti}
               slotProps={{
                 list: {
-                  "aria-labelledby": "basic-button-noti",
+                  'aria-labelledby': 'basic-button-noti',
                 },
               }}
             >
               <MenuItem onClick={handleCloseNoti}>
                 <Box
                   sx={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     p: 1,
-                    borderBottom: "1px solid #ccc",
+                    borderBottom: '1px solid #ccc',
                   }}
                 >
                   <Typography
-                    variant="subtitle1"
+                    variant='subtitle1'
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
+                      color: 'black',
                     }}
                   >
                     Profile updated successfully
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                     15 minutes ago.
                   </Typography>
                 </Box>
@@ -362,24 +387,25 @@ function Header({ isOpen, onToggleSidebar }) {
               <MenuItem onClick={handleCloseNoti}>
                 <Box
                   sx={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     p: 1,
-                    borderBottom: "1px solid #ccc",
+                    borderBottom: '1px solid #ccc',
                   }}
                 >
                   <Typography
-                    variant="subtitle1"
+                    variant='subtitle1'
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
+                      color: 'black',
                     }}
                   >
                     Profile updated successfully
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                     15 minutes ago.
                   </Typography>
                 </Box>
@@ -387,24 +413,25 @@ function Header({ isOpen, onToggleSidebar }) {
               <MenuItem onClick={handleCloseNoti}>
                 <Box
                   sx={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     p: 1,
-                    borderBottom: "1px solid #ccc",
+                    borderBottom: '1px solid #ccc',
                   }}
                 >
                   <Typography
-                    variant="subtitle1"
+                    variant='subtitle1'
                     sx={{
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
+                      color: 'black',
                     }}
                   >
                     Profile updated successfully
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                     15 minutes ago.
                   </Typography>
                 </Box>
@@ -415,67 +442,47 @@ function Header({ isOpen, onToggleSidebar }) {
           {/* Account */}
           <Box>
             <Box
-              id="basic-button-acc"
-              aria-controls={openAcc ? "basic-menu-acc" : undefined}
-              aria-haspopup="true"
-              aria-expanded={openAcc ? "true" : undefined}
+              id='basic-button-acc'
+              aria-controls={openAcc ? 'basic-menu-acc' : undefined}
+              aria-haspopup='true'
+              aria-expanded={openAcc ? 'true' : undefined}
               onClick={handleClickAcc}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                p: 2,
-                borderRadius: 2,
-                "&:hover": { backgroundColor: "#F5F5F5 " },
-                maxWidth: "200px",
-                minWidth: "50px",
-              }}
+              sx={STYLE_BTN_ACTION}
             >
-              <AccountCircleIcon
-                sx={{ color: "#003C7A", mr: { xs: 0, md: 0, xl: 1 } }}
-              />
-              <Typography
-                variant="body1"
-                sx={{
-                  color: "#003C7A",
-                  fontSize: "1.2rem",
-                  display: { xs: "none", md: "none", xl: "block" },
-                }}
-              >
+              <AccountCircleIcon sx={STYLE_ICON} />
+              <Typography variant='body1' sx={STYLE_TYPO}>
                 Account
                 {openAcc ? <ExpandLess /> : <ExpandMore />}
               </Typography>
             </Box>
             <Menu
-              id="basic-menu-acc"
+              id='basic-menu-acc'
               anchorEl={anchorElAcc}
               open={openAcc}
               onClose={handleCloseAcc}
               slotProps={{
                 list: {
-                  "aria-labelledby": "basic-button-acc",
+                  'aria-labelledby': 'basic-button-acc',
                 },
               }}
               sx={{
-                "& .MuiMenuItem-root": {
-                  width: "200px",
-                  mb: 1,
+                '& .MuiMenuItem-root': {
+                  width: '200px',
                 },
               }}
             >
               <MenuItem onClick={handleCloseAcc}>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                <Typography variant='body2' sx={{ color: 'black' }}>
                   My Account
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseAcc}>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                <Typography variant='body2' sx={{ color: 'black' }}>
                   Settings
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseAcc}>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                <Typography variant='body2' sx={{ color: 'black' }}>
                   Log out
                 </Typography>
               </MenuItem>

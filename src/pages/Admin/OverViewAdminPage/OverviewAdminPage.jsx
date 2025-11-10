@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 
-function OverviewPage() {
+function OverviewAdminPage() {
   return (
     <div>
       <Typography variant="h4">Trang Tổng quan</Typography>
@@ -10,4 +10,4 @@ function OverviewPage() {
   );
 }
 
-export default OverviewPage;
+export default OverviewAdminPage;

@@ -9,6 +9,9 @@ import Button from '@mui/material/Button';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@emotion/react';
+import { clientTheme } from '../../../clientTheme';
 
 const HomePage = () => {
   const sportNames = [
@@ -29,151 +32,236 @@ const HomePage = () => {
     { label: 'Huyện Hoàng Sa' },
   ];
 
-  return (
-    <>
-      <Header></Header>
+  const STYLE_AUTOCOMPLETE = {
+    flexGrow: 1,
+    display: { xs: 'none', md: 'block' },
+    '& .MuiInputLabel-root': {
+      color: 'primary.main', // Đơn giản hóa
+      '&.Mui-focused': {
+        color: 'primary.main', // Đơn giản hóa
+      },
+    },
+    '& .MuiOutlinedInput-root': {
+      fontSize: 14,
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: 'primary.main', // Đơn giản hóa
+      },
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: 'primary.main', // Đơn giản hóa
+      },
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderColor: 'primary.main', // Đơn giản hóa
+      },
+    },
+  };
 
-      {/* Section 1 */}
-      <Box
-        sx={{
-          width: '100%',
-          height: '60vh',
-        }}
-      >
+  const STYLE_DATEPICKER = {
+    flexGrow: 1,
+    display: { xs: 'none', md: 'block' },
+    '& .MuiInputLabel-root': {
+      color: 'primary.main', // Đơn giản hóa
+      '&.Mui-focused': {
+        color: 'primary.main', // Đơn giản hóa
+      },
+    },
+    '& .MuiOutlinedInput-root': {
+      // Sửa lại class cho DatePicker
+      fontSize: 14,
+      '& .MuiOutlinedInput-notchedOutline': {
+        // Sửa lại class cho DatePicker
+        borderColor: 'primary.main', // Đơn giản hóa
+      },
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        // Sửa lại class cho DatePicker
+        borderColor: 'primary.main', // Đơn giản hóa
+      },
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        // Sửa lại class cho DatePicker
+        borderColor: 'primary.main', // Đơn giản hóa
+      },
+      '& .MuiOutlinedInput-input': {
+        // Sửa lại class cho DatePicker
+        color: 'primary.main', // Đơn giản hóa
+      },
+      '& .MuiIconButton-root': {
+        color: 'primary.main', // Đơn giản hóa
+      },
+    },
+  };
+
+  return (
+    <ThemeProvider theme={clientTheme}>
+      <CssBaseline />
+      <>
+        <Header></Header>
+
+        {/* Section 1 */}
         <Box
           sx={{
             width: '100%',
             height: '60vh',
-            backgroundImage: `url(${images.banner})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            position: 'relative',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
           }}
         >
-          <Container
+          <Box
             sx={{
+              width: '100%',
+              height: '60vh',
+              backgroundImage: `url(${images.banner})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              position: 'relative',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <Box sx={{ display: 'flex', width: '100%', height: '300px' }}>
-              <Box
-                sx={{
-                  width: '30%',
-                  height: '100%',
-                }}
-              >
-                <img
-                  src={images.ballSvg}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain', // Hoặc 'contain'
-                    borderRadius: '8px',
-                    color: 'white',
-                  }}
-                ></img>
-              </Box>
-              <Box
-                sx={{
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'left',
-                }}
-              >
-                <Typography variant='h1' sx={{ color: 'white' }}>
-                  <Typography variant='span' sx={{ color: 'primary.main' }}>
-                    Hi5port
-                  </Typography>{' '}
-                  - Ứng dụng đặt sân tập thể thao hàng đầu tại Việt Nam.
-                </Typography>
-                <Typography variant='span' sx={{ color: '#ccc' }}>
-                  Mang đến trải nghiệm đặt sân trực tuyến thuận tiện và linh
-                  hoạt cho người chơi.
-                </Typography>
-              </Box>
-            </Box>
-          </Container>
-          <Container
-            sx={{
-              position: 'absolute',
-              bottom: '-160px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-            }}
-          >
-            <Box
+            <Container
               sx={{
-                p: 1,
-                borderRadius: 4,
-                backgroundColor: 'white',
-                height: 'auto',
-                boxShadow: 3,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Box sx={{ display: 'flex', width: '100%', height: '300px' }}>
+                <Box
+                  sx={{
+                    width: '30%',
+                    height: '100%',
+                  }}
+                >
+                  <img
+                    src={images.ballSvg}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain', // Hoặc 'contain'
+                      borderRadius: '8px',
+                      color: 'white',
+                    }}
+                  ></img>
+                </Box>
+                <Box
+                  sx={{
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'left',
+                  }}
+                >
+                  <Typography variant='h1' sx={{ color: 'white' }}>
+                    <Typography
+                      variant='span'
+                      sx={{
+                        color: 'primary.main',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      Hi5port
+                    </Typography>{' '}
+                    - Ứng dụng đặt sân tập thể thao hàng đầu tại Việt Nam.
+                  </Typography>
+                  <Typography variant='span' sx={{ color: '#ccc' }}>
+                    Mang đến trải nghiệm đặt sân trực tuyến thuận tiện và linh
+                    hoạt cho người chơi.
+                  </Typography>
+                </Box>
+              </Box>
+            </Container>
+            <Container
+              sx={{
+                position: 'absolute',
+                bottom: '-160px',
+                left: '50%',
+                transform: 'translateX(-50%)',
               }}
             >
               <Box
                 sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  m: 2,
-                  gap: '10px',
+                  p: 1,
+                  borderRadius: 4,
+                  backgroundColor: 'white',
+                  height: 'auto',
+                  boxShadow: 3,
                 }}
               >
-                <Typography variant='h2' sx={{ color: '#003d7b' }}>
-                  Đặt sân thể thao ngay
-                </Typography>
-                <Typography variant='p' sx={{ color: '#667085' }}>
-                  Tìm kiếm sân chơi thể thao, thi đấu khắp cả nước
-                </Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    m: 2,
+                    gap: '10px',
+                  }}
+                >
+                  <Typography
+                    variant='h2'
+                    sx={{
+                      color: 'primary.main',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Đặt sân thể thao ngay
+                  </Typography>
+                  <Typography
+                    variant='p'
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
+                    Tìm kiếm sân chơi thể thao, thi đấu khắp cả nước
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', md: 'row' },
+                    alignItems: 'stretch', // Giúp các item có cùng chiều cao khi ở dạng 'row'
+                    gap: 2, // Dùng đơn vị spacing của theme (2 = 16px)
+                    p: 2, // Dùng padding thay cho margin để kiểm soát không gian bên trong tốt hơn
+                    borderRadius: 2,
+                  }}
+                >
+                  <Autocomplete
+                    disablePortal
+                    options={sportNames}
+                    // flexGrow: 1 để các Autocomplete tự chia đều không gian còn lại
+                    sx={STYLE_AUTOCOMPLETE}
+                    renderInput={(params) => (
+                      <TextField {...params} label='Loại sân' />
+                    )}
+                  />
+                  <Autocomplete
+                    disablePortal
+                    options={districtNames}
+                    sx={STYLE_AUTOCOMPLETE}
+                    renderInput={(params) => (
+                      <TextField {...params} label='Quận/Huyện' />
+                    )}
+                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker label='Chọn ngày' sx={STYLE_DATEPICKER} />
+                  </LocalizationProvider>
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    sx={{
+                      flexShrink: 0,
+                      width: { xs: '100%', md: 'auto' },
+                      px: 3,
+                    }}
+                  >
+                    Tìm kiếm
+                  </Button>
+                </Box>
               </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', md: 'row' },
-                  alignItems: 'stretch', // Giúp các item có cùng chiều cao khi ở dạng 'row'
-                  gap: 2, // Dùng đơn vị spacing của theme (2 = 16px)
-                  p: 2, // Dùng padding thay cho margin để kiểm soát không gian bên trong tốt hơn
-                  borderRadius: 2,
-                }}
-              >
-                <Autocomplete
-                  disablePortal
-                  options={sportNames}
-                  // flexGrow: 1 để các Autocomplete tự chia đều không gian còn lại
-                  sx={{ flexGrow: 1 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label='Loại sân' />
-                  )}
-                />
-                <Autocomplete
-                  disablePortal
-                  options={districtNames}
-                  sx={{ flexGrow: 1 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label='Quận/Huyện' />
-                  )}
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker label='Chọn ngày' sx={{ flexGrow: 1 }} />
-                </LocalizationProvider>
-                <Button variant='contained' sx={{ flexShrink: 0, px: 3 }}>
-                  Tìm kiếm
-                </Button>
-              </Box>
-            </Box>
-          </Container>
+            </Container>
+          </Box>
         </Box>
-      </Box>
 
-      {/* Section 2 */}
-    </>
+        {/* Section 2 */}
+      </>
+    </ThemeProvider>
   );
 };
 
