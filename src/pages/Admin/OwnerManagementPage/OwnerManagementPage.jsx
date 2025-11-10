@@ -3,68 +3,83 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
-const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  {
-    field: 'ten_chu_san',
-    headerName: 'Tên chủ sân',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'ten_san',
-    headerName: 'Tên sân',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    type: 'email',
-    width: 150,
-    editable: false,
-  },
-
-  {
-    field: 'dia_chi',
-    headerName: 'Địa Chỉ',
-    type: 'string',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'avatar',
-    headerName: 'Ảnh đại diện',
-    type: 'image',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'so_dien_thoai',
-    headerName: 'Số điện thoại',
-    type: 'string',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'trang_thai',
-    headerName: 'Trạng thái',
-    renderCell: (params) => (
-      <Button
-        // onClick={() => handleStatusClick(params.row)}
-        sx={{
-          bgcolor: 'green',
-          color: 'white',
-        }}
-      >
-        Cập nhật
-      </Button>
-    ),
-  },
-];
+import { toast } from 'react-toastify';
 
 function OwnerManagementPage() {
+  const columns = [
+    {
+      field: 'stt',
+      headerName: 'STT',
+      width: 80,
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => {
+        const index = params.api.getRowIndexRelativeToVisibleRows(params.id);
+        return index + 1;
+      },
+    },
+    {
+      field: 'ten_chu_san',
+      headerName: 'Tên chủ sân',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'ten_san',
+      headerName: 'Tên sân',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      type: 'email',
+      width: 150,
+      editable: false,
+    },
+
+    {
+      field: 'dia_chi',
+      headerName: 'Địa Chỉ',
+      type: 'string',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'avatar',
+      headerName: 'Ảnh đại diện',
+      type: 'image',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'so_dien_thoai',
+      headerName: 'Số điện thoại',
+      type: 'string',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'trang_thai',
+      headerName: 'Trạng thái',
+      width: 150,
+      renderCell: (params) => {
+        const isActive = params.row.trang_thai === 1;
+        return (
+          <Button
+            onClick={() => changeStatus({ id: params.row.id })}
+            sx={{
+              bgcolor: isActive ? 'green' : 'gray',
+              color: 'white',
+
+            }}
+          >
+            {isActive ? 'Hoạt động' : 'Tạm khóa'}
+          </Button>
+        )
+      },
+    },
+  ];
   const [rows, list_chu_san] = useState([]);
 
   const layDataChuSan = () => {
@@ -77,6 +92,23 @@ function OwnerManagementPage() {
         console.error("Lỗi khi lấy data:", err);
       });
   };
+
+  const changeStatus = (value) => {
+    axios
+      .post("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/changeStatus", value)
+      .then((res) => {
+        if (res.data.status) {
+          toast.success(res.data.message);
+          layDataChuSan();
+        }
+        else {
+          toast.error(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.error("Lỗi khi thay đổi trạng thái:", err);
+      });
+  }
 
   useEffect(() => {
     layDataChuSan();
