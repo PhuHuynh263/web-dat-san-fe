@@ -1,17 +1,25 @@
-import { Box, Typography, TextField, CssBaseline, Button, ThemeProvider } from '@mui/material';
+import {
+  Box,
+  Typography,
+  TextField,
+  CssBaseline,
+  Button,
+  ThemeProvider,
+} from '@mui/material';
 import images from '../../assets/images/images';
-import { clientTheme } from '../../clientTheme';
+import { loginSignUpTheme } from '../../loginSignUpTheme';
+import { NavLink } from 'react-router-dom';
 
 function LoginPage() {
   const STYLE_TEXTFIELD = {
     margin: '8px',
     flexGrow: 1,
     '& .MuiInputLabel-root': {
-      color: 'primary.main',
+      color: 'white',
       fontWeight: 'bold',
       fontSize: 14,
       '&.Mui-focused': {
-        color: 'primary.main',
+        color: 'white',
         fontWeight: 'bold',
       },
     },
@@ -21,7 +29,8 @@ function LoginPage() {
 
       // Style cho chữ bạn gõ vào
       '& .MuiOutlinedInput-input': {
-        color: 'black',
+        color: 'white',
+        backgroundColor: 'none',
       },
 
       // Style cho đường viền (notchedOutline)
@@ -42,97 +51,132 @@ function LoginPage() {
   };
 
   return (
-    <ThemeProvider theme={clientTheme}>
+    <ThemeProvider theme={loginSignUpTheme}>
       <CssBaseline />
-      <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundImage: `url(${images.bgLogin})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        height: '100vh',
-      }}
-    >
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'column',
-          height: 600,
-          width: 500,
-          opacity: 0.8,
-          p: 4,
-          boxShadow: 5,
-          borderRadius: 2,
-          border: '1px solid #ccc',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundImage: `url(${images.bgLogin})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          height: '100vh',
         }}
       >
-        <Box sx={{ width: '100%', height: 'auto' }}>
-          <Typography
-            variant='h2'
-            align='center'
-            sx={{ mt: 5, mb: 5, color: 'primary.main', fontWeight: 'bold' }}
-          >
-            Login Page
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-          <TextField
-            id='filled-email'
-            label='Your Email'
-            sx={STYLE_TEXTFIELD}
-          />
-          <TextField
-            id='outlined-password-input'
-            label='Password'
-            type='password'
-            autoComplete='current-password'
-            sx={STYLE_TEXTFIELD}
-          />
-        </Box>
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
+            flexDirection: 'column',
+            height: 750,
+            width: 500,
+            opacity: 0.8,
+            p: 4,
+            boxShadow: 5,
+            borderRadius: 2,
+            border: '1px solid #ccc',
           }}
         >
-          <Typography
-            variant='body2'
-            color='white'
-            fontWeight='bold'
-            sx={{ mt: 3, mb: 2, cursor: 'pointer' }}
+          <Box sx={{ width: '100%', height: 'auto' }}>
+            <Typography
+              variant='h1'
+              align='center'
+              sx={{ mt: 5, mb: 5, color: 'primary.main', fontWeight: 'bold' }}
+            >
+              Login Page
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+            <TextField
+              id='filled-email'
+              label='Your Email'
+              sx={STYLE_TEXTFIELD}
+            />
+            <TextField
+              id='outlined-password-input'
+              label='Password'
+              type='password'
+              autoComplete='current-password'
+              sx={STYLE_TEXTFIELD}
+            />
+            <Box
+              sx={{
+                display: 'flex',
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Button
+                variant='contained'
+                color='primary'
+                sx={{ width: '100%', m: 1, fontWeight: 'bold' }}
+              >
+                Login
+              </Button>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-evenly',
+              alignItems: 'center',
+            }}
           >
-            Forget Password?
-          </Typography>
-          <Button
-            variant='contained'
-            color='primary'
-            sx={{ mt: 3, mb: 2, fontWeight: 'bold' }}
+            <Typography
+              variant='body2'
+              color='white'
+              fontWeight='bold'
+              onClick={() => {
+                console.log('Forget Password clicked');
+              }}
+              sx={{ mt: 3, mb: 2, cursor: 'pointer' }}
+            >
+              Forget Password?
+            </Typography>
+            <Button
+              variant='contained'
+              sx={{
+                mt: 3,
+                mb: 2,
+                fontWeight: 'bold',
+                color: 'black',
+                border: '2px solid white',
+                backgroundColor: 'white',
+                '&:hover': {
+                  backgroundColor: 'primary.main',
+                  color: 'white',
+                  borderColor: 'primary.main',
+                },
+              }}
+            >
+              Sign Up
+            </Button>
+          </Box>
+          <Box sx={{ flex: 1 }}></Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignContent: 'center',
+              justifyContent: 'center',
+            }}
           >
-            Register
-          </Button>
-        </Box>
-        <Box sx={{ flex: 1 }}></Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignContent: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography
-            variant='body2'
-            color='white'
-            fontWeight='bold'
-            sx={{ mt: 3, mb: 2, cursor: 'pointer' }}
-          >
-            Create an Account
-          </Typography>
+            <Typography
+              variant='body2'
+              component={NavLink}
+              to='/signup'
+              color='white'
+              fontWeight='bold'
+              onClick={() => {
+                console.log('Create an Account clicked');
+              }}
+              sx={{ mt: 3, mb: 2, cursor: 'pointer' }}
+            >
+              Create an Account
+            </Typography>
+          </Box>
         </Box>
       </Box>
-    </Box>
     </ThemeProvider>
   );
 }

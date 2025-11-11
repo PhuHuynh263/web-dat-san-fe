@@ -11,6 +11,8 @@ function OwnerManagementPage() {
       field: 'stt',
       headerName: 'STT',
       width: 80,
+      align: 'center',
+      headerAlign: 'center',
       sortable: false,
       filterable: false,
       renderCell: (params) => {
@@ -21,14 +23,17 @@ function OwnerManagementPage() {
     {
       field: 'ho_va_ten',
       headerName: 'Tên chủ sân',
-      width: 150,
+      flex: 1,
+      headerAlign: 'center',
       editable: false,
     },
     {
       field: 'email',
       headerName: 'Email',
       type: 'email',
-      width: 150,
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
       editable: false,
     },
 
@@ -36,20 +41,26 @@ function OwnerManagementPage() {
       field: 'avatar',
       headerName: 'Ảnh đại diện',
       type: 'image',
-      width: 150,
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
       editable: false,
     },
     {
       field: 'so_dien_thoai',
       headerName: 'Số điện thoại',
       type: 'string',
-      width: 150,
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
       editable: false,
     },
     {
       field: 'trang_thai',
       headerName: 'Trạng thái',
-      width: 150,
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
       renderCell: (params) => {
         const isActive = params.row.trang_thai === 1;
         return (
@@ -71,6 +82,9 @@ function OwnerManagementPage() {
     },
     {
       headerName: 'Hành động',
+      headerAlign: 'center',
+      flex: 1,
+      sortable: false,
       renderCell: (params) => {
         return (
           <Button

@@ -9,6 +9,7 @@ import HomePage from '../pages/Client/HomePage/index.jsx';
 // Import Dashboard Routes
 import { dashboardRoutes } from './dashboardRoutes.jsx';
 import LoginPage from '../pages/LoginPage/LoginPage.jsx';
+import SignUpPage from '../pages/SignUpPage/SignUpPage.jsx';
 
 // --- HÀM MỚI ĐỂ "LÀM PHẲNG" ROUTE ---
 function flattenRoutes(routes) {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/signup',
+    element: <SignUpPage />,
   },
 ]);
 

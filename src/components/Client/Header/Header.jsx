@@ -7,6 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Typography from '@mui/material/Typography';
+import { NavLink } from 'react-router-dom';
 
 const MENU_ITEMS_STYLE = {
   fontSize: '1rem',
@@ -61,11 +62,35 @@ function Header() {
           <Box
             sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
           >
-            <Typography variant='span' sx={{ cursor: 'pointer' }}>
+            <Typography
+              variant='span'
+              component={NavLink}
+              to='/login'
+              sx={{
+                cursor: 'pointer',
+                textDecoration: 'none',
+                color: 'inherit',
+                '&:hover': {
+                  color: 'primary.main',
+                },
+              }}
+            >
               Login
             </Typography>
             {' / '}
-            <Typography variant='span' sx={{ cursor: 'pointer' }}>
+            <Typography
+              variant='span'
+              component={NavLink}
+              to='/signup'
+              sx={{
+                cursor: 'pointer',
+                textDecoration: 'none',
+                color: 'inherit',
+                '&:hover': {
+                  color: 'primary.main',
+                },
+              }}
+            >
               Register
             </Typography>
           </Box>
