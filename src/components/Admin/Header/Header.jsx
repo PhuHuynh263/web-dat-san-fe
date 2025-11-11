@@ -471,21 +471,32 @@ function Header({ isOpen, onToggleSidebar }) {
                 },
               }}
             >
-              <MenuItem onClick={handleCloseAcc}>
-                <Typography variant='body2' sx={{ color: 'black' }}>
-                  My Account
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseAcc}>
-                <Typography variant='body2' sx={{ color: 'black' }}>
-                  Settings
-                </Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseAcc}>
-                <Typography variant='body2' sx={{ color: 'black' }}>
-                  Log out
-                </Typography>
-              </MenuItem>
+              {isLoggedIn ? (
+                <React.Fragment>
+                  <MenuItem>
+                    <Typography variant='body2' sx={{ color: 'black' }}>
+                      Tài khoản
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem>
+                    <Typography variant='body2' sx={{ color: 'black' }}>
+                      Cài đặt
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem >
+                    <Typography variant='body2' sx={{ color: 'black' }}>
+                      Đăng xuất
+                    </Typography>
+                  </MenuItem>
+                </React.Fragment>
+              ) : (
+                // Chuyển sang trang Login bằng router
+                <MenuItem> 
+                  <Typography variant='body2' sx={{ color: 'black' }}>
+                    Đăng nhập
+                  </Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
         </Box>
@@ -494,4 +505,5 @@ function Header({ isOpen, onToggleSidebar }) {
   );
 }
 
+const isLoggedIn = true;
 export default Header;
