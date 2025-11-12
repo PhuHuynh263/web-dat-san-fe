@@ -50,14 +50,14 @@ function Header({ isOpen, onToggleSidebar }) {
   const STYLE_ICON = {
     color: "primary.minor",
     fontSize: "1.5rem",
-    mr: { xs: 0, md: 0, xl: 1 },
+    mr: { xs: 0, md: 1, xl: 1 },
     cursor: "pointer",
   };
 
   const STYLE_TYPO = {
     color: "primary.minor",
     fontSize: "0.9rem",
-    display: { xs: "none", md: "none", xl: "block" },
+    display: { xs: "none", md: "block", xl: "block" },
   };
 
   const STYLE_BTN_ACTION = {
