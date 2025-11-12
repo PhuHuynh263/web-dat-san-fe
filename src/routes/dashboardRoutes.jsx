@@ -17,11 +17,14 @@ import PersonIcon from "@mui/icons-material/Person";
 import PaymentIcon from '@mui/icons-material/Payment';
 import StyleIcon from '@mui/icons-material/Style';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import GrassIcon from '@mui/icons-material/Grass';
+import StadiumIcon from '@mui/icons-material/Stadium';
+
 
 // --- Import Admin Page Components ---
 import OverviewAdminPage from "../pages/Admin/OverViewAdminPage/OverviewAdminPage";
 import PitchManagementPage from "../pages/Admin/PitchManagementPage/PitchManagementPage";
-import BookingManagementPage from "../pages/Admin/BookingManagementPage/BookingManagementPage";
+import BookingManagementPage from "../pages/Admin/TotalYardManagementPage/TotalYardManagementPage";
 import AssessmentManagement from "../pages/Admin/AssessmentManagementPage/AssessmentManagementPage";
 import OwnerManagementPage from "../pages/Admin/OwnerManagementPage/OwnerManagementPage";
 import CustomerManagementPage from "../pages/Admin/CustomerManagementPage/CustomerManagementPage";
@@ -37,6 +40,7 @@ import RevenueReportOwnerPage from "../pages/Owner/RevenueReportOwnerPage/Revenu
 import ServicePaymentPage from "../pages/Owner/ServicePaymentPage/ServicePaymentPage";
 import SoccerFieldManagementPage from "../pages/Owner/SoccerFieldManagementPage/SoccerFieldManagementPage";
 import YardTypeManagementPage from "../pages/Owner/YardTypeManagementPage/YardTypeManagementPage";
+import TotalYardManagementPage from "../pages/Admin/TotalYardManagementPage/TotalYardManagementPage";
 
 // === Đổi tên thành dashboardRoutes (chứa tất cả route) ===
 export const dashboardRoutes = [
@@ -61,11 +65,11 @@ export const dashboardRoutes = [
     },
   },
   {
-    path: "/admin/bookings",
-    element: <BookingManagementPage />,
+    path: "/admin/total-yards",
+    element: <TotalYardManagementPage />,
     meta: {
-      title: "QUẢN LÝ ĐƠN ĐẶT",
-      icon: <ReceiptLongIcon />,
+      title: "QUẢN LÝ TOÀN BỘ SÂN BÓNG",
+      icon: <StadiumIcon />,
       roles: ["admin"],
     },
   },

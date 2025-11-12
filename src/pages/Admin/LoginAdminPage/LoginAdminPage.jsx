@@ -154,7 +154,7 @@ function LoginAdminPage() {
                 align="center"
                 sx={{ mb: 5, color: "secondary.main", fontWeight: "bold" }}
               >
-                Log In
+                Đăng nhập
               </Typography>
             </Box>
             <Box 
@@ -198,7 +198,7 @@ function LoginAdminPage() {
                   onClick={() => setChecked(!checked)}
                   sx={{ cursor: "pointer" }}
                 >
-                  Remember me?
+                  Nhớ đăng nhập?
                 </Typography>
               </Box>
               <Box
@@ -215,7 +215,7 @@ function LoginAdminPage() {
                   type="submit"
                   sx={{ width: "100%", m: 1, fontWeight: "bold" }}
                 >
-                  Login
+                  Đăng nhập
                 </Button>
               </Box>
             </Box>
@@ -235,7 +235,7 @@ function LoginAdminPage() {
                 }}
                 sx={{ mt: 3, mb: 2, cursor: "pointer" }}
               >
-                Forget Password?
+                Quên mật khẩu?
               </Typography>
             </Box>
             <Box sx={{ flex: 1 }}></Box>
