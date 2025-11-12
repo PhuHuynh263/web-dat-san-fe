@@ -495,4 +495,5 @@ function Header({ isOpen, onToggleSidebar }) {
   );
 }
 
+const isLoggedIn = true;
 export default Header;
