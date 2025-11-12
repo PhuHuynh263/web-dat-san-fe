@@ -11,7 +11,6 @@ import { dashboardRoutes } from "./dashboardRoutes.jsx";
 import LoginPage from "../pages/Client/LoginPage/LoginPage.jsx";
 import SignUpPage from "../pages/Client/SignUpPage/SignUpPage.jsx";
 import LoginAdminPage from "../pages/Admin/LoginAdminPage/LoginAdminPage.jsx";
-import SignUpAdminPage from "../pages/Admin/SignUpAdminPage/SignUpAdminPage.jsx";
 import LoginOwnerPage from "../pages/Owner/LoginOwnerPage/LoginOwnerPage.jsx";
 import SignUpOwnerPage from "../pages/Owner/SignUpOwnerPage/SignUpOwnerPage.jsx";
 
@@ -81,10 +80,6 @@ const router = createBrowserRouter([
   {
     path: "/admin/login",
     element: <LoginAdminPage />,
-  },
-  {
-    path: "/admin/signup",
-    element: <SignUpAdminPage />,
   },
   {
     path: "/owner/login",

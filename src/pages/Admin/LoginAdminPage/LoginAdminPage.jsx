@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { darken } from "@mui/material/styles";
 import { dashboardTheme } from "../../../dashboardTheme";
-import { NavLink } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
 
 function LoginAdminPage() {
@@ -174,24 +173,6 @@ function LoginAdminPage() {
               >
                 Forget Password?
               </Typography>
-              <Button
-                variant="contained"
-                sx={{
-                  mt: 3,
-                  mb: 2,
-                  fontWeight: "bold",
-                  color: "black",
-                  border: "2px solid white",
-                  backgroundColor: "white",
-                  "&:hover": {
-                    backgroundColor: "secondary.main",
-                    color: "white",
-                    borderColor: "secondary.main",
-                  },
-                }}
-              >
-                Sign Up
-              </Button>
             </Box>
             <Box sx={{ flex: 1 }}></Box>
             <Box
@@ -200,21 +181,7 @@ function LoginAdminPage() {
                 alignContent: "center",
                 justifyContent: "center",
               }}
-            >
-              <Typography
-                variant="body2"
-                component={NavLink}
-                to="/admin/signup"
-                color="white"
-                fontWeight="bold"
-                onClick={() => {
-                  console.log("Create an Account clicked");
-                }}
-                sx={{ mt: 3, mb: 2, cursor: "pointer" }}
-              >
-                Create an Account
-              </Typography>
-            </Box>
+            ></Box>
           </Box>
         </Container>
       </Box>
