@@ -17,6 +17,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Header({ isOpen, onToggleSidebar }) {
   const [anchorElMess, setAnchorElMess] = React.useState(null);
@@ -48,6 +50,35 @@ function Header({ isOpen, onToggleSidebar }) {
       .catch((err) => {
         console.error(err);
         setAuth(false);
+      });
+  };
+
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    axios
+      .post(
+        "http://127.0.0.1:8000/api/quan-tri-vien/dang-xuat",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+          },
+        }
+      )
+      .then((res) => {
+        const thong_bao = res.data.message;
+        if (res.data.status) {
+          toast.success(thong_bao);
+          localStorage.removeItem("token_quan_tri_vien"); // xoá token
+          navigate("/admin/login"); // chuyển trang
+        } else {
+          toast.error(thong_bao);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Lỗi kết nối đến máy chủ!");
       });
   };
 
@@ -517,7 +548,9 @@ function Header({ isOpen, onToggleSidebar }) {
                     </Typography>
                   </MenuItem>
                   <MenuItem>
-                    <Typography variant="body2" sx={{ color: "black" }}>
+                    <Typography 
+                      onClick={() => logOut()}
+                      variant="body2" sx={{ color: "black" }}>
                       Đăng xuất
                     </Typography>
                   </MenuItem>

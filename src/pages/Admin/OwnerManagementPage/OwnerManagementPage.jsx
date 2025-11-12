@@ -100,7 +100,11 @@ function OwnerManagementPage() {
 
   const layDataChuSan = () => {
     axios
-      .get("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/data")
+      .get("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/data", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+        },
+      })
       .then((res) => {
         list_chu_san(res.data.data);
       })
@@ -111,7 +115,11 @@ function OwnerManagementPage() {
 
   const changeStatus = (value) => {
     axios
-      .post("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/changeStatus", value)
+      .post("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/changeStatus", value, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+        },
+      })
       .then((res) => {
         if (res.data.status) {
           toast.success(res.data.message);

@@ -105,7 +105,11 @@ function OwnerManagementPage() {
 
   const layDataKhachHang = () => {
     axios
-      .get("http://127.0.0.1:8000/api/quan-tri-vien/khach-hang/data")
+      .get("http://127.0.0.1:8000/api/quan-tri-vien/khach-hang/data", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+        },
+      })
       .then((res) => {
         list_khach_hang(res.data.data);
       })
@@ -116,7 +120,11 @@ function OwnerManagementPage() {
 
   const changeStatus = (value) => {
     axios
-      .post("http://127.0.0.1:8000/api/quan-tri-vien/khach-hang/changeStatus", value)
+      .post("http://127.0.0.1:8000/api/quan-tri-vien/khach-hang/changeStatus", value, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+        },
+      })
       .then((res) => {
         if (res.data.status) {
           toast.success(res.data.message);
