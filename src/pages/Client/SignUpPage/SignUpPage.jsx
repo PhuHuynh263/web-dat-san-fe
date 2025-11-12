@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Box,
   Typography,
@@ -8,23 +7,23 @@ import {
   ThemeProvider,
   Container,
 } from "@mui/material";
-import images from "../../assets/images/images";
-import { loginSignUpTheme } from "../../loginSignUpTheme";
+import images from "../../../assets/images/images";
+import { clientTheme } from "../../../clientTheme";
 import { NavLink } from "react-router-dom";
-import Checkbox from "@mui/material/Checkbox";
 
-function LoginPage() {
+function SignUpPage() {
   const STYLE_TEXTFIELD = {
     margin: "8px",
     flexGrow: 1,
     "& .MuiInputLabel-root": {
-      color: "white",
+      color: "black",
       fontWeight: "bold",
       fontSize: 14,
       "&.Mui-focused": {
-        color: "white",
+        color: "black",
         fontWeight: "bold",
         fontSize: 18,
+        // Style cho Label KHI ĐƯỢC FOCUS
       },
     },
     // --- Style cho khung Input (OutlinedInput) ---
@@ -33,7 +32,7 @@ function LoginPage() {
 
       // Style cho chữ bạn gõ vào
       "& .MuiOutlinedInput-input": {
-        color: "white",
+        color: "black",
         backgroundColor: "none",
       },
 
@@ -54,21 +53,15 @@ function LoginPage() {
     },
   };
 
-  const [checked, setChecked] = React.useState(true);
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
-
   return (
-    <ThemeProvider theme={loginSignUpTheme}>
+    <ThemeProvider theme={clientTheme}>
       <CssBaseline />
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          backgroundImage: `url(${images.bgLogin})`,
+          backgroundImage: `url(${images.bgSignUp})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           height: "100vh",
@@ -99,12 +92,40 @@ function LoginPage() {
               <Typography
                 variant="h1"
                 align="center"
-                sx={{ mb: 5, color: "primary.main", fontWeight: "bold" }}
+                sx={{
+                  mb: 5,
+                  color: "primary.main",
+                  fontWeight: "bold",
+                }}
               >
-                Login Page
+                Sign Up
               </Typography>
             </Box>
             <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <TextField
+                  id="filled-first-name"
+                  label="First Name"
+                  sx={STYLE_TEXTFIELD}
+                />
+                <TextField
+                  id="filled-last-name"
+                  label="Last Name"
+                  sx={STYLE_TEXTFIELD}
+                />
+              </Box>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <TextField
+                  id="filled-phone-number"
+                  label="Phone Number"
+                  sx={STYLE_TEXTFIELD}
+                />
+                <TextField
+                  id="filled-address"
+                  label="Address"
+                  sx={STYLE_TEXTFIELD}
+                />
+              </Box>
               <TextField
                 id="filled-email"
                 label="Your Email"
@@ -117,30 +138,13 @@ function LoginPage() {
                 autoComplete="current-password"
                 sx={STYLE_TEXTFIELD}
               />
-              <Box>
-                <Checkbox
-                  checked={checked}
-                  onChange={handleChange}
-                  slotProps={{
-                    input: { "aria-label": "controlled" },
-                  }}
-                  sx={{
-                    color: "white",
-                    "&.Mui-checked": {
-                      color: (theme) => theme.palette.primary.main, // Màu của dấu tick
-                    },
-                  }}
-                />
-                <Typography
-                  variant="body2"
-                  color="#ccc"
-                  component="span"
-                  onClick={() => setChecked(!checked)}
-                  sx={{ cursor: "pointer" }}
-                >
-                  Remember me?
-                </Typography>
-              </Box>
+              <TextField
+                id="outlined-reenter-password-input"
+                label="Re-enter Password"
+                type="password"
+                autoComplete="current-password"
+                sx={STYLE_TEXTFIELD}
+              />
               <Box
                 sx={{
                   display: "flex",
@@ -151,10 +155,10 @@ function LoginPage() {
               >
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   sx={{ width: "100%", m: 1, fontWeight: "bold" }}
                 >
-                  Login
+                  Sign Up
                 </Button>
               </Box>
             </Box>
@@ -164,37 +168,7 @@ function LoginPage() {
                 justifyContent: "space-evenly",
                 alignItems: "center",
               }}
-            >
-              <Typography
-                variant="body2"
-                color="white"
-                fontWeight="bold"
-                onClick={() => {
-                  console.log("Forget Password clicked");
-                }}
-                sx={{ mt: 3, mb: 2, cursor: "pointer" }}
-              >
-                Forget Password?
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{
-                  mt: 3,
-                  mb: 2,
-                  fontWeight: "bold",
-                  color: "black",
-                  border: "2px solid white",
-                  backgroundColor: "white",
-                  "&:hover": {
-                    backgroundColor: "primary.main",
-                    color: "white",
-                    borderColor: "primary.main",
-                  },
-                }}
-              >
-                Sign Up
-              </Button>
-            </Box>
+            ></Box>
             <Box sx={{ flex: 1 }}></Box>
             <Box
               sx={{
@@ -206,7 +180,7 @@ function LoginPage() {
               <Typography
                 variant="body2"
                 component={NavLink}
-                to="/signup"
+                to="/login"
                 color="white"
                 fontWeight="bold"
                 onClick={() => {
@@ -214,7 +188,7 @@ function LoginPage() {
                 }}
                 sx={{ mt: 3, mb: 2, cursor: "pointer" }}
               >
-                Create an Account
+                Back to Login
               </Typography>
             </Box>
           </Box>
@@ -224,4 +198,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default SignUpPage;

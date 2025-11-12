@@ -1,15 +1,19 @@
-import { createBrowserRouter } from 'react-router-dom';
-import React, { Suspense } from 'react'; // Import Suspense
-import { Box, CircularProgress, Toolbar } from '@mui/material'; // Import components
+import { createBrowserRouter } from "react-router-dom";
+import React, { Suspense } from "react"; // Import Suspense
+import { Box, CircularProgress, Toolbar } from "@mui/material"; // Import components
 
 // Import Layouts
-import DashBoard from '../layouts/Admin/DashBoard.jsx';
-import HomePage from '../pages/Client/HomePage/index.jsx';
+import DashBoard from "../layouts/Admin/DashBoard.jsx";
+import HomePage from "../pages/Client/HomePage/index.jsx";
 
 // Import Dashboard Routes
-import { dashboardRoutes } from './dashboardRoutes.jsx';
-import LoginPage from '../pages/LoginPage/LoginPage.jsx';
-import SignUpPage from '../pages/SignUpPage/SignUpPage.jsx';
+import { dashboardRoutes } from "./dashboardRoutes.jsx";
+import LoginPage from "../pages/Client/LoginPage/LoginPage.jsx";
+import SignUpPage from "../pages/Client/SignUpPage/SignUpPage.jsx";
+import LoginAdminPage from "../pages/Admin/LoginAdminPage/LoginAdminPage.jsx";
+import SignUpAdminPage from "../pages/Admin/SignUpAdminPage/SignUpAdminPage.jsx";
+import LoginOwnerPage from "../pages/Owner/LoginOwnerPage/LoginOwnerPage.jsx";
+import SignUpOwnerPage from "../pages/Owner/SignUpOwnerPage/SignUpOwnerPage.jsx";
 
 // --- HÀM MỚI ĐỂ "LÀM PHẲNG" ROUTE ---
 function flattenRoutes(routes) {
@@ -36,7 +40,7 @@ function flattenRoutes(routes) {
 const router = createBrowserRouter([
   // --- Nhóm Route cho Client ---
   {
-    path: '/',
+    path: "/",
     element: <HomePage />,
     // ... (children của client)
   },
@@ -50,7 +54,7 @@ const router = createBrowserRouter([
       element: (
         <Suspense
           fallback={
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
               <CircularProgress />
             </Box>
           }
@@ -63,16 +67,32 @@ const router = createBrowserRouter([
 
   // --- Route cho trang 404 Not Found ---
   {
-    path: '*',
+    path: "*",
     element: <div>404 - Page Not Found</div>,
   },
   {
-    path: '/login',
+    path: "/login",
     element: <LoginPage />,
   },
   {
-    path: '/signup',
+    path: "/signup",
     element: <SignUpPage />,
+  },
+  {
+    path: "/admin/login",
+    element: <LoginAdminPage />,
+  },
+  {
+    path: "/admin/signup",
+    element: <SignUpAdminPage />,
+  },
+  {
+    path: "/owner/login",
+    element: <LoginOwnerPage />,
+  },
+  {
+    path: "/owner/signup",
+    element: <SignUpOwnerPage />,
   },
 ]);
 
