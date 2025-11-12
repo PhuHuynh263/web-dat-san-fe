@@ -28,6 +28,7 @@ function Header({ isOpen, onToggleSidebar }) {
   const role = "admin";
 
   const [isLoggedIn, setLogIn] = useState(false);
+  const [adminName, setAdminName] = useState("");
 
   const checkLogin = () => {
     axios
@@ -39,6 +40,7 @@ function Header({ isOpen, onToggleSidebar }) {
       .then((res) => {
         if (res.data.status) {
           setLogIn(true);
+          setAdminName(res.data.ten_qtv);
         } else {
           setLogIn(false);
         }
@@ -482,7 +484,7 @@ function Header({ isOpen, onToggleSidebar }) {
             >
               <AccountCircleIcon sx={STYLE_ICON} />
               <Typography variant="body1" sx={STYLE_TYPO}>
-                Account
+                {isLoggedIn ? adminName : "Tài khoản"}
                 {openAcc ? <ExpandLess /> : <ExpandMore />}
               </Typography>
             </Box>
