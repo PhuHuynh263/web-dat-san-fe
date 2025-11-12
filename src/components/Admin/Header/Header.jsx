@@ -15,6 +15,8 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function Header({ isOpen, onToggleSidebar }) {
   const [anchorElMess, setAnchorElMess] = React.useState(null);
@@ -23,8 +25,33 @@ function Header({ isOpen, onToggleSidebar }) {
   const openMess = Boolean(anchorElMess);
   const openAcc = Boolean(anchorElAcc);
   const openNoti = Boolean(anchorElNoti);
-  const isLoggedIn = false;
   const role = "admin";
+
+  const [isLoggedIn, setLogIn] = useState(false);
+
+  const checkLogin = () => {
+    axios
+      .get("http://127.0.0.1:8000/api/quan-tri-vien/kiem-tra-dang-nhap", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+        },
+      })
+      .then((res) => {
+        if (res.data.status) {
+          setLogIn(true);
+        } else {
+          setLogIn(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setAuth(false);
+      });
+  };
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
 
   const handleClickAcc = (event) => {
     setAnchorElAcc(event.currentTarget);

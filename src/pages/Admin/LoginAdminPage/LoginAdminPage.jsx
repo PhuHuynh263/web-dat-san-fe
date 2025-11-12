@@ -1,4 +1,9 @@
 import * as React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+
 import {
   Box,
   Typography,
@@ -59,6 +64,57 @@ function LoginAdminPage() {
     setChecked(event.target.checked);
   };
 
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleUserNameChange = (event) => {
+    setUserName(event.target.value);
+  };
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const logIn = (event) => {
+    event.preventDefault();
+
+    const loginData = {
+      user_name: userName,
+      password: password
+    };
+    console.log(loginData);
+
+    axios
+      .post("http://127.0.0.1:8000/api/quan-tri-vien/dang-nhap", loginData)
+      .then((res) => {
+        if (res.data.status) {
+          const thong_bao = res.data.message;
+          toast.success(thong_bao);
+          // ... (Lưu localStorage như cũ)
+          localStorage.setItem('token_quan_tri_vien', res.data.token_quan_tri_vien);
+          localStorage.setItem('ten_qtv', res.data.ten_qtv);
+          localStorage.setItem('anh_qtv', res.data.anh_qtv);
+
+          navigate('/admin/dashboard');
+        } else {
+          // ... (Xử lý lỗi như cũ)
+          toast.error(res.data.message);
+        }
+      })
+      .catch((errors) => {
+        // ... (Xử lý .catch như cũ)
+        if (errors.response && errors.response.data && errors.response.data.errors) {
+          const listErrors = errors.response.data.errors;
+          Object.values(listErrors).forEach((value) => {
+            const errorMessage = Array.isArray(value) ? value[0] : value;
+            toast.error(errorMessage);
+          });
+        } else {
+          toast.error('Có lỗi xảy ra, vui lòng thử lại.');
+        }
+      });
+  };
+
   return (
     <ThemeProvider theme={dashboardTheme}>
       <CssBaseline />
@@ -101,18 +157,25 @@ function LoginAdminPage() {
                 Log In
               </Typography>
             </Box>
-            <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+            <Box 
+              component="form" 
+              onSubmit={logIn}
+              sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
               <TextField
-                id="filled-email"
-                label="Your Email"
+                id="filled-username-input"
+                label="Tên đăng nhập"
                 sx={STYLE_TEXTFIELD}
+                value={userName}
+                onChange={handleUserNameChange}
               />
               <TextField
                 id="outlined-password-input"
-                label="Password"
+                label="Mật khẩu"
                 type="password"
                 autoComplete="current-password"
                 sx={STYLE_TEXTFIELD}
+                value={password}
+                onChange={handlePasswordChange}
               />
               <Box>
                 <Checkbox
@@ -149,6 +212,7 @@ function LoginAdminPage() {
                 <Button
                   variant="contained"
                   color="secondary"
+                  type="submit"
                   sx={{ width: "100%", m: 1, fontWeight: "bold" }}
                 >
                   Login
