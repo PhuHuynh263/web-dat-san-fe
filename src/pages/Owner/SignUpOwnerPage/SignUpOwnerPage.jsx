@@ -97,49 +97,49 @@ function SignUpOwnerPage() {
                   fontWeight: "bold",
                 }}
               >
-                Sign Up
+                Đăng Ký
               </Typography>
             </Box>
             <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
               <Box sx={{ display: "flex", gap: 2 }}>
                 <TextField
                   id="filled-first-name"
-                  label="First Name"
+                  label="Họ"
                   sx={STYLE_TEXTFIELD}
                 />
                 <TextField
                   id="filled-last-name"
-                  label="Last Name"
+                  label="Tên"
                   sx={STYLE_TEXTFIELD}
                 />
               </Box>
               <Box sx={{ display: "flex", gap: 2 }}>
                 <TextField
                   id="filled-phone-number"
-                  label="Phone Number"
+                  label="Số điện thoại"
                   sx={STYLE_TEXTFIELD}
                 />
                 <TextField
                   id="filled-address"
-                  label="Address"
+                  label="Địa chỉ"
                   sx={STYLE_TEXTFIELD}
                 />
               </Box>
               <TextField
-                id="filled-email"
-                label="Your Email"
+                id="filled-username-input"
+                label="Tên đăng nhập"
                 sx={STYLE_TEXTFIELD}
               />
               <TextField
                 id="outlined-password-input"
-                label="Password"
+                label="Mật khẩu"
                 type="password"
                 autoComplete="current-password"
                 sx={STYLE_TEXTFIELD}
               />
               <TextField
                 id="outlined-reenter-password-input"
-                label="Re-enter Password"
+                label="Nhập lại mật khẩu"
                 type="password"
                 autoComplete="current-password"
                 sx={STYLE_TEXTFIELD}
@@ -157,7 +157,7 @@ function SignUpOwnerPage() {
                   color="primary"
                   sx={{ width: "100%", m: 1, fontWeight: "bold" }}
                 >
-                  Sign Up
+                  Đăng Ký
                 </Button>
               </Box>
             </Box>
@@ -187,7 +187,7 @@ function SignUpOwnerPage() {
                 }}
                 sx={{ mt: 3, mb: 2, cursor: "pointer" }}
               >
-                Back to Login
+                Quay lại Đăng Nhập
               </Typography>
             </Box>
           </Box>

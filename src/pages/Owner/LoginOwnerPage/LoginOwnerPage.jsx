@@ -99,18 +99,18 @@ function LoginOwnerPage() {
                 align="center"
                 sx={{ mb: 5, color: "primary.main", fontWeight: "bold" }}
               >
-                Log In
+                Đăng Nhập
               </Typography>
             </Box>
             <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
               <TextField
-                id="filled-email"
-                label="Your Email"
+                id="filled-username-input"
+                label="Tên đăng nhập"
                 sx={STYLE_TEXTFIELD}
               />
               <TextField
                 id="outlined-password-input"
-                label="Password"
+                label="Mật khẩu"
                 type="password"
                 autoComplete="current-password"
                 sx={STYLE_TEXTFIELD}
@@ -136,7 +136,7 @@ function LoginOwnerPage() {
                   onClick={() => setChecked(!checked)}
                   sx={{ cursor: "pointer" }}
                 >
-                  Remember me?
+                  Nhớ đăng nhập?
                 </Typography>
               </Box>
               <Box
@@ -152,7 +152,7 @@ function LoginOwnerPage() {
                   color="primary"
                   sx={{ width: "100%", m: 1, fontWeight: "bold" }}
                 >
-                  Login
+                  Đăng Nhập
                 </Button>
               </Box>
             </Box>
@@ -172,7 +172,7 @@ function LoginOwnerPage() {
                 }}
                 sx={{ mt: 3, mb: 2, cursor: "pointer" }}
               >
-                Forget Password?
+                Quên mật khẩu?
               </Typography>
               <Button
                 variant="contained"
@@ -190,7 +190,7 @@ function LoginOwnerPage() {
                   },
                 }}
               >
-                Sign Up
+                Đăng Ký
               </Button>
             </Box>
             <Box sx={{ flex: 1 }}></Box>
@@ -212,7 +212,7 @@ function LoginOwnerPage() {
                 }}
                 sx={{ mt: 3, mb: 2, cursor: "pointer" }}
               >
-                Create an Account
+                Tạo tài khoản mới
               </Typography>
             </Box>
           </Box>
