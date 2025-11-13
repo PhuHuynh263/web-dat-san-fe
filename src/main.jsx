@@ -10,6 +10,3 @@ createRoot(document.getElementById("root")).render(
     <App />
   </CssBaseline>
 );
-// "Hahahahahah"
-// "Hehehehehehe"
-// "Hihihihihihi"
