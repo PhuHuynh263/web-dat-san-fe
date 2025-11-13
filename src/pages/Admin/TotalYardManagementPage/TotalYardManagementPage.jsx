@@ -63,15 +63,12 @@ function TotalYardManagementPage() {
       sortable: false,
       headerAlign: 'center',
       renderCell: (params) => {
-        const isActive = params.row.trang_thai === 1;
         return (
           <Button
             onClick={() => {
-              console.log('Row ID:', params.row.id);
-              changeStatus({ id: params.row.id });
             }}
             sx={{
-              bgcolor: isActive ? 'green' : 'gray',
+              bgcolor: 'green',
               color: 'white',
               padding: '5px 10px',
             }}
