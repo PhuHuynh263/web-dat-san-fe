@@ -99,29 +99,29 @@ function TotalYardManagementPage() {
       headerAlign: 'center',
       editable: false,
     },
-    {
-      field: 'trang_thai',
-      headerName: 'Trạng thái',
-      flex: 1,
-      sortable: false,
-      headerAlign: 'center',
-      renderCell: (params) => {
-        const isActive = params.row.trang_thai === 1;
-        return (
-          <Button
-            // onClick={() => {
-            // }}
-            sx={{
-              bgcolor: isActive ? 'green' : "gray",
-              color: 'white',
-              padding: '5px 10px',
-            }}
-          >
-            {isActive ? 'Hoạt động' : 'Tạm khóa'}
-          </Button>
-        );
-      },
-    },
+    // {
+    //   field: 'trang_thai',
+    //   headerName: 'Trạng thái',
+    //   flex: 1,
+    //   sortable: false,
+    //   headerAlign: 'center',
+    //   renderCell: (params) => {
+    //     const isActive = params.row.trang_thai === 1;
+    //     return (
+    //       <Button
+    //         // onClick={() => {
+    //         // }}
+    //         sx={{
+    //           bgcolor: isActive ? 'green' : "gray",
+    //           color: 'white',
+    //           padding: '5px 10px',
+    //         }}
+    //       >
+    //         {isActive ? 'Hoạt động' : 'Tạm khóa'}
+    //       </Button>
+    //     );
+    //   },
+    // },
   ];
 
   const [rows, list_san_bong] = useState([]);
@@ -185,23 +185,25 @@ function TotalYardManagementPage() {
         rows={rows}
         columns={columns}
         initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
+          pagination: { paginationModel: { pageSize: 5 } },
         }}
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+        getRowHeight={() => 'auto'} // 🔥 Tự động nới chiều cao hàng
         sx={{
           '& .MuiDataGrid-cell': {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            whiteSpace: 'normal',   // Cho phép xuống dòng
+            wordWrap: 'break-word', // Ngắt từ
+            lineHeight: '1.4',
+            textAlign: 'center',
           },
         }}
       />
+
     </Box>
   );
 }

@@ -29,9 +29,9 @@ function SoccerFieldManagementPage() {
 
   const layDataChuSan = () => {
     axios
-      .get("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/data", {
+      .get("http://127.0.0.1:8000/api/chu-san/data", {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+          Authorization: "Bearer " + localStorage.getItem("token_chu_san"),
         },
       })
       .then((res) => {
@@ -44,9 +44,9 @@ function SoccerFieldManagementPage() {
 
   const layDataLoaiSan = () => {
     axios
-      .get("http://127.0.0.1:8000/api/quan-tri-vien/loai-san/data", {
+      .get("http://127.0.0.1:8000/api/chu-san/loai-san/data", {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+          Authorization: "Bearer " + localStorage.getItem("token_chu_san"),
         },
       })
       .then((res) => {
@@ -56,6 +56,27 @@ function SoccerFieldManagementPage() {
         console.error("Lỗi khi lấy data:", err);
       });
   };
+
+  const changeStatus = (value) => {
+    axios
+      .post("http://127.0.0.1:8000/api/chu-san/san-bong/changeStatus", value, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_chu_san"),
+        },
+      })
+      .then((res) => {
+        if (res.data.status) {
+          toast.success(res.data.message);
+          layDataSanCuaToi();
+        }
+        else {
+          toast.error(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.error("Lỗi khi thay đổi trạng thái:", err);
+      });
+  }
 
   useEffect(() => {
     layDataSanCuaToi();
@@ -165,8 +186,9 @@ function SoccerFieldManagementPage() {
         const isActive = params.row.trang_thai === 1;
         return (
           <Button
-            // onClick={() => {
-            // }}
+            onClick={() => {
+              changeStatus({ id: params.row.id });
+            }}
             sx={{
               bgcolor: isActive ? 'green' : "gray",
               color: 'white',
@@ -182,23 +204,28 @@ function SoccerFieldManagementPage() {
   return (
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid
+        autoHeight // 🔥 tự động nới chiều cao theo nội dung
         rows={row}
         columns={columns}
         initialState={{
           pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
+            paginationModel: { pageSize: 5 },
           },
         }}
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+        getRowHeight={() => 'auto'}
         sx={{
           '& .MuiDataGrid-cell': {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            whiteSpace: 'normal',
+            wordBreak: 'normal',
+            overflowWrap: 'normal',
+            lineHeight: '1.4',
+            textAlign: 'center',
           },
         }}
       />
