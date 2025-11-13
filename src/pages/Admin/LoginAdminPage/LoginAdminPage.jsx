@@ -64,8 +64,8 @@ function LoginAdminPage() {
     setChecked(event.target.checked);
   };
 
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleUserNameChange = (event) => {
@@ -80,7 +80,7 @@ function LoginAdminPage() {
 
     const loginData = {
       user_name: userName,
-      password: password
+      password: password,
     };
     console.log(loginData);
 
@@ -91,11 +91,14 @@ function LoginAdminPage() {
           const thong_bao = res.data.message;
           toast.success(thong_bao);
           // ... (Lưu localStorage như cũ)
-          localStorage.setItem('token_quan_tri_vien', res.data.token_quan_tri_vien);
-          localStorage.setItem('ten_qtv', res.data.ten_qtv);
-          localStorage.setItem('anh_qtv', res.data.anh_qtv);
+          localStorage.setItem(
+            "token_quan_tri_vien",
+            res.data.token_quan_tri_vien
+          );
+          localStorage.setItem("ten_qtv", res.data.ten_qtv);
+          localStorage.setItem("anh_qtv", res.data.anh_qtv);
 
-          navigate('/admin/dashboard');
+          navigate("/admin/dashboard");
         } else {
           // ... (Xử lý lỗi như cũ)
           toast.error(res.data.message);
@@ -103,14 +106,18 @@ function LoginAdminPage() {
       })
       .catch((errors) => {
         // ... (Xử lý .catch như cũ)
-        if (errors.response && errors.response.data && errors.response.data.errors) {
+        if (
+          errors.response &&
+          errors.response.data &&
+          errors.response.data.errors
+        ) {
           const listErrors = errors.response.data.errors;
           Object.values(listErrors).forEach((value) => {
             const errorMessage = Array.isArray(value) ? value[0] : value;
             toast.error(errorMessage);
           });
         } else {
-          toast.error('Có lỗi xảy ra, vui lòng thử lại.');
+          toast.error("Có lỗi xảy ra, vui lòng thử lại.");
         }
       });
   };
@@ -157,10 +164,11 @@ function LoginAdminPage() {
                 Đăng nhập
               </Typography>
             </Box>
-            <Box 
-              component="form" 
+            <Box
+              component="form"
               onSubmit={logIn}
-              sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+              sx={{ display: "flex", gap: 2, flexDirection: "column" }}
+            >
               <TextField
                 id="filled-username-input"
                 label="Tên đăng nhập"
