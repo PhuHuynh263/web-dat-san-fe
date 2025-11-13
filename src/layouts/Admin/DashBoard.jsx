@@ -5,7 +5,7 @@ import { useState } from "react";
 import Header from "../../components/Admin/Header/Header";
 import { Box, CssBaseline, ThemeProvider, Toolbar } from "@mui/material";
 import Sidebar from "../../components/Admin/Sidebar/Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { dashboardTheme } from "../../dashboardTheme";
 // import { useAuth } from '../../hooks/useAuth'; // (Cách chuẩn)
 
@@ -17,9 +17,14 @@ function DashBoard() {
   // const { user } = useAuth(); // Giả sử user = { role: 'admin' }
   // const userRole = user ? user.role : null;
 
-  // (Cách 2: Giả lập để test)
-  // Thay đổi giá trị này thành 'owner' để xem Sidebar thay đổi
-  const userRole = "owner";
+  // --- LẤY VAI TRÒ THEO ĐƯỜNG DẪN ---
+  // Lấy segment đầu tiên của pathname: '/owner/xxx' -> 'owner'
+  const location = useLocation();
+  const firstSegment = location.pathname.split("/").filter(Boolean)[0] || null;
+
+  // Map segment sang role (chỉ hỗ trợ 'owner' và 'admin' ở đây)
+  const userRole =
+    firstSegment === "owner" ? "owner" : firstSegment === "admin" ? "admin" : null;
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
