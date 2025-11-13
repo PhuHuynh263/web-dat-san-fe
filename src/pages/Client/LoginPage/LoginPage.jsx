@@ -203,19 +203,75 @@ function LoginPage() {
                 justifyContent: "center",
               }}
             >
-              <Typography
-                variant="body2"
-                component={NavLink}
-                to="/signup"
-                color="white"
-                fontWeight="bold"
-                onClick={() => {
-                  console.log("Create an Account clicked");
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
-                sx={{ mt: 3, mb: 2, cursor: "pointer" }}
               >
-                Create an Account
-              </Typography>
+                <Box>
+                  <Typography
+                    variant="a"
+                    component={NavLink}
+                    to="/admin/login"
+                    color="white"
+                    fontWeight="bold"
+                    onClick={() => {
+                      console.log("Create an Account clicked");
+                    }}
+                    sx={{
+                      mt: 3,
+                      cursor: "pointer",
+                      "&:hover": { textDecoration: "underline" },
+                    }}
+                  >
+                    Bạn là chủ sân
+                  </Typography>
+                  <Typography
+                    variant="a"
+                    color="white"
+                    fontWeight="bold"
+                    sx={{
+                      ml: 1,
+                      mr: 1,
+                    }}
+                  >
+                    /
+                  </Typography>
+                  <Typography
+                    variant="a"
+                    component={NavLink}
+                    to="/owner/login"
+                    color="white"
+                    fontWeight="bold"
+                    onClick={() => {
+                      console.log("Create an Account clicked");
+                    }}
+                    sx={{
+                      mt: 3,
+                      cursor: "pointer",
+                      "&:hover": { textDecoration: "underline" },
+                    }}
+                  >
+                    quản trị viên?
+                  </Typography>
+                </Box>
+                <Typography
+                  variant="body2"
+                  component={NavLink}
+                  to="/signup"
+                  color="white"
+                  fontWeight="bold"
+                  onClick={() => {
+                    console.log("Create an Account clicked");
+                  }}
+                  sx={{ mt: 3, mb: 2, cursor: "pointer" }}
+                >
+                  Tạo tài khoản mới?
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Container>

@@ -16,10 +16,10 @@ function DashBoard() {
   // (Cách 1: Dùng hook - Cách chuẩn nhất)
   // const { user } = useAuth(); // Giả sử user = { role: 'admin' }
   // const userRole = user ? user.role : null;
-  
+
   // (Cách 2: Giả lập để test)
   // Thay đổi giá trị này thành 'owner' để xem Sidebar thay đổi
-  const userRole = 'admin'; 
+  const userRole = "owner";
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
@@ -29,26 +29,26 @@ function DashBoard() {
     <ThemeProvider theme={dashboardTheme}>
       <CssBaseline />
       <Box sx={{ display: "flex" }}>
-      {/* Truyền userRole xuống Header (nếu Header cũng cần) */}
-      <Header isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
+        {/* Truyền userRole xuống Header (nếu Header cũng cần) */}
+        <Header isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
 
-      {/* 1. Truyền userRole xuống Sidebar */}
-      <Sidebar isOpen={isSidebarOpen} userRole={userRole} />
+        {/* 1. Truyền userRole xuống Sidebar */}
+        <Sidebar isOpen={isSidebarOpen} userRole={userRole} />
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          bgcolor: "background.default",
-          height: "100vh",
-          overflow: "auto",
-        }}
-      >
-        <Toolbar />
-        <Outlet />
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            bgcolor: "background.default",
+            height: "100vh",
+            overflow: "auto",
+          }}
+        >
+          <Toolbar />
+          <Outlet />
+        </Box>
       </Box>
-    </Box>
     </ThemeProvider>
   );
 }
