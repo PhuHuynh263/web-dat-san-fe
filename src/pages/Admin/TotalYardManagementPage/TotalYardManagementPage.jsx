@@ -55,6 +55,15 @@ function TotalYardManagementPage() {
       editable: false,
     },
     {
+      field: 'slug_san',
+      headerName: 'Slug sân',
+      type: 'string',
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
+      editable: false,
+    },
+    {
       field: 'hinh_anh',
       headerName: 'Hình ảnh',
       type: 'image',
@@ -82,7 +91,7 @@ function TotalYardManagementPage() {
       editable: false,
     },
     {
-      field: 'dia-chi',
+      field: 'dia_chi',
       headerName: 'Địa chỉ',
       type: 'string',
       flex: 1,
@@ -133,7 +142,6 @@ function TotalYardManagementPage() {
         console.error("Lỗi khi lấy data:", err);
       });
   };
-
 
   const layDataChuSan = () => {
     axios
@@ -186,6 +194,13 @@ function TotalYardManagementPage() {
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+        sx={{
+          '& .MuiDataGrid-cell': {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        }}
       />
     </Box>
   );

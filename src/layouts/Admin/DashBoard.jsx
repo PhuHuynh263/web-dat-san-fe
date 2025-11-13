@@ -2,7 +2,8 @@
 // (Bạn có thể đổi tên file này thành `DashboardLayout.jsx` cho chung chung hơn)
 
 import { useState } from "react";
-import Header from "../../components/Admin/Header/Header";
+import AdminHeader from "../../components/Admin/Header/AdminHeader";
+import OwnerHeader from "../../components/Owner/Header/OwnerHeader";
 import { Box, CssBaseline, ThemeProvider, Toolbar } from "@mui/material";
 import Sidebar from "../../components/Admin/Sidebar/Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
@@ -34,8 +35,13 @@ function DashBoard() {
     <ThemeProvider theme={dashboardTheme}>
       <CssBaseline />
       <Box sx={{ display: "flex" }}>
-        {/* Truyền userRole xuống Header (nếu Header cũng cần) */}
-        <Header isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
+        {/* Render Header theo userRole */}
+        {userRole === "admin" && (
+          <AdminHeader isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
+        )}
+        {userRole === "owner" && (
+          <OwnerHeader isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
+        )}
 
         {/* 1. Truyền userRole xuống Sidebar */}
         <Sidebar isOpen={isSidebarOpen} userRole={userRole} />

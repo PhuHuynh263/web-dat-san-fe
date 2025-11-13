@@ -40,11 +40,11 @@ import OverviewOwnerPage from "../pages/Owner/OverViewOwnerPage/OverviewOwnerPag
 import RevenueReportOwnerPage from "../pages/Owner/RevenueReportOwnerPage/RevenueReportOwnerPage";
 import ServicePaymentPage from "../pages/Owner/ServicePaymentPage/ServicePaymentPage";
 import SoccerFieldManagementPage from "../pages/Owner/SoccerFieldManagementPage/SoccerFieldManagementPage";
-import YardTypeManagementPage from "../pages/Owner/YardTypeManagementPage/YardTypeManagementPage";
+import YardTypeManagementPage from "../pages/Admin/YardTypeManagementPage/YardTypeManagementPage";
 
 // === Đổi tên thành dashboardRoutes (chứa tất cả route) ===
 export const dashboardRoutes = [
-  
+
   // =========== CÁC ROUTE CỦA ADMIN ============
   {
     path: "/admin/dashboard", // Đổi từ /dashboard để rõ ràng
@@ -61,6 +61,15 @@ export const dashboardRoutes = [
     meta: {
       title: "QUẢN LÝ TOÀN BỘ SÂN BÓNG",
       icon: <StadiumIcon />,
+      roles: ["admin"],
+    },
+  },
+  {
+    path: "/admin/yard-types",
+    element: <YardTypeManagementPage />,
+    meta: {
+      title: "QUẢN LÝ LOẠI SÂN",
+      icon: <StyleIcon />,
       roles: ["admin"],
     },
   },
@@ -146,15 +155,6 @@ export const dashboardRoutes = [
     meta: {
       title: "Quản lý sân của tôi",
       icon: <SportsSoccerIcon />,
-      roles: ["owner"],
-    },
-  },
-  {
-    path: "/owner/yard-types",
-    element: <YardTypeManagementPage />,
-    meta: {
-      title: "Quản lý loại sân",
-      icon: <StyleIcon />,
       roles: ["owner"],
     },
   },

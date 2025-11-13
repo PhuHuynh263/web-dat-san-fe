@@ -1,4 +1,8 @@
 import * as React from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -60,6 +64,66 @@ function LoginOwnerPage() {
     setChecked(event.target.checked);
   };
 
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const navigate = useNavigate();
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  }
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  }
+
+  const logIn = (event) => {
+    event.preventDefault();
+
+    const loginData = {
+      email: email,
+      password: password,
+    }
+    console.log("Login data:", loginData);
+
+    axios
+      .post("http://127.0.0.1:8000/api/chu-san/dang-nhap", loginData)
+      .then((res) => {
+        if (res.data.status) {
+          const thong_bao = res.data.message;
+          toast.success(thong_bao);
+          // ... (Lưu localStorage như cũ)
+          localStorage.setItem(
+            "token_chu_san",
+            res.data.token_chu_san
+          );
+          localStorage.setItem("ten_cs", res.data.anh_cs);
+          localStorage.setItem("anh_cs", res.data.anh_cs);
+
+          navigate("/owner/dashboard");
+        } else {
+          // ... (Xử lý lỗi như cũ)
+          toast.error(res.data.message);
+        }
+      })
+      .catch((errors) => {
+        // ... (Xử lý .catch như cũ)
+        if (
+          errors.response &&
+          errors.response.data &&
+          errors.response.data.errors
+        ) {
+          const listErrors = errors.response.data.errors;
+          Object.values(listErrors).forEach((value) => {
+            const errorMessage = Array.isArray(value) ? value[0] : value;
+            toast.error(errorMessage);
+          });
+        } else {
+          toast.error("Có lỗi xảy ra, vui lòng thử lại.");
+        }
+      });
+  }
+
   return (
     <ThemeProvider theme={dashboardTheme}>
       <CssBaseline />
@@ -102,11 +166,16 @@ function LoginOwnerPage() {
                 Đăng Nhập
               </Typography>
             </Box>
-            <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+            <Box
+              component="form"
+              onSubmit={logIn}
+              sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
               <TextField
                 id="filled-username-input"
                 label="Tên đăng nhập"
                 sx={STYLE_TEXTFIELD}
+                value={email}
+                onChange={handleEmailChange}
               />
               <TextField
                 id="outlined-password-input"
@@ -114,6 +183,8 @@ function LoginOwnerPage() {
                 type="password"
                 autoComplete="current-password"
                 sx={STYLE_TEXTFIELD}
+                value={password}
+                onChange={handlePasswordChange}
               />
               <Box>
                 <Checkbox
@@ -148,6 +219,7 @@ function LoginOwnerPage() {
                 }}
               >
                 <Button
+                  type="submit"
                   variant="contained"
                   color="primary"
                   sx={{ width: "100%", m: 1, fontWeight: "bold" }}

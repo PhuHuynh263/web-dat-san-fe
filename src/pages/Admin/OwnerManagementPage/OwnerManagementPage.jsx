@@ -153,6 +153,13 @@ function OwnerManagementPage() {
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+        sx={{
+          '& .MuiDataGrid-cell': {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        }}
       />
     </Box>
   </>
