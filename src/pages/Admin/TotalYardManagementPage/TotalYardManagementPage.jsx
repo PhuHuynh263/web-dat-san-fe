@@ -22,25 +22,41 @@ function TotalYardManagementPage() {
       },
     },
     {
-      field: 'ho_va_ten',
+      field: 'id_chu_san',
       headerName: 'Tên chủ sân',
       flex: 1,
       headerAlign: 'center',
       editable: false,
+      renderCell: (params) => {
+        const chuSan = list_chu_san.find((c => c.id === Number(params.row.id_chu_san)));
+        return chuSan ? chuSan.ten_chu_san : 'Chưa xác định';
+      },
     },
     {
-      field: 'email',
-      headerName: 'Email',
-      type: 'email',
+      field: 'id_loai_san',
+      headerName: 'Loại Sân',
+      type: 'string',
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
+      editable: false,
+      renderCell: (params) => {
+        const loaiSan = list_loai_san.find((l => l.id === Number(params.row.id_loai_san)));
+        return loaiSan ? loaiSan.ten_loai_san : 'Chưa xác định';
+      }
+    },
+    {
+      field: 'ten_san',
+      headerName: 'Tên sân',
+      type: 'string',
       flex: 1,
       sortable: false,
       headerAlign: 'center',
       editable: false,
     },
-
     {
-      field: 'avatar',
-      headerName: 'Ảnh đại diện',
+      field: 'hinh_anh',
+      headerName: 'Hình ảnh',
       type: 'image',
       flex: 1,
       sortable: false,
@@ -48,8 +64,26 @@ function TotalYardManagementPage() {
       editable: false,
     },
     {
-      field: 'so_dien_thoai',
-      headerName: 'Số điện thoại',
+      field: 'mo_ta',
+      headerName: 'Mô tả',
+      type: 'text',
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
+      editable: false,
+    },
+    {
+      field: 'gia_thue',
+      headerName: 'Giá thuê',
+      type: 'number',
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
+      editable: false,
+    },
+    {
+      field: 'dia-chi',
+      headerName: 'Địa chỉ',
       type: 'string',
       flex: 1,
       sortable: false,
@@ -63,12 +97,13 @@ function TotalYardManagementPage() {
       sortable: false,
       headerAlign: 'center',
       renderCell: (params) => {
+        const isActive = params.row.trang_thai === 1;
         return (
           <Button
-            onClick={() => {
-            }}
+            // onClick={() => {
+            // }}
             sx={{
-              bgcolor: 'green',
+              bgcolor: isActive ? 'green' : "gray",
               color: 'white',
               padding: '5px 10px',
             }}
@@ -78,29 +113,68 @@ function TotalYardManagementPage() {
         );
       },
     },
-    {
-      headerName: 'Hành động',
-      headerAlign: 'center',
-      flex: 1,
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <Button
-            sx={{
-              bgcolor: 'yellow',
-              color: 'black',
-              padding: '5px 10px',
-            }}
-          >
-            Action
-          </Button>
-        );
-      },
-    }
   ];
+
+  const [rows, list_san_bong] = useState([]);
+  const [list_chu_san, setListChuSan] = useState([]);
+  const [list_loai_san, setListLoaiSan] = useState([]);
+
+  const layDataToanBoSan = () => {
+    axios
+      .get("http://127.0.0.1:8000/api/quan-tri-vien/san-bong/data", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+        },
+      })
+      .then((res) => {
+        list_san_bong(res.data.data);
+      })
+      .catch((err) => {
+        console.error("Lỗi khi lấy data:", err);
+      });
+  };
+
+
+  const layDataChuSan = () => {
+    axios
+      .get("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/data", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+        },
+      })
+      .then((res) => {
+        setListChuSan(res.data.data);
+      })
+      .catch((err) => {
+        console.error("Lỗi khi lấy data:", err);
+      });
+  };
+
+  const layDataLoaiSan = () => {
+    axios
+      .get("http://127.0.0.1:8000/api/quan-tri-vien/loai-san/data", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+        },
+      })
+      .then((res) => {
+        setListLoaiSan(res.data.data);
+      })
+      .catch((err) => {
+        console.error("Lỗi khi lấy data:", err);
+      });
+  };
+
+  useEffect(() => {
+    layDataToanBoSan();
+    layDataChuSan();
+    layDataLoaiSan();
+  }, []);
+
   return (
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid
+        rows={rows}
         columns={columns}
         initialState={{
           pagination: {

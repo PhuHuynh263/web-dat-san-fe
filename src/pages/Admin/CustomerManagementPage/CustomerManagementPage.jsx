@@ -80,25 +80,6 @@ function OwnerManagementPage() {
         );
       },
     },
-    {
-      headerName: 'Hành động',
-      headerAlign: 'center',
-      flex: 1,
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <Button
-            sx={{
-              bgcolor: 'yellow',
-              color: 'black',
-              padding: '5px 10px',
-            }}
-          >
-            Action
-          </Button>
-        );
-      },
-    }
   ];
 
   const [rows, list_khach_hang] = useState([]);

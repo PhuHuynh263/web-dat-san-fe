@@ -23,8 +23,9 @@ import StadiumIcon from '@mui/icons-material/Stadium';
 
 // --- Import Admin Page Components ---
 import OverviewAdminPage from "../pages/Admin/OverViewAdminPage/OverviewAdminPage";
-import PitchManagementPage from "../pages/Admin/PitchManagementPage/PitchManagementPage";
-import BookingManagementPage from "../pages/Admin/TotalYardManagementPage/TotalYardManagementPage";
+// import PitchManagementPage from "../pages/Admin/PitchManagementPage/PitchManagementPage";
+// import BookingManagementPage from "../pages/Admin/TotalYardManagementPage/BookingManagementPage";
+import TotalYardManagementPage from "../pages/Admin/TotalYardManagementPage/TotalYardManagementPage";
 import AssessmentManagement from "../pages/Admin/AssessmentManagementPage/AssessmentManagementPage";
 import OwnerManagementPage from "../pages/Admin/OwnerManagementPage/OwnerManagementPage";
 import CustomerManagementPage from "../pages/Admin/CustomerManagementPage/CustomerManagementPage";
@@ -40,7 +41,6 @@ import RevenueReportOwnerPage from "../pages/Owner/RevenueReportOwnerPage/Revenu
 import ServicePaymentPage from "../pages/Owner/ServicePaymentPage/ServicePaymentPage";
 import SoccerFieldManagementPage from "../pages/Owner/SoccerFieldManagementPage/SoccerFieldManagementPage";
 import YardTypeManagementPage from "../pages/Owner/YardTypeManagementPage/YardTypeManagementPage";
-import TotalYardManagementPage from "../pages/Admin/TotalYardManagementPage/TotalYardManagementPage";
 
 // === Đổi tên thành dashboardRoutes (chứa tất cả route) ===
 export const dashboardRoutes = [
@@ -52,15 +52,6 @@ export const dashboardRoutes = [
     meta: {
       title: "TỔNG QUAN",
       icon: <DashboardIcon />,
-      roles: ["admin"],
-    },
-  },
-  {
-    path: "/admin/pitches",
-    element: <PitchManagementPage />,
-    meta: {
-      title: "QUẢN LÝ SÂN BÓNG",
-      icon: <SportsSoccerIcon />,
       roles: ["admin"],
     },
   },
