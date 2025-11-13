@@ -204,7 +204,7 @@ function SoccerFieldManagementPage() {
   return (
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid
-        autoHeight // 🔥 tự động nới chiều cao theo nội dung
+        autoHeight
         rows={row}
         columns={columns}
         initialState={{
