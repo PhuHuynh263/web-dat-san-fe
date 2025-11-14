@@ -1,4 +1,9 @@
 import * as React from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate, NavLink } from "react-router-dom";
+import { useState } from "react";
+
 import {
   Box,
   Typography,
@@ -7,11 +12,11 @@ import {
   Button,
   ThemeProvider,
   Container,
+  Checkbox,
 } from "@mui/material";
+
 import images from "../../../assets/images/images";
 import { clientTheme } from "../../../clientTheme";
-import { NavLink } from "react-router-dom";
-import Checkbox from "@mui/material/Checkbox";
 
 function LoginPage() {
   const STYLE_TEXTFIELD = {
@@ -27,37 +32,73 @@ function LoginPage() {
         fontSize: 18,
       },
     },
-    // --- Style cho khung Input (OutlinedInput) ---
     "& .MuiOutlinedInput-root": {
       fontSize: 14,
-
-      // Style cho chữ bạn gõ vào
       "& .MuiOutlinedInput-input": {
         color: "white",
-        backgroundColor: "none",
+        backgroundColor: "transparent", // Sửa từ "none"
       },
-
-      // Style cho đường viền (notchedOutline)
       "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "primary.main", // Viền mặc định
+        borderColor: "primary.main",
       },
-
-      // Style viền khi hover
       "&:hover .MuiOutlinedInput-notchedOutline": {
         borderColor: "primary.main",
       },
-
-      // Style viền khi focus (click vào)
       "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
         borderColor: "primary.main",
       },
     },
   };
 
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleChange = (event) => {
+  const handleCheckboxChange = (event) => {
     setChecked(event.target.checked);
+  };
+
+  const logIn = (event) => {
+    event.preventDefault(); // Chặn reload trang
+
+    const loginData = { email, password };
+
+    axios
+      .post("http://127.0.0.1:8000/api/khach-hang/dang-nhap", loginData)
+      .then((res) => {
+        if (res.data.status) {
+          toast.success(res.data.message);
+
+          localStorage.setItem("token_khach_hang", res.data.token_khach_hang);
+          localStorage.setItem("ten_kh", res.data.ten_kh);
+          localStorage.setItem("anh_kh", res.data.anh_kh);
+
+          navigate("/");
+        } else {
+          toast.error(res.data.message);
+        }
+      })
+      .catch((errors) => {
+        if (
+          errors.response &&
+          errors.response.data &&
+          errors.response.data.errors
+        ) {
+          const listErrors = errors.response.data.errors;
+          Object.values(listErrors).forEach((value) => {
+            toast.error(Array.isArray(value) ? value[0] : value);
+          });
+        } else if (
+          errors.response &&
+          errors.response.data &&
+          errors.response.data.message
+        ) {
+          toast.error(errors.response.data.message);
+        } else {
+          toast.error("Có lỗi xảy ra, vui lòng thử lại.");
+        }
+      });
   };
 
   return (
@@ -86,7 +127,6 @@ function LoginPage() {
               display: "flex",
               flexDirection: "column",
               width: 500,
-              height: "auto",
               minHeight: 700,
               opacity: 0.8,
               p: 4,
@@ -95,92 +135,84 @@ function LoginPage() {
               border: "1px solid #ccc",
             }}
           >
-            <Box sx={{ width: "100%", height: "auto" }}>
-              <Typography
-                variant="h1"
-                align="center"
-                sx={{ mb: 5, color: "primary.main", fontWeight: "bold" }}
-              >
-                Login Page
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
+            <Typography
+              variant="h4"
+              align="center"
+              sx={{ mb: 5, color: "primary.main", fontWeight: "bold" }}
+            >
+              Login Page
+            </Typography>
+
+            <Box
+              component="form"
+              onSubmit={logIn}
+              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+            >
               <TextField
-                id="filled-email"
+                name="email"
                 label="Your Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 sx={STYLE_TEXTFIELD}
               />
               <TextField
-                id="outlined-password-input"
+                name="password"
                 label="Password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
                 sx={STYLE_TEXTFIELD}
               />
-              <Box>
+
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Checkbox
                   checked={checked}
-                  onChange={handleChange}
-                  slotProps={{
-                    input: { "aria-label": "controlled" },
-                  }}
+                  onChange={handleCheckboxChange}
                   sx={{
                     color: "white",
                     "&.Mui-checked": {
-                      color: (theme) => theme.palette.primary.main, // Màu của dấu tick
+                      color: (theme) => theme.palette.primary.main,
                     },
                   }}
                 />
                 <Typography
                   variant="body2"
                   color="#ccc"
-                  component="span"
-                  onClick={() => setChecked(!checked)}
                   sx={{ cursor: "pointer" }}
+                  onClick={() => setChecked(!checked)}
                 >
                   Remember me?
                 </Typography>
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                sx={{ width: "100%", m: 1, fontWeight: "bold" }}
               >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ width: "100%", m: 1, fontWeight: "bold" }}
-                >
-                  Login
-                </Button>
-              </Box>
+                Login
+              </Button>
             </Box>
+
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
+                justifyContent: "space-between",
+                mt: 3,
               }}
             >
               <Typography
                 variant="body2"
                 color="white"
-                fontWeight="bold"
-                onClick={() => {
-                  console.log("Forget Password clicked");
-                }}
-                sx={{ mt: 3, mb: 2, cursor: "pointer" }}
+                sx={{ cursor: "pointer" }}
               >
                 Forget Password?
               </Typography>
               <Button
                 variant="contained"
                 sx={{
-                  mt: 3,
-                  mb: 2,
                   fontWeight: "bold",
                   color: "black",
                   border: "2px solid white",
@@ -195,83 +227,39 @@ function LoginPage() {
                 Sign Up
               </Button>
             </Box>
-            <Box sx={{ flex: 1 }}></Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignContent: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
+
+            <Box sx={{ mt: 3, textAlign: "center" }}>
+              <Typography
+                variant="body2"
+                component={NavLink}
+                to="/admin/login"
+                color="white"
+                sx={{ mx: 1, cursor: "pointer" }}
               >
-                <Box>
-                  <Typography
-                    variant="a"
-                    component={NavLink}
-                    to="/admin/login"
-                    color="white"
-                    fontWeight="bold"
-                    onClick={() => {
-                      console.log("Create an Account clicked");
-                    }}
-                    sx={{
-                      mt: 3,
-                      cursor: "pointer",
-                      "&:hover": { textDecoration: "underline" },
-                    }}
-                  >
-                    Bạn là chủ sân
-                  </Typography>
-                  <Typography
-                    variant="a"
-                    color="white"
-                    fontWeight="bold"
-                    sx={{
-                      ml: 1,
-                      mr: 1,
-                    }}
-                  >
-                    /
-                  </Typography>
-                  <Typography
-                    variant="a"
-                    component={NavLink}
-                    to="/owner/login"
-                    color="white"
-                    fontWeight="bold"
-                    onClick={() => {
-                      console.log("Create an Account clicked");
-                    }}
-                    sx={{
-                      mt: 3,
-                      cursor: "pointer",
-                      "&:hover": { textDecoration: "underline" },
-                    }}
-                  >
-                    quản trị viên?
-                  </Typography>
-                </Box>
-                <Typography
-                  variant="body2"
-                  component={NavLink}
-                  to="/signup"
-                  color="white"
-                  fontWeight="bold"
-                  onClick={() => {
-                    console.log("Create an Account clicked");
-                  }}
-                  sx={{ mt: 3, mb: 2, cursor: "pointer" }}
-                >
-                  Tạo tài khoản mới?
-                </Typography>
-              </Box>
+                Bạn là chủ sân
+              </Typography>
+              <Typography variant="body2" color="white">
+                /
+              </Typography>
+              <Typography
+                variant="body2"
+                component={NavLink}
+                to="/owner/login"
+                color="white"
+                sx={{ mx: 1, cursor: "pointer" }}
+              >
+                quản trị viên?
+              </Typography>
+
+              <Typography
+                variant="body2"
+                component={NavLink}
+                to="/signup"
+                color="white"
+                sx={{ display: "block", mt: 2, cursor: "pointer" }}
+              >
+                Tạo tài khoản mới?
+              </Typography>
             </Box>
           </Box>
         </Container>

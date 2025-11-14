@@ -8,6 +8,9 @@ import Box from '@mui/material/Box';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Typography from '@mui/material/Typography';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const MENU_ITEMS_STYLE = {
   fontSize: '1rem',
@@ -29,6 +32,64 @@ function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [isLoggedIn, setLogin] = React.useState(false);
+  const [clientName, setClientName] = React.useState('');
+
+  const navigate = useNavigate();
+
+  const checkLogin = () => {
+    axios
+      .get("http://127.0.0.1:8000/api/khach-hang/kiem-tra-dang-nhap", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token_khach_hang"),
+        },
+      })
+      .then((res) => {
+        if (res.data.status) {
+          setLogin(true);
+          setClientName(res.data.ten_kh);
+        } else {
+          setLogin(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLogIn(false);
+      });
+  };
+
+  const logOut = () => {
+    axios
+      .post(
+        "http://127.0.0.1:8000/api/khach-hang/dang-xuat",
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token_khach_hang"),
+          },
+        }
+      )
+      .then((res) => {
+        const thong_bao = res.data.message;
+        if (res.data.status) {
+          toast.success(thong_bao);
+          localStorage.removeItem("token_khach_hang");
+          navigate("/login");
+        } else {
+          toast.error(thong_bao);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Lỗi kết nối đến máy chủ!");
+      });
+  };
+
+  React.useEffect(() => {
+    checkLogin();
+  }, []);
+
   return (
     <AppBar sx={{ position: 'static', backgroundColor: 'white' }}>
       <Container sx={{ maxWidth: 'xl', backgroundColor: 'white' }}>
@@ -59,42 +120,79 @@ function Header() {
           </Box>
 
           {/* Action Button Login/Register */}
-          <Box
-            sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
-          >
-            <Typography
-              variant='span'
-              component={NavLink}
-              to='/login'
-              sx={{
-                cursor: 'pointer',
-                textDecoration: 'none',
-                color: 'inherit',
-                '&:hover': {
-                  color: 'primary.main',
-                },
-              }}
-            >
-              Login
-            </Typography>
-            {' / '}
-            <Typography
-              variant='span'
-              component={NavLink}
-              to='/signup'
-              sx={{
-                cursor: 'pointer',
-                textDecoration: 'none',
-                color: 'inherit',
-                '&:hover': {
-                  color: 'primary.main',
-                },
-              }}
-            >
-              Register
-            </Typography>
-          </Box>
 
+          {!isLoggedIn ? (
+            <Box
+              sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
+            >
+              <Typography
+                variant="span"
+                component={NavLink}
+                to="/login"
+                sx={{
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  '&:hover': {
+                    color: 'primary.main',
+                  },
+                }}
+              >
+                Đăng nhập
+              </Typography>
+              {' / '}
+              <Typography
+                variant="span"
+                component={NavLink}
+                to="/signup"
+                sx={{
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  '&:hover': {
+                    color: 'primary.main',
+                  },
+                }}
+              >
+                Đăng ký
+              </Typography>
+            </Box>
+          ) : (
+            <Box
+              sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
+            >
+              <Typography
+                variant="span"
+                sx={{
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  '&:hover': {
+                    color: 'primary.main',
+                  },
+                }}
+              >
+                {isLoggedIn ? clientName : 'User'}
+              </Typography>
+              {' / '}
+              <Typography
+                onClick={() => logOut()}
+                variant="span"
+                component={NavLink}
+                to="#"
+                sx={{
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  '&:hover': {
+                    color: 'primary.main',
+                  },
+                }}
+              >
+                Đăng xuất
+              </Typography>
+            </Box>
+          )}
           {/* Menu */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

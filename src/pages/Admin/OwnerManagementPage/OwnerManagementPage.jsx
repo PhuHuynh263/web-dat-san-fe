@@ -45,10 +45,18 @@ function OwnerManagementPage() {
       headerAlign: 'center',
       editable: false,
     },
-
+    {
+      field: 'thanh_pho',
+      headerName: 'Thành phố',
+      type: 'string',
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
+      editable: false,
+    },
     {
       field: 'dia_chi',
-      headerName: 'Địa Chỉ',
+      headerName: 'Địa chỉ',
       type: 'string',
       flex: 1,
       sortable: false,
@@ -58,6 +66,15 @@ function OwnerManagementPage() {
     {
       field: 'avatar',
       headerName: 'Ảnh đại diện',
+      type: 'image',
+      flex: 1,
+      sortable: false,
+      headerAlign: 'center',
+      editable: false,
+    },
+    {
+      field: 'hinh_anh',
+      headerName: 'Hình ảnh sân',
       type: 'image',
       flex: 1,
       sortable: false,
@@ -153,11 +170,16 @@ function OwnerManagementPage() {
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+        getRowHeight={() => 'auto'}
         sx={{
           '& .MuiDataGrid-cell': {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            whiteSpace: 'normal',   // Cho phép xuống dòng
+            wordWrap: 'break-word', // Ngắt từ
+            lineHeight: '1.4',
+            textAlign: 'center',
           },
         }}
       />
