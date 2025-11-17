@@ -2,6 +2,7 @@ import * as React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { useState } from "react";
 import {
   Box,
@@ -247,7 +248,9 @@ function LoginOwnerPage() {
                 Quên mật khẩu?
               </Typography>
               <Button
+                component={Link}
                 variant="contained"
+                to= "/owner/signup"
                 sx={{
                   mt: 3,
                   mb: 2,

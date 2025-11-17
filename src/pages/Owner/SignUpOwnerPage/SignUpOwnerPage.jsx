@@ -2,7 +2,7 @@ import * as React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+
 import {
   Box,
   Typography,
@@ -63,6 +63,7 @@ function SignUpOwnerPage() {
   const [city, setCity] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [address, setAddress] = React.useState("");
+  const [yardName, setYardName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [reenterPassword, setReenterPassword] = React.useState("");
@@ -79,6 +80,9 @@ function SignUpOwnerPage() {
   const handleAddressChange = (event) => {
     setAddress(event.target.value);
   };
+  const handleYardName = (event) => {
+    setYardName(event.target.value);
+  };
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -93,20 +97,21 @@ function SignUpOwnerPage() {
     event.preventDefault();
 
     const signUpData = {
-      name: name,
-      city: city,
-      phoneNumber: phoneNumber,
-      address: address,
+      ten_chu_san: name,
+      thanh_pho: city,
+      so_dien_thoai: phoneNumber,
+      dia_chi: address,
+      ten_san: yardName,
       email: email,
       password: password,
-      reenterPassword: reenterPassword,
+      re_password: reenterPassword,
     }
 
     console.log("Sign Up Data: ", signUpData);
 
     // Xử lý logic đăng ký ở đây
     axios
-      .post("http://localhost:8080/api/owners/signup", signUpData)
+      .post("http://127.0.0.1:8000/api/chu-san/dang-ky", signUpData)
       .then((res) => {
         if (res.data.status) {
           const thong_bao = res.data.message;
@@ -185,14 +190,14 @@ function SignUpOwnerPage() {
             <Box component="form" onSubmit={signUp} sx={{ display: "flex", gap: 2, flexDirection: "column" }}>
               <Box sx={{ display: "flex", gap: 2 }}>
                 <TextField
-                  id="filled_name"
+                  id="ten_chu_san"
                   label="Họ và tên"
                   sx={STYLE_TEXTFIELD}
                   value={name}
                   onChange={handleNameChange}
                 />
                 <TextField
-                  id="city"
+                  id="thanh_pho"
                   label="Thành phố"
                   sx={STYLE_TEXTFIELD}
                   value={city}
@@ -201,14 +206,14 @@ function SignUpOwnerPage() {
               </Box>
               <Box sx={{ display: "flex", gap: 2 }}>
                 <TextField
-                  id="filled-phone-number"
+                  id="so_dien_thoai"
                   label="Số điện thoại"
                   sx={STYLE_TEXTFIELD}
                   value={phoneNumber}
                   onChange={handlePhoneNumberChange}
                 />
                 <TextField
-                  id="filled-address"
+                  id="dia_chi"
                   label="Địa chỉ"
                   sx={STYLE_TEXTFIELD}
                   value={address}
@@ -216,14 +221,21 @@ function SignUpOwnerPage() {
                 />
               </Box>
               <TextField
-                id="filled-email-input"
+                id="ten_san"
+                label="Tên sân"
+                sx={STYLE_TEXTFIELD}
+                value={yardName}
+                onChange={handleYardName}
+              />
+              <TextField
+                id="email"
                 label="Email"
                 sx={STYLE_TEXTFIELD}
                 value={email}
                 onChange={handleEmailChange}
               />
               <TextField
-                id="outlined-password-input"
+                id="password"
                 label="Mật khẩu"
                 type="password"
                 autoComplete="current-password"
@@ -232,7 +244,7 @@ function SignUpOwnerPage() {
                 onChange={handlePasswordChange}
               />
               <TextField
-                id="outlined-reenter-password-input"
+                id="re_password"
                 label="Nhập lại mật khẩu"
                 type="password"
                 autoComplete="current-password"
