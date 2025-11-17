@@ -10,6 +10,10 @@ import HomePage from "../pages/Client/HomePage/index.jsx";
 import { dashboardRoutes } from "./dashboardRoutes.jsx";
 import LoginPage from "../pages/Client/LoginPage/LoginPage.jsx";
 import SignUpPage from "../pages/Client/SignUpPage/SignUpPage.jsx";
+import AboutPage from "../pages/Client/AboutPage/AboutPage.jsx";
+import ContactPage from "../pages/Client/ContactPage/ContactPage.jsx";
+import BookingPage from "../pages/Client/BookingPage/BookingPage.jsx";
+import NewsPage from "../pages/Client/NewsPage/NewsPage.jsx";
 import LoginAdminPage from "../pages/Admin/LoginAdminPage/LoginAdminPage.jsx";
 import LoginOwnerPage from "../pages/Owner/LoginOwnerPage/LoginOwnerPage.jsx";
 import SignUpOwnerPage from "../pages/Owner/SignUpOwnerPage/SignUpOwnerPage.jsx";
@@ -76,6 +80,22 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUpPage />,
+  },
+  {
+    path: "/about",
+    element: <AboutPage />,
+  },
+  {
+    path: "/contact",
+    element: <ContactPage />,
+  },
+  {
+    path: "/booking",
+    element: <BookingPage />,
+  },
+  {
+    path: "/news",
+    element: <NewsPage />,
   },
   {
     path: "/admin/login",

@@ -55,7 +55,7 @@ function Header() {
       })
       .catch((err) => {
         console.error(err);
-        setLogIn(false);
+        setLogin(false);
       });
   };
 
@@ -96,7 +96,9 @@ function Header() {
         <Toolbar>
           {/* Logo */}
           <Box
-            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+            component={NavLink}
+            to="/"
+            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', textDecoration: 'none' }}
           >
             <SportsSoccerIcon
               sx={{
@@ -199,11 +201,15 @@ function Header() {
             {/* Home */}
             <Typography
               variant='span'
+              component={NavLink}
+              to="/"
               sx={{
                 fontSize: '1rem',
                 fontWeight: 'bold',
                 color: 'primary.main',
                 cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': { color: 'primary.main' },
               }}
             >
               Trang Chủ
@@ -212,8 +218,11 @@ function Header() {
             {/* About */}
             <Typography
               variant='span'
+              component={NavLink}
+              to="/about"
               sx={{
                 ...MENU_ITEMS_STYLE,
+                textDecoration: 'none',
               }}
             >
               Giới Thiệu
@@ -222,8 +231,11 @@ function Header() {
             {/* Contact */}
             <Typography
               variant='span'
+              component={NavLink}
+              to="/contact"
               sx={{
                 ...MENU_ITEMS_STYLE,
+                textDecoration: 'none',
               }}
             >
               Liên Hệ
@@ -261,11 +273,27 @@ function Header() {
               ))}
             </Menu>
 
+            {/* Booking */}
+            <Typography
+              variant='span'
+              component={NavLink}
+              to="/booking"
+              sx={{
+                ...MENU_ITEMS_STYLE,
+                textDecoration: 'none',
+              }}
+            >
+              Đặt Sân
+            </Typography>
+
             {/* News */}
             <Typography
               variant='span'
+              component={NavLink}
+              to="/news"
               sx={{
                 ...MENU_ITEMS_STYLE,
+                textDecoration: 'none',
               }}
             >
               Tin Tức
