@@ -74,7 +74,7 @@ function LoginPage() {
           localStorage.setItem("ten_kh", res.data.ten_kh);
           localStorage.setItem("anh_kh", res.data.anh_kh);
 
-          navigate("/");
+          navigate("/homepage");
         } else {
           toast.error(res.data.message);
         }
@@ -239,7 +239,7 @@ function LoginPage() {
                 Bạn là chủ sân
               </Typography>
               <Typography variant="body2" color="white">
-                /
+                
               </Typography>
               <Typography
                 variant="body2"
