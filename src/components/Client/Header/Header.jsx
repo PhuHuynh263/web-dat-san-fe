@@ -15,10 +15,22 @@ import { useNavigate } from "react-router-dom";
 const MENU_ITEMS_STYLE = {
   fontSize: "1rem",
   fontWeight: "bold",
-  color: "text.primary",
+  color: "text.secondary",
   cursor: "pointer",
   ml: 2,
-  ":hover": { color: "primary.main" },
+  textDecoration: "none", // Chuyển textDecoration vào đây luôn cho gọn
+
+  // Style khi hover
+  ":hover": {
+    color: "primary.main",
+  },
+
+  // Style khi đang Active (được chọn)
+  "&.active": {
+    color: "primary.main",
+    // Bạn có thể thêm border-bottom nếu muốn giống tab
+    // borderBottom: (theme) => `2px solid ${theme.client.palette.primary.main}`,
+  },
 };
 
 const servicesList = ["Đá Banh", "Cầu Lông", "Quần Vợt", "Pickleball"];
@@ -207,14 +219,9 @@ function Header() {
             <Typography
               variant="span"
               component={NavLink}
-              to="/"
+              to="/homepage"
               sx={{
-                fontSize: "1rem",
-                fontWeight: "bold",
-                color: "primary.main",
-                cursor: "pointer",
-                textDecoration: "none",
-                "&:hover": { color: "primary.main" },
+                ...MENU_ITEMS_STYLE,
               }}
             >
               Trang Chủ

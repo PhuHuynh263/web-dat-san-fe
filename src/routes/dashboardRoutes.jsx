@@ -14,12 +14,11 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import CommentIcon from "@mui/icons-material/Comment";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import PersonIcon from "@mui/icons-material/Person";
-import PaymentIcon from '@mui/icons-material/Payment';
-import StyleIcon from '@mui/icons-material/Style';
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import GrassIcon from '@mui/icons-material/Grass';
-import StadiumIcon from '@mui/icons-material/Stadium';
-
+import PaymentIcon from "@mui/icons-material/Payment";
+import StyleIcon from "@mui/icons-material/Style";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import GrassIcon from "@mui/icons-material/Grass";
+import StadiumIcon from "@mui/icons-material/Stadium";
 
 // --- Import Admin Page Components ---
 import OverviewAdminPage from "../pages/Admin/OverViewAdminPage/OverviewAdminPage";
@@ -31,7 +30,7 @@ import OwnerManagementPage from "../pages/Admin/OwnerManagementPage/OwnerManagem
 import CustomerManagementPage from "../pages/Admin/CustomerManagementPage/CustomerManagementPage";
 import RevenueReportAdminPage from "../pages/Admin/RevenueReportAdminPage/RevenueReportAdminPage";
 import UserReportPage from "../pages/Admin/UserReportPage/UserReportPage";
-import SettingsPage from "../pages/Admin/SettingsPage/SettingsPage"; // Giả sử đây là trang cài đặt chung
+import SettingsAdminPage from "../pages/Admin/SettingsAdminPage/SettingsAdminPage"; // Giả sử đây là trang cài đặt chung
 
 // --- Import Owner Page Components ---
 import ManageBookingSchedulePage from "../pages/Owner/ManageBookingSchedulePage/ManageBookingSchedulePage";
@@ -41,10 +40,9 @@ import RevenueReportOwnerPage from "../pages/Owner/RevenueReportOwnerPage/Revenu
 import ServicePaymentPage from "../pages/Owner/ServicePaymentPage/ServicePaymentPage";
 import SoccerFieldManagementPage from "../pages/Owner/SoccerFieldManagementPage/SoccerFieldManagementPage";
 import YardTypeManagementPage from "../pages/Admin/YardTypeManagementPage/YardTypeManagementPage";
-
+import SettingsOwnerPage from "../pages/Owner/SettingsOwnerPage/SettingsOwnerPage";
 // === Đổi tên thành dashboardRoutes (chứa tất cả route) ===
 export const dashboardRoutes = [
-
   // =========== CÁC ROUTE CỦA ADMIN ============
   {
     path: "/admin/dashboard", // Đổi từ /dashboard để rõ ràng
@@ -110,6 +108,7 @@ export const dashboardRoutes = [
       },
     ],
   },
+
   {
     // Mục cha cho Báo cáo (Admin)
     meta: {
@@ -137,6 +136,15 @@ export const dashboardRoutes = [
         },
       },
     ],
+  },
+  {
+    path: "/admin/settings", // Route cài đặt chung
+    element: <SettingsAdminPage />,
+    meta: {
+      title: "CÀI ĐẶT",
+      icon: <SettingsIcon />,
+      roles: ["admin"], // Cả hai đều có thể truy cập
+    },
   },
 
   // =========== CÁC ROUTE CỦA OWNER ============
@@ -194,15 +202,15 @@ export const dashboardRoutes = [
       roles: ["owner"],
     },
   },
-
-  // =========== CÁC ROUTE DÙNG CHUNG ============
   {
-    path: "/dashboard/settings", // Route cài đặt chung
-    element: <SettingsPage />,
+    path: "/owner/settings", // Route cài đặt chung
+    element: <SettingsOwnerPage />,
     meta: {
       title: "CÀI ĐẶT",
       icon: <SettingsIcon />,
-      roles: ["admin", "owner"], // Cả hai đều có thể truy cập
+      roles: ["owner"], // Cả hai đều có thể truy cập
     },
   },
+
+  // =========== CÁC ROUTE DÙNG CHUNG ============
 ];
