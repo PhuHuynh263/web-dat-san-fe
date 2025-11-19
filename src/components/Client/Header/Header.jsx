@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
@@ -25,42 +24,11 @@ const navLinks = [
   { to: '/booking', label: 'Đặt Sân' },
   { to: '/news', label: 'Tin Tức' },
 ];
-=======
-import * as React from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import AppBar from "@mui/material/AppBar";
-import Container from "@mui/material/Container";
-import Toolbar from "@mui/material/Toolbar";
-import Box from "@mui/material/Box";
-import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
-import Typography from "@mui/material/Typography";
-import { NavLink } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-
-const MENU_ITEMS_STYLE = {
-  fontSize: "1rem",
-  fontWeight: "bold",
-  color: "text.primary",
-  cursor: "pointer",
-  ml: 2,
-  ":hover": { color: "primary.main" },
-};
-
-const servicesList = ["Đá Banh", "Cầu Lông", "Quần Vợt", "Pickleball"];
->>>>>>> 81a37d0179c94b1a0f4cbe00b4926e92c4cf9766
 
 function Header() {
   const [isLoggedIn, setLogin] = React.useState(false);
-<<<<<<< HEAD
   const [clientName, setClientName] = React.useState('');
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-=======
-  const [clientName, setClientName] = React.useState("");
-
->>>>>>> 81a37d0179c94b1a0f4cbe00b4926e92c4cf9766
   const navigate = useNavigate();
 
   const checkLogin = () => {
@@ -128,45 +96,31 @@ function Header() {
   };
 
   return (
-<<<<<<< HEAD
     <AppBar sx={{ position: 'static', backgroundColor: 'white' }}>
       <Container maxWidth={false} sx={{ backgroundColor: 'white', py: 1 }}>
-=======
-    <AppBar sx={{ position: "static", backgroundColor: "white" }}>
-      <Container sx={{ maxWidth: "xl", backgroundColor: "white" }}>
->>>>>>> 81a37d0179c94b1a0f4cbe00b4926e92c4cf9766
         <Toolbar>
           {/* Logo */}
           <Box
             component={NavLink}
             to="/homepage"
-<<<<<<< HEAD
             end
             sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', textDecoration: 'none' }}
-=======
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer",
-              textDecoration: "none",
-            }}
->>>>>>> 81a37d0179c94b1a0f4cbe00b4926e92c4cf9766
           >
             <SportsSoccerIcon
               sx={{
-                color: "primary.main",
+                color: 'primary.main',
                 fontSize: 40,
-                cursor: "pointer",
+                cursor: 'pointer',
               }}
             />
             <Typography
-              variant="span"
+              variant='span'
               sx={{
-                fontSize: "1.2rem",
-                fontWeight: "bold",
+                fontSize: '1.2rem',
+                fontWeight: 'bold',
                 ml: 1,
-                color: "primary.main",
-                cursor: "pointer",
+                color: 'primary.main',
+                cursor: 'pointer',
               }}
             >
               FootyFanatics
@@ -176,34 +130,34 @@ function Header() {
           {/* Action Button Login/Register */}
           {!isLoggedIn ? (
             <Box
-              sx={{ flexGrow: 0, ml: 2, color: "text.secondary", fontSize: 14 }}
+              sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
             >
               <Typography
                 variant="span"
                 component={NavLink}
                 to="/login"
                 sx={{
-                  cursor: "pointer",
-                  textDecoration: "none",
-                  color: "inherit",
-                  "&:hover": {
-                    color: "primary.main",
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  '&:hover': {
+                    color: 'primary.main',
                   },
                 }}
               >
                 Đăng nhập
               </Typography>
-              {" / "}
+              {' / '}
               <Typography
                 variant="span"
                 component={NavLink}
                 to="/signup"
                 sx={{
-                  cursor: "pointer",
-                  textDecoration: "none",
-                  color: "inherit",
-                  "&:hover": {
-                    color: "primary.main",
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  '&:hover': {
+                    color: 'primary.main',
                   },
                 }}
               >
@@ -212,33 +166,33 @@ function Header() {
             </Box>
           ) : (
             <Box
-              sx={{ flexGrow: 0, ml: 2, color: "text.secondary", fontSize: 14 }}
+              sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
             >
               <Typography
                 variant="span"
                 sx={{
-                  cursor: "pointer",
-                  textDecoration: "none",
-                  color: "inherit",
-                  "&:hover": {
-                    color: "primary.main",
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  '&:hover': {
+                    color: 'primary.main',
                   },
                 }}
               >
-                {isLoggedIn ? clientName : "User"}
+                {isLoggedIn ? clientName : 'User'}
               </Typography>
-              {" / "}
+              {' / '}
               <Typography
                 onClick={() => logOut()}
                 variant="span"
                 component={NavLink}
                 to="#"
                 sx={{
-                  cursor: "pointer",
-                  textDecoration: "none",
-                  color: "inherit",
-                  "&:hover": {
-                    color: "primary.main",
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  '&:hover': {
+                    color: 'primary.main',
                   },
                 }}
               >
@@ -249,7 +203,6 @@ function Header() {
 
           {/* Menu */}
           <Box sx={{ flexGrow: 1 }} />
-<<<<<<< HEAD
           
           {/* Desktop Menu - Hidden on md and below */}
           <Box sx={{ display: { xs: 'none', [HAMBURGER_BREAKPOINT]: 'flex' }, alignItems: 'center' }}>
@@ -289,109 +242,6 @@ function Header() {
             >
               <MenuIcon sx={{ color: 'black', fontSize: 30 }} />
             </IconButton>
-=======
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            {/* Home */}
-            <Typography
-              variant="span"
-              component={NavLink}
-              to="/"
-              sx={{
-                fontSize: "1rem",
-                fontWeight: "bold",
-                color: "primary.main",
-                cursor: "pointer",
-                textDecoration: "none",
-                "&:hover": { color: "primary.main" },
-              }}
-            >
-              Trang Chủ
-            </Typography>
-
-            {/* About */}
-            <Typography
-              variant="span"
-              component={NavLink}
-              to="/about"
-              sx={{
-                ...MENU_ITEMS_STYLE,
-                textDecoration: "none",
-              }}
-            >
-              Giới Thiệu
-            </Typography>
-
-            {/* Contact */}
-            <Typography
-              variant="span"
-              component={NavLink}
-              to="/contact"
-              sx={{
-                ...MENU_ITEMS_STYLE,
-                textDecoration: "none",
-              }}
-            >
-              Liên Hệ
-            </Typography>
-
-            {/* Services */}
-            <Typography
-              variant="span"
-              sx={{
-                ...MENU_ITEMS_STYLE,
-              }}
-              id="basic-button"
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-            >
-              Dịch Vụ
-            </Typography>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              slotProps={{
-                list: {
-                  "aria-labelledby": "basic-button",
-                },
-              }}
-            >
-              {servicesList.map((service) => (
-                <MenuItem key={service} onClick={handleClose}>
-                  {service}
-                </MenuItem>
-              ))}
-            </Menu>
-
-            {/* Booking */}
-            <Typography
-              variant="span"
-              component={NavLink}
-              to="/booking"
-              sx={{
-                ...MENU_ITEMS_STYLE,
-                textDecoration: "none",
-              }}
-            >
-              Đặt Sân
-            </Typography>
-
-            {/* News */}
-            <Typography
-              variant="span"
-              component={NavLink}
-              to="/news"
-              sx={{
-                ...MENU_ITEMS_STYLE,
-                textDecoration: "none",
-              }}
-            >
-              Tin Tức
-            </Typography>
->>>>>>> 81a37d0179c94b1a0f4cbe00b4926e92c4cf9766
           </Box>
         </Toolbar>
       </Container>
