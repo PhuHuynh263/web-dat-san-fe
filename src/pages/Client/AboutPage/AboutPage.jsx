@@ -11,7 +11,7 @@ const AboutPage = () => {
     <ThemeProvider theme={clientTheme}>
       <CssBaseline />
       <Header />
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth={false} sx={{ backgroundColor: 'white', py: 1 }}>
         <Box sx={{ mb: 6 }}>
           <Typography
             variant="h1"

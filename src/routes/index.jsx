@@ -41,11 +41,12 @@ function flattenRoutes(routes) {
 // ------------------------------------
 
 const router = createBrowserRouter([
+  
+
   // --- Nhóm Route cho Client ---
   {
     path: "/homepage",
     element: <HomePage />,
-    // ... (children của client)
   },
 
   // --- Nhóm Route cho Dashboard ---

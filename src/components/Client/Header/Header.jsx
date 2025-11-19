@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,34 +6,29 @@ import Box from '@mui/material/Box';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import Typography from '@mui/material/Typography';
 import { NavLink } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-const MENU_ITEMS_STYLE = {
-  fontSize: '1rem',
-  fontWeight: 'bold',
-  color: 'text.primary',
-  cursor: 'pointer',
-  ml: 2,
-  ':hover': { color: 'primary.main' },
-};
+// Biến cho hamburger menu
+const DRAWER_WIDTH = '60vw';
+const HAMBURGER_BREAKPOINT = 'md'; // md trong MUI = 900px
 
-const servicesList = ['Đá Banh', 'Cầu Lông', 'Quần Vợt', 'Pickleball'];
+const navLinks = [
+  { to: '/homepage', label: 'Trang Chủ', end: true },
+  { to: '/about', label: 'Giới Thiệu' },
+  { to: '/contact', label: 'Liên Hệ' },
+  { to: '/booking', label: 'Đặt Sân' },
+  { to: '/news', label: 'Tin Tức' },
+];
 
 function Header() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const [isLoggedIn, setLogin] = React.useState(false);
   const [clientName, setClientName] = React.useState('');
-
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
   const navigate = useNavigate();
 
   const checkLogin = () => {
@@ -90,14 +83,27 @@ function Header() {
     checkLogin();
   }, []);
 
+  const handleDrawerOpen = () => {
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+
+  const handleNavLinkClick = () => {
+    setDrawerOpen(false);
+  };
+
   return (
     <AppBar sx={{ position: 'static', backgroundColor: 'white' }}>
-      <Container sx={{ maxWidth: 'xl', backgroundColor: 'white' }}>
+      <Container maxWidth={false} sx={{ backgroundColor: 'white', py: 1 }}>
         <Toolbar>
           {/* Logo */}
           <Box
             component={NavLink}
-            to="/"
+            to="/homepage"
+            end
             sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', textDecoration: 'none' }}
           >
             <SportsSoccerIcon
@@ -122,7 +128,6 @@ function Header() {
           </Box>
 
           {/* Action Button Login/Register */}
-
           {!isLoggedIn ? (
             <Box
               sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
@@ -195,112 +200,101 @@ function Header() {
               </Typography>
             </Box>
           )}
+
           {/* Menu */}
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {/* Home */}
-            <Typography
-              variant='span'
-              component={NavLink}
-              to="/"
-              sx={{
-                fontSize: '1rem',
-                fontWeight: 'bold',
-                color: 'primary.main',
-                cursor: 'pointer',
-                textDecoration: 'none',
-                '&:hover': { color: 'primary.main' },
-              }}
-            >
-              Trang Chủ
-            </Typography>
+          
+          {/* Desktop Menu - Hidden on md and below */}
+          <Box sx={{ display: { xs: 'none', [HAMBURGER_BREAKPOINT]: 'flex' }, alignItems: 'center' }}>
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.end}
+                style={({ isActive }) => ({
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  marginLeft: link.to === '/homepage' ? 0 : 16,
+                  transition: 'color 0.3s ease',
+                  color: isActive ? '#df1b3f' : '#000000',
+                })}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#df1b3f';
+                }}
+                onMouseLeave={(e) => {
+                  const href = e.currentTarget.getAttribute('href');
+                  const isCurrentPath = window.location.pathname === href || (href === '/homepage' && window.location.pathname === '/');
+                  e.currentTarget.style.color = isCurrentPath ? '#df1b3f' : '#000000';
+                }}
+              >
+                {link.label}
+              </NavLink>
+            ))}
+          </Box>
 
-            {/* About */}
-            <Typography
-              variant='span'
-              component={NavLink}
-              to="/about"
-              sx={{
-                ...MENU_ITEMS_STYLE,
-                textDecoration: 'none',
-              }}
+          {/* Hamburger Menu Icon - Shown only on md and below */}
+          <Box sx={{ display: { xs: 'flex', [HAMBURGER_BREAKPOINT]: 'none' }, ml: 2 }}>
+            <IconButton
+              onClick={handleDrawerOpen}
+              sx={{ p: 0 }}
             >
-              Giới Thiệu
-            </Typography>
-
-            {/* Contact */}
-            <Typography
-              variant='span'
-              component={NavLink}
-              to="/contact"
-              sx={{
-                ...MENU_ITEMS_STYLE,
-                textDecoration: 'none',
-              }}
-            >
-              Liên Hệ
-            </Typography>
-
-            {/* Services */}
-            <Typography
-              variant='span'
-              sx={{
-                ...MENU_ITEMS_STYLE,
-              }}
-              id='basic-button'
-              aria-controls={open ? 'basic-menu' : undefined}
-              aria-haspopup='true'
-              aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
-            >
-              Dịch Vụ
-            </Typography>
-            <Menu
-              id='basic-menu'
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              slotProps={{
-                list: {
-                  'aria-labelledby': 'basic-button',
-                },
-              }}
-            >
-              {servicesList.map((service) => (
-                <MenuItem key={service} onClick={handleClose}>
-                  {service}
-                </MenuItem>
-              ))}
-            </Menu>
-
-            {/* Booking */}
-            <Typography
-              variant='span'
-              component={NavLink}
-              to="/booking"
-              sx={{
-                ...MENU_ITEMS_STYLE,
-                textDecoration: 'none',
-              }}
-            >
-              Đặt Sân
-            </Typography>
-
-            {/* News */}
-            <Typography
-              variant='span'
-              component={NavLink}
-              to="/news"
-              sx={{
-                ...MENU_ITEMS_STYLE,
-                textDecoration: 'none',
-              }}
-            >
-              Tin Tức
-            </Typography>
+              <MenuIcon sx={{ color: 'black', fontSize: 30 }} />
+            </IconButton>
           </Box>
         </Toolbar>
       </Container>
+
+      {/* Drawer Menu */}
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={handleDrawerClose}
+        sx={{
+          '& .MuiDrawer-paper': {
+            width: DRAWER_WIDTH,
+            backgroundColor: 'white',
+          },
+        }}
+      >
+        <Box
+          sx={{
+            p: 2,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.end}
+              onClick={handleNavLinkClick}
+              style={({ isActive }) => ({
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                marginTop: 30,
+                marginBottom: 0,
+                transition: 'color 0.3s ease',
+                color: isActive ? '#df1b3f' : '#000000',
+              })}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#df1b3f';
+              }}
+              onMouseLeave={(e) => {
+                const href = e.currentTarget.getAttribute('href');
+                const isCurrentPath = window.location.pathname === href || (href === '/homepage' && window.location.pathname === '/');
+                e.currentTarget.style.color = isCurrentPath ? '#df1b3f' : '#000000';
+              }}
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </Box>
+      </Drawer>
     </AppBar>
   );
 }

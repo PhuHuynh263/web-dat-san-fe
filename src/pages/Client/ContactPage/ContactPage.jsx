@@ -62,7 +62,7 @@ const ContactPage = () => {
     <ThemeProvider theme={clientTheme}>
       <CssBaseline />
       <Header />
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth={false} sx={{ backgroundColor: 'white', py: 1 }}>
         <Box sx={{ mb: 6, textAlign: 'center' }}>
           <Typography
             variant="h1"
