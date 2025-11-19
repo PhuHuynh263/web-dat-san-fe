@@ -207,7 +207,7 @@ function Header() {
             <Typography
               variant="span"
               component={NavLink}
-              to="/"
+              to="/homepage"
               sx={{
                 fontSize: "1rem",
                 fontWeight: "bold",
