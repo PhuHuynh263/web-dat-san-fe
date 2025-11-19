@@ -1,27 +1,27 @@
-import * as React from 'react';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import AppBar from '@mui/material/AppBar';
-import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
-import Box from '@mui/material/Box';
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
-import Typography from '@mui/material/Typography';
-import { NavLink } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import * as React from "react";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import AppBar from "@mui/material/AppBar";
+import Container from "@mui/material/Container";
+import Toolbar from "@mui/material/Toolbar";
+import Box from "@mui/material/Box";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import Typography from "@mui/material/Typography";
+import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const MENU_ITEMS_STYLE = {
-  fontSize: '1rem',
-  fontWeight: 'bold',
-  color: 'text.primary',
-  cursor: 'pointer',
+  fontSize: "1rem",
+  fontWeight: "bold",
+  color: "text.primary",
+  cursor: "pointer",
   ml: 2,
-  ':hover': { color: 'primary.main' },
+  ":hover": { color: "primary.main" },
 };
 
-const servicesList = ['Đá Banh', 'Cầu Lông', 'Quần Vợt', 'Pickleball'];
+const servicesList = ["Đá Banh", "Cầu Lông", "Quần Vợt", "Pickleball"];
 
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -34,7 +34,7 @@ function Header() {
   };
 
   const [isLoggedIn, setLogin] = React.useState(false);
-  const [clientName, setClientName] = React.useState('');
+  const [clientName, setClientName] = React.useState("");
 
   const navigate = useNavigate();
 
@@ -91,30 +91,35 @@ function Header() {
   }, []);
 
   return (
-    <AppBar sx={{ position: 'static', backgroundColor: 'white' }}>
-      <Container sx={{ maxWidth: 'xl', backgroundColor: 'white' }}>
+    <AppBar sx={{ position: "static", backgroundColor: "white" }}>
+      <Container sx={{ maxWidth: "xl", backgroundColor: "white" }}>
         <Toolbar>
           {/* Logo */}
           <Box
             component={NavLink}
-            to="/"
-            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', textDecoration: 'none' }}
+            to="/homepage"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+              textDecoration: "none",
+            }}
           >
             <SportsSoccerIcon
               sx={{
-                color: 'primary.main',
+                color: "primary.main",
                 fontSize: 40,
-                cursor: 'pointer',
+                cursor: "pointer",
               }}
             />
             <Typography
-              variant='span'
+              variant="span"
               sx={{
-                fontSize: '1.2rem',
-                fontWeight: 'bold',
+                fontSize: "1.2rem",
+                fontWeight: "bold",
                 ml: 1,
-                color: 'primary.main',
-                cursor: 'pointer',
+                color: "primary.main",
+                cursor: "pointer",
               }}
             >
               FootyFanatics
@@ -125,34 +130,34 @@ function Header() {
 
           {!isLoggedIn ? (
             <Box
-              sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
+              sx={{ flexGrow: 0, ml: 2, color: "text.secondary", fontSize: 14 }}
             >
               <Typography
                 variant="span"
                 component={NavLink}
                 to="/login"
                 sx={{
-                  cursor: 'pointer',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  '&:hover': {
-                    color: 'primary.main',
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  color: "inherit",
+                  "&:hover": {
+                    color: "primary.main",
                   },
                 }}
               >
                 Đăng nhập
               </Typography>
-              {' / '}
+              {" / "}
               <Typography
                 variant="span"
                 component={NavLink}
                 to="/signup"
                 sx={{
-                  cursor: 'pointer',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  '&:hover': {
-                    color: 'primary.main',
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  color: "inherit",
+                  "&:hover": {
+                    color: "primary.main",
                   },
                 }}
               >
@@ -161,33 +166,33 @@ function Header() {
             </Box>
           ) : (
             <Box
-              sx={{ flexGrow: 0, ml: 2, color: 'text.secondary', fontSize: 14 }}
+              sx={{ flexGrow: 0, ml: 2, color: "text.secondary", fontSize: 14 }}
             >
               <Typography
                 variant="span"
                 sx={{
-                  cursor: 'pointer',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  '&:hover': {
-                    color: 'primary.main',
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  color: "inherit",
+                  "&:hover": {
+                    color: "primary.main",
                   },
                 }}
               >
-                {isLoggedIn ? clientName : 'User'}
+                {isLoggedIn ? clientName : "User"}
               </Typography>
-              {' / '}
+              {" / "}
               <Typography
                 onClick={() => logOut()}
                 variant="span"
                 component={NavLink}
                 to="#"
                 sx={{
-                  cursor: 'pointer',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  '&:hover': {
-                    color: 'primary.main',
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  color: "inherit",
+                  "&:hover": {
+                    color: "primary.main",
                   },
                 }}
               >
@@ -197,19 +202,19 @@ function Header() {
           )}
           {/* Menu */}
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
             {/* Home */}
             <Typography
-              variant='span'
+              variant="span"
               component={NavLink}
               to="/"
               sx={{
-                fontSize: '1rem',
-                fontWeight: 'bold',
-                color: 'primary.main',
-                cursor: 'pointer',
-                textDecoration: 'none',
-                '&:hover': { color: 'primary.main' },
+                fontSize: "1rem",
+                fontWeight: "bold",
+                color: "primary.main",
+                cursor: "pointer",
+                textDecoration: "none",
+                "&:hover": { color: "primary.main" },
               }}
             >
               Trang Chủ
@@ -217,12 +222,12 @@ function Header() {
 
             {/* About */}
             <Typography
-              variant='span'
+              variant="span"
               component={NavLink}
               to="/about"
               sx={{
                 ...MENU_ITEMS_STYLE,
-                textDecoration: 'none',
+                textDecoration: "none",
               }}
             >
               Giới Thiệu
@@ -230,12 +235,12 @@ function Header() {
 
             {/* Contact */}
             <Typography
-              variant='span'
+              variant="span"
               component={NavLink}
               to="/contact"
               sx={{
                 ...MENU_ITEMS_STYLE,
-                textDecoration: 'none',
+                textDecoration: "none",
               }}
             >
               Liên Hệ
@@ -243,26 +248,26 @@ function Header() {
 
             {/* Services */}
             <Typography
-              variant='span'
+              variant="span"
               sx={{
                 ...MENU_ITEMS_STYLE,
               }}
-              id='basic-button'
-              aria-controls={open ? 'basic-menu' : undefined}
-              aria-haspopup='true'
-              aria-expanded={open ? 'true' : undefined}
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
             >
               Dịch Vụ
             </Typography>
             <Menu
-              id='basic-menu'
+              id="basic-menu"
               anchorEl={anchorEl}
               open={open}
               onClose={handleClose}
               slotProps={{
                 list: {
-                  'aria-labelledby': 'basic-button',
+                  "aria-labelledby": "basic-button",
                 },
               }}
             >
@@ -275,12 +280,12 @@ function Header() {
 
             {/* Booking */}
             <Typography
-              variant='span'
+              variant="span"
               component={NavLink}
               to="/booking"
               sx={{
                 ...MENU_ITEMS_STYLE,
-                textDecoration: 'none',
+                textDecoration: "none",
               }}
             >
               Đặt Sân
@@ -288,12 +293,12 @@ function Header() {
 
             {/* News */}
             <Typography
-              variant='span'
+              variant="span"
               component={NavLink}
               to="/news"
               sx={{
                 ...MENU_ITEMS_STYLE,
-                textDecoration: 'none',
+                textDecoration: "none",
               }}
             >
               Tin Tức
