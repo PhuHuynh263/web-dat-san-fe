@@ -25,7 +25,11 @@ function DashBoard() {
 
   // Map segment sang role (chỉ hỗ trợ 'owner' và 'admin' ở đây)
   const userRole =
-    firstSegment === "owner" ? "owner" : firstSegment === "admin" ? "admin" : null;
+    firstSegment === "owner"
+      ? "owner"
+      : firstSegment === "admin"
+      ? "admin"
+      : null;
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
@@ -37,10 +41,16 @@ function DashBoard() {
       <Box sx={{ display: "flex" }}>
         {/* Render Header theo userRole */}
         {userRole === "admin" && (
-          <AdminHeader isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
+          <AdminHeader
+            isOpen={isSidebarOpen}
+            onToggleSidebar={handleToggleSidebar}
+          />
         )}
         {userRole === "owner" && (
-          <OwnerHeader isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
+          <OwnerHeader
+            isOpen={isSidebarOpen}
+            onToggleSidebar={handleToggleSidebar}
+          />
         )}
 
         {/* 1. Truyền userRole xuống Sidebar */}
@@ -52,12 +62,19 @@ function DashBoard() {
             flexGrow: 1,
             p: 3,
             bgcolor: "background.default",
+            // 2. Thiết lập chiều cao cố định bằng màn hình
             height: "100vh",
-            overflow: "auto",
+            // 3. Ẩn hoàn toàn thanh cuộn của container chính
+            overflow: "hidden",
+            // 4. (Tùy chọn) Dùng Flexbox để quản lý layout dọc tốt hơn
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          <Toolbar />
-          <Outlet />
+          <Toolbar sx={{ flexShrink: 0 }} />
+          <Box sx={{ flexGrow: 1, overflow: "hidden", width: "100%" }}>
+            <Outlet />
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>
