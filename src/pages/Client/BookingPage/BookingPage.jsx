@@ -11,94 +11,131 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import axios from 'axios';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
-// Final static BookingPage: only JSX tags, no state or handlers
+// Static BookingPage: only JSX tags, horizontal filter, fully responsive
 const BookingPage = () => {
-  const [yard, setYard] = useState();
-
-  const getDataYard = () => {
-    axios
-      .get("http://127.0.0.1:8000/api/khach-hang/chu-san/data")
-      .then((res) => {
-        setYard(res.data.data);
-      })
-      .catch((err) => {
-        console.error("Lỗi khi lấy data:", err);
-      });
-  }
-
-  useEffect(() => {
-    getDataYard();
-  }, []);
-
   return (
     <ThemeProvider theme={clientTheme}>
       <CssBaseline />
       <Header />
-      <Container maxWidth={false} sx={{ backgroundColor: 'white', py: 3, p: 0 }}>
-        <Box sx={{ display: 'flex', gap: 0 }}>
-          {/* Static Filter Panel (left) */}
-          <Box sx={{ width: '20vw', minHeight: 'calc(100vh - 73px)', backgroundColor: 'white', boxShadow: 3, flexDirection: 'column', p: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Lọc Tìm Kiếm</Typography>
-            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>Thành Phố / Tỉnh</Typography>
-            <TextField label="Chọn thành phố" fullWidth sx={{ mb: 2 }} />
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        {/* Horizontal Filter Panel */}
+        <Box
+          sx={{
+            backgroundColor: '#f5f5f5',
+            p: { xs: 2, sm: 3, md: 4 },
+            borderRadius: 2,
+            mb: 4,
+            boxShadow: 1,
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', fontSize: { xs: '1rem', md: '1.25rem' } }}>
+            Lọc Tìm Kiếm
+          </Typography>
 
-            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>Loại Sân</Typography>
-            <TextField label="Chọn loại sân" fullWidth sx={{ mb: 2 }} />
-
-            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>Ngày Tháng</Typography>
-            <TextField label="Chọn ngày" fullWidth sx={{ mb: 2 }} />
-
-            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>Khung Giờ</Typography>
-            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-              <TextField label="Từ giờ" sx={{ flex: 1 }} />
-              <TextField label="Đến giờ" sx={{ flex: 1 }} />
-            </Box>
-
-            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>Tiện Ích</Typography>
-            <Box sx={{ mb: 2 }}>
-              <Typography>- Bãi đỗ xe</Typography>
-              <Typography>- WiFi</Typography>
-              <Typography>- Phòng thay đồ</Typography>
-            </Box>
-
-            <Button variant="contained" fullWidth sx={{ backgroundColor: 'primary.main' }}>Tìm Kiếm</Button>
-          </Box>
-
-          {/* Static Results List (right) */}
-          <Box sx={{ flex: 1, width: '100%', pl: 4, minHeight: 'calc(100vh - 73px)' }}>
-            <Box sx={{ mb: 3 }}>
-              <Button sx={{ textTransform: 'none', fontWeight: 'bold' }}>Lọc</Button>
-            </Box>
-
-            <Grid container spacing={3}>
-              {yard?.map((item) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
-                  <Card>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      // image={item.image || 'https://via.placeholder.com/300x140'}
-                      image='https://tse1.mm.bing.net/th/id/OIP.6koCM750UfzYdM8Qjj2a6QHaE8?rs=1&pid=ImgDetMain&o=7&rm=3'
-                      alt={`Sân bóng ${item.ten_san || item.id}`}
-                    />
-                    <CardContent>
-                      <Typography variant="h6">
-                        {item.ten_san || `Sân bóng mẫu #${item.id}`}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {item.mo_ta || 'Mô tả ngắn gọn về sân.'}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
+          <Grid container spacing={2}>
+            {/* City Dropdown */}
+            <Grid item xs={12} sm={6} md={2}>
+              <FormControl fullWidth size="small">
+                <InputLabel>Thành Phố</InputLabel>
+                <Select label="Thành Phố" defaultValue="">
+                  <MenuItem value="">-- Chọn --</MenuItem>
+                  <MenuItem value="hanoi">Hà Nội</MenuItem>
+                  <MenuItem value="hochiminh">TP. Hồ Chí Minh</MenuItem>
+                  <MenuItem value="danang">Đà Nẵng</MenuItem>
+                  <MenuItem value="haiphong">Hải Phòng</MenuItem>
+                  <MenuItem value="cantho">Cần Thơ</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
 
-          </Box>
+            {/* Field Type Dropdown */}
+            <Grid item xs={12} sm={6} md={2}>
+              <FormControl fullWidth size="small">
+                <InputLabel>Loại Sân</InputLabel>
+                <Select label="Loại Sân" defaultValue="">
+                  <MenuItem value="">-- Chọn --</MenuItem>
+                  <MenuItem value="5v5">Sân 5v5</MenuItem>
+                  <MenuItem value="7v7">Sân 7v7</MenuItem>
+                  <MenuItem value="11v11">Sân 11v11</MenuItem>
+                  <MenuItem value="futsal">Sân Futsal</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
+            {/* Date */}
+            <Grid item xs={12} sm={6} md={2}>
+              <TextField label="Ngày Tháng" fullWidth size="small" type="date" InputLabelProps={{ shrink: true }} />
+            </Grid>
+
+            {/* From Time */}
+            <Grid item xs={12} sm={6} md={1.5}>
+              <TextField label="Từ giờ" fullWidth size="small" type="time" InputLabelProps={{ shrink: true }} />
+            </Grid>
+
+            {/* To Time */}
+            <Grid item xs={12} sm={6} md={1.5}>
+              <TextField label="Đến giờ" fullWidth size="small" type="time" InputLabelProps={{ shrink: true }} />
+            </Grid>
+
+            {/* Search Button */}
+            <Grid item xs={12} sm={6} md={3}>
+              <Box sx={{ display: 'flex', alignItems: 'flex-end', height: '100%' }}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  sx={{
+                    backgroundColor: 'primary.main',
+                    textTransform: 'none',
+                    fontWeight: 'bold',
+                    py: 1,
+                  }}
+                >
+                  Tìm Kiếm
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Results Grid */}
+        <Box>
+          <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold' }}>
+            Kết Quả Tìm Kiếm
+          </Typography>
+
+          <Grid container spacing={3}>
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={id}>
+                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer', transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.02)' } }}>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image="https://via.placeholder.com/300x200?text=Sân+bóng"
+                    alt={`Sân bóng ${id}`}
+                  />
+                  <CardContent sx={{ flex: 1 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                      Sân bóng mẫu #{id}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      Mô tả ngắn gọn về sân bóng đặc sắc tại địa phương.
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'primary.main', mb: 1 }}>
+                      200.000 VNĐ / giờ
+                    </Typography>
+                    <Button variant="outlined" fullWidth size="small">
+                      Xem Chi Tiết
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </Container>
     </ThemeProvider>
