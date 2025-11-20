@@ -1,13 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
-import React, { Suspense } from "react"; // Import Suspense
-import { Box, CircularProgress, Toolbar } from "@mui/material"; // Import components
+import React, { Suspense } from "react";
 
 // Import Layouts
 import DashBoard from "../layouts/Admin/DashBoard.jsx";
 import HomePage from "../pages/Client/HomePage/index.jsx";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 
 // Import Dashboard Routes
 import { dashboardRoutes } from "./dashboardRoutes.jsx";
+
+// Import các trang khác
 import LoginPage from "../pages/Client/LoginPage/LoginPage.jsx";
 import SignUpPage from "../pages/Client/SignUpPage/SignUpPage.jsx";
 import AboutPage from "../pages/Client/AboutPage/AboutPage.jsx";
@@ -18,61 +20,57 @@ import LoginAdminPage from "../pages/Admin/LoginAdminPage/LoginAdminPage.jsx";
 import LoginOwnerPage from "../pages/Owner/LoginOwnerPage/LoginOwnerPage.jsx";
 import SignUpOwnerPage from "../pages/Owner/SignUpOwnerPage/SignUpOwnerPage.jsx";
 
+// 1. IMPORT COMPONENT LOADING MỚI
+import PageLoading from "../components/common/Loading/PageLoading.jsx";
 // --- HÀM MỚI ĐỂ "LÀM PHẲNG" ROUTE ---
 function flattenRoutes(routes) {
   let flatRoutes = [];
 
   routes.forEach((route) => {
     if (route.children) {
-      // Nếu là mục cha (có children),
-      // đệ quy để lấy các route con của nó
       flatRoutes = [...flatRoutes, ...flattenRoutes(route.children)];
     } else {
-      // Nếu là route thông thường, thêm vào danh sách
       flatRoutes.push({
         path: route.path,
         element: route.element,
-        meta: route.meta, // Giữ lại meta để dùng sau này
+        meta: route.meta,
       });
     }
   });
   return flatRoutes;
 }
-// ------------------------------------
+
+// 2. HÀM TIỆN ÍCH ĐỂ BỌC SUSPENSE (Code gọn hơn)
+const withLoading = (Component) => (
+  <Suspense fallback={<PageLoading message="Đang tải trang..." />}>
+    {Component}
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   // --- Nhóm Route cho Client ---
   {
     path: "/homepage",
     element: <HomePage />,
-    // ... (children của client)
   },
 
   // --- Nhóm Route cho Dashboard ---
   {
-    element: <DashBoard />, // Dùng DashBoard làm layout chung
+    element: <DashBoard />,
     children: flattenRoutes(dashboardRoutes).map((route) => ({
       path: route.path,
-      // Bọc element bằng Suspense để hỗ trợ React.lazy
-      element: (
-        <Suspense
-          fallback={
-            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-              <CircularProgress />
-            </Box>
-          }
-        >
-          {route.element}
-        </Suspense>
-      ),
+      // 3. Sử dụng hàm withLoading ở đây
+      element: withLoading(route.element),
     })),
   },
 
   // --- Route cho trang 404 Not Found ---
   {
     path: "*",
-    element: <div>404 - Page Not Found</div>,
+    element: <NotFoundPage />,
   },
+
+  // --- Các Route Khác ---
   {
     path: "/login",
     element: <LoginPage />,
