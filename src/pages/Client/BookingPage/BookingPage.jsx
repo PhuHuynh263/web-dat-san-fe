@@ -1,64 +1,120 @@
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import {
+  Box,
+  Container,
+  CssBaseline,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
-import { CssBaseline } from '@mui/material';
 import { clientTheme } from '../../../clientTheme';
 import Header from '../../../components/Client/Header/Header';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 
-// Static BookingPage: only JSX tags, horizontal filter, fully responsive
 const BookingPage = () => {
+  const [city, setCity] = useState('');
+  const [fieldType, setFieldType] = useState('');
+  const [date, setDate] = useState('');
+  const [fromTime, setFromTime] = useState('');
+  const [toTime, setToTime] = useState('');
+
+  const [yard, setYard] = useState([]);
+
+  const getDaTaChuSan = () => {
+    axios
+      .get('http://127.0.0.1:8000/api/khach-hang/chu-san/data')
+      .then((res) => {
+        if (res.data.status) {
+          setYard(res.data.data);
+          toast.success(res.data.message);
+        } else {
+          toast.error(res.data.message);
+        }
+      })
+      .catch((err) => {
+        toast.error('Lỗi khi tải dữ liệu sân bóng');
+        console.error(err);
+      });
+  };
+
+  useEffect(() => {
+    getDaTaChuSan();
+  }, []);
+
   return (
     <ThemeProvider theme={clientTheme}>
       <CssBaseline />
       <Header />
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        {/* Horizontal Filter Panel */}
+        {/* Bộ lọc tìm kiếm */}
         <Box
           sx={{
-            backgroundColor: '#f5f5f5',
-            p: { xs: 2, sm: 3, md: 4 },
-            borderRadius: 2,
+            background: "#ffffff",
+            p: 3,
+            borderRadius: 3,
             mb: 4,
-            boxShadow: 1,
+            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+            border: "1px solid #eee"
           }}
         >
-          <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', fontSize: { xs: '1rem', md: '1.25rem' } }}>
+          <Typography
+            variant="h6"
+            sx={{ mb: 3, fontWeight: "700", fontSize: "1.15rem" }}
+          >
             Lọc Tìm Kiếm
           </Typography>
 
           <Grid container spacing={2}>
-            {/* City Dropdown */}
-            <Grid item xs={12} sm={6} md={2}>
+
+            {/* Thành phố */}
+            <Grid item xs={12} sm={6} md={2.5}>
               <FormControl fullWidth size="small">
                 <InputLabel>Thành Phố</InputLabel>
-                <Select label="Thành Phố" defaultValue="">
-                  <MenuItem value="">-- Chọn --</MenuItem>
-                  <MenuItem value="hanoi">Hà Nội</MenuItem>
-                  <MenuItem value="hochiminh">TP. Hồ Chí Minh</MenuItem>
-                  <MenuItem value="danang">Đà Nẵng</MenuItem>
-                  <MenuItem value="haiphong">Hải Phòng</MenuItem>
-                  <MenuItem value="cantho">Cần Thơ</MenuItem>
+                <Select
+                  value={city}
+                  label="Thành Phố"
+                  onChange={(e) => setCity(e.target.value)}
+                  sx={{
+                    borderRadius: 2,
+                    bgcolor: "#fafafa",
+                    width: "170px"
+                  }}
+                >
+                  <MenuItem value=""><em>-- Chọn --</em></MenuItem>
+                  <MenuItem value="Hà Nội">Hà Nội</MenuItem>
+                  <MenuItem value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</MenuItem>
+                  <MenuItem value="Đà Nẵng">Đà Nẵng</MenuItem>
+                  <MenuItem value="Hải Phòng">Hải Phòng</MenuItem>
+                  <MenuItem value="Cần Thơ">Cần Thơ</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
 
-            {/* Field Type Dropdown */}
-            <Grid item xs={12} sm={6} md={2}>
+            {/* Loại sân */}
+            <Grid item xs={12} sm={6} md={2.5}>
               <FormControl fullWidth size="small">
                 <InputLabel>Loại Sân</InputLabel>
-                <Select label="Loại Sân" defaultValue="">
-                  <MenuItem value="">-- Chọn --</MenuItem>
+                <Select
+                  value={fieldType}
+                  label="Loại Sân"
+                  onChange={(e) => setFieldType(e.target.value)}
+                  sx={{
+                    borderRadius: 2,
+                    bgcolor: "#fafafa",
+                    width: "170px"
+                  }}
+                >
+                  <MenuItem value=""><em>-- Chọn --</em></MenuItem>
                   <MenuItem value="5v5">Sân 5v5</MenuItem>
                   <MenuItem value="7v7">Sân 7v7</MenuItem>
                   <MenuItem value="11v11">Sân 11v11</MenuItem>
@@ -67,66 +123,115 @@ const BookingPage = () => {
               </FormControl>
             </Grid>
 
-            {/* Date */}
+            {/* Ngày */}
             <Grid item xs={12} sm={6} md={2}>
-              <TextField label="Ngày Tháng" fullWidth size="small" type="date" InputLabelProps={{ shrink: true }} />
+              <TextField
+                label="Ngày"
+                type="date"
+                size="small"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                sx={{
+                  borderRadius: 2,
+                  bgcolor: "#fafafa",
+                }}
+              />
             </Grid>
 
-            {/* From Time */}
+            {/* Từ giờ */}
+            <Grid item xs={12} sm={6} md={2}>
+              <TextField
+                label="Từ giờ"
+                type="time"
+                size="small"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={fromTime}
+                onChange={(e) => setFromTime(e.target.value)}
+                sx={{
+                  borderRadius: 2,
+                  bgcolor: "#fafafa",
+                }}
+              />
+            </Grid>
+
+            {/* Đến giờ */}
+            <Grid item xs={12} sm={6} md={2}>
+              <TextField
+                label="Đến giờ"
+                type="time"
+                size="small"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={toTime}
+                onChange={(e) => setToTime(e.target.value)}
+                sx={{
+                  borderRadius: 2,
+                  bgcolor: "#fafafa",
+                }}
+              />
+            </Grid>
+
+            {/* Nút tìm */}
             <Grid item xs={12} sm={6} md={1.5}>
-              <TextField label="Từ giờ" fullWidth size="small" type="time" InputLabelProps={{ shrink: true }} />
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={getDaTaChuSan}
+                sx={{
+                  height: "40px",
+                  fontWeight: 700,
+                  textTransform: "none",
+                  borderRadius: 2,
+                }}
+              >
+                Tìm kiếm
+              </Button>
             </Grid>
 
-            {/* To Time */}
-            <Grid item xs={12} sm={6} md={1.5}>
-              <TextField label="Đến giờ" fullWidth size="small" type="time" InputLabelProps={{ shrink: true }} />
-            </Grid>
-
-            {/* Search Button */}
-            <Grid item xs={12} sm={6} md={3}>
-              <Box sx={{ display: 'flex', alignItems: 'flex-end', height: '100%' }}>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  sx={{
-                    backgroundColor: 'primary.main',
-                    textTransform: 'none',
-                    fontWeight: 'bold',
-                    py: 1,
-                  }}
-                >
-                  Tìm Kiếm
-                </Button>
-              </Box>
-            </Grid>
           </Grid>
         </Box>
 
-        {/* Results Grid */}
+
+        {/* Kết quả tìm kiếm */}
         <Box>
           <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold' }}>
             Kết Quả Tìm Kiếm
           </Typography>
 
           <Grid container spacing={3}>
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={id}>
-                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer', transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.02)' } }}>
+            {yard.map((item) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
+                <Card
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s',
+                    '&:hover': { transform: 'scale(1.02)' },
+                    maxWidth: 300,
+                    margin: 'auto',
+                    flexDirection: 'column',
+                  }}
+                >
                   <CardMedia
                     component="img"
                     height="200"
-                    image="https://via.placeholder.com/300x200?text=Sân+bóng"
-                    alt={`Sân bóng ${id}`}
+                    image={'https://fpt123.net/uploads/images/san-co-nhan-tao/san-bong-5-nguoi.jpg'}
+                    alt={`Sân bóng ${item.ten_san}`}
                   />
                   <CardContent sx={{ flex: 1 }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
-                      Sân bóng mẫu #{id}
+                      {item.ten_san}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                      Mô tả ngắn gọn về sân bóng đặc sắc tại địa phương.
+                      {item.dia_chi}, {item.thanh_pho}
                     </Typography>
                     <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'primary.main', mb: 1 }}>
-                      200.000 VNĐ / giờ
+                      Liên hệ: {item.so_dien_thoai}
                     </Typography>
                     <Button variant="outlined" fullWidth size="small">
                       Xem Chi Tiết
@@ -143,4 +248,3 @@ const BookingPage = () => {
 };
 
 export default BookingPage;
-
