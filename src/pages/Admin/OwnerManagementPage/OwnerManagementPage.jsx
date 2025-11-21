@@ -259,6 +259,7 @@ function OwnerManagementPage() {
           sx={{
             border: 0,
             height: "100%",
+            width: "100%",
             "& .MuiDataGrid-columnHeaders": {
               backgroundColor: "#f5f7fa",
               fontWeight: "bold",
@@ -266,8 +267,13 @@ function OwnerManagementPage() {
               fontSize: "0.85rem",
               color: "#555",
             },
+            "& .MuiDataGrid-row": {
+              alignItems: "center",
+            },
             "& .MuiDataGrid-cell": {
               borderBottom: "1px solid #f0f0f0",
+              display: 'flex',
+              alignItems: 'center',
             },
             "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-cell:focus": {
               outline: "none",
