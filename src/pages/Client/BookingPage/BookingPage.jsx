@@ -367,6 +367,50 @@ const BookingPage = () => {
               </FormControl>
             </Box>
 
+            {/* Ngày */}
+            {/* <Box sx={{ mb: 3 }}>
+              <Typography sx={{ mb: 1, fontWeight: 'bold', fontSize: '0.9rem' }}>Ngày</Typography>
+              <TextField
+                label="Chọn ngày"
+                type="date"
+                size="small"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                sx={{ borderRadius: 1 }}
+              />
+            </Box> */}
+
+            {/* Từ giờ */}
+            {/* <Box sx={{ mb: 3 }}>
+              <Typography sx={{ mb: 1, fontWeight: 'bold', fontSize: '0.9rem' }}>Từ Giờ</Typography>
+              <TextField
+                label="Từ giờ"
+                type="time"
+                size="small"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={fromTime}
+                onChange={(e) => setFromTime(e.target.value)}
+                sx={{ borderRadius: 1 }}
+              />
+            </Box> */}
+
+            {/* Đến giờ  */}
+            {/* <Box sx={{ mb: 4 }}>
+              <Typography sx={{ mb: 1, fontWeight: 'bold', fontSize: '0.9rem' }}>Đến Giờ</Typography>
+              <TextField
+                label="Đến giờ"
+                type="time"
+                size="small"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={toTime}
+                onChange={(e) => setToTime(e.target.value)}
+                sx={{ borderRadius: 1 }}
+              />
+            </Box> */}
             <Button
               variant="contained"
               fullWidth
