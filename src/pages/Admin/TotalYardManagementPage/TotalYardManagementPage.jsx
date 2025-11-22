@@ -115,7 +115,7 @@ function TotalYardManagementPage() {
     {
       field: "stt",
       headerName: "STT",
-      width: 60,
+width: 60,
       align: "center",
       headerAlign: "center",
       sortable: false,
@@ -205,14 +205,14 @@ function TotalYardManagementPage() {
       ),
     },
     {
-      field: "gia_thue",
-      headerName: "Giá thuê",
+      field: "kich_thuoc",
+      headerName: "Kích thước",
       width: 120,
-      align: "right",
+      align: "left",
       headerAlign: "right",
       renderCell: (params) => (
         <Typography variant="body2" fontWeight="bold" color="error">
-          {Number(params.value).toLocaleString()} đ
+          {params.value}
         </Typography>
       ),
     },
@@ -233,7 +233,7 @@ function TotalYardManagementPage() {
         <Box>
           <Tooltip title="Sửa">
             <IconButton size="small" color="primary">
-              <EditIcon fontSize="small" />
+<EditIcon fontSize="small" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Xóa">
@@ -284,18 +284,25 @@ function TotalYardManagementPage() {
           initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
           pageSizeOptions={[10, 20, 50]}
           disableRowSelectionOnClick
-          rowHeight={70} // Tăng chiều cao hàng để chứa ảnh và nội dung thoải mái
+          rowHeight={60}
           sx={{
             border: 0,
             height: "100%",
+            width: "100%",
             "& .MuiDataGrid-columnHeaders": {
               backgroundColor: "#f5f7fa",
               fontWeight: "bold",
               textTransform: "uppercase",
               fontSize: "0.85rem",
+              color: "#333",
+            },
+            "& .MuiDataGrid-row": {
+              alignItems: "center",
             },
             "& .MuiDataGrid-cell": {
               borderBottom: "1px solid #f0f0f0",
+              display: 'flex',
+              alignItems: 'center',
             },
             "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-cell:focus": {
               outline: "none",

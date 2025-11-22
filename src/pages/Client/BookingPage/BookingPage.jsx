@@ -1,38 +1,56 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 import {
   Box,
-  Container,
   CssBaseline,
   Typography,
-  TextField,
   Button,
   Grid,
   Card,
   CardMedia,
   CardContent,
+  IconButton,
+  Drawer,
+  useTheme,
+  useMediaQuery,
+  FormControl,
   Select,
   MenuItem,
-  FormControl,
   InputLabel,
-} from '@mui/material';
-import { ThemeProvider } from '@emotion/react';
-import { clientTheme } from '../../../clientTheme';
-import Header from '../../../components/Client/Header/Header';
+  TextField,
+} from "@mui/material";
+
+import { ThemeProvider } from "@emotion/react";
+import TuneIcon from "@mui/icons-material/Tune";
+import CloseIcon from "@mui/icons-material/Close";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { clientTheme } from "../../../clientTheme";
+import Header from "../../../components/Client/Header/Header";
+
+const dataAddress = {
+  "Hà Nội": ["Ba Đình", "Hoàn Kiếm", "Thanh Xuân", "Cầu Giấy"],
+  "Thành phố Hồ Chí Minh": ["Quận 1", "Quận 3", "Gò Vấp", "Tân Bình"],
+  "Đà Nẵng": ["Hải Châu", "Thanh Khê", "Liên Chiểu"],
+};
 
 const BookingPage = () => {
-  const [city, setCity] = useState('');
-  const [fieldType, setFieldType] = useState('');
-  const [date, setDate] = useState('');
-  const [fromTime, setFromTime] = useState('');
-  const [toTime, setToTime] = useState('');
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const [yard, setYard] = useState([]);
+  const [filterOpen, setFilterOpen] = useState(true);
 
+  // Filter state
+  const [city, setCity] = useState("");
+  const [district, setDistrict] = useState("");
+  const [districts, setDistricts] = useState([]);
+  const [fieldType, setFieldType] = useState("");
+
+  // GET SÂN TỪ API
   const getDaTaChuSan = () => {
     axios
-      .get('http://127.0.0.1:8000/api/khach-hang/chu-san/data')
+      .get("http://127.0.0.1:8000/api/khach-hang/chu-san/data")
       .then((res) => {
         if (res.data.status) {
           setYard(res.data.data);
@@ -41,163 +59,178 @@ const BookingPage = () => {
           toast.error(res.data.message);
         }
       })
-      .catch((err) => {
-        toast.error('Lỗi khi tải dữ liệu sân bóng');
-        console.error(err);
-      });
+      .catch(() => toast.error("Lỗi khi tải dữ liệu sân bóng"));
   };
 
   useEffect(() => {
     getDaTaChuSan();
   }, []);
 
+  const handleChangeCity = (value) => {
+    setCity(value);
+    setDistrict("");
+    setDistricts(dataAddress[value] || []);
+  };
+
+  const handleSearch = () => {
+    const searchData = {
+      city,
+      district,
+      // fieldType,
+    };
+    console.log("Thông tin search:", searchData);
+    axios
+      .post("http://127.0.0.1:8000/api/khach-hang/tim-kiem", searchData)
+      .then((res => {
+        if (res.data.status) {
+          setYard(res.data.data);
+        }
+      }))
+    if (!isDesktop) setFilterOpen(false);
+  };
+
   return (
     <ThemeProvider theme={clientTheme}>
       <CssBaseline />
       <Header />
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        {/* Bộ lọc tìm kiếm */}
-        <Box
-          sx={{
-            background: "#ffffff",
-            p: 3,
-            borderRadius: 3,
-            mb: 4,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-            border: "1px solid #eee"
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{ mb: 3, fontWeight: "700", fontSize: "1.15rem" }}
+
+      <Box sx={{ display: "flex", minHeight: "calc(100vh - 73px)" }}>
+        {/* FILTER DESKTOP */}
+        {isDesktop && (
+          <Box
+            sx={{
+              width: filterOpen ? "30vw" : 0,
+              backgroundColor: "white",
+              boxShadow: filterOpen ? 3 : 0,
+              transition: "width 0.3s ease",
+              overflow: "hidden",
+              borderRight: filterOpen ? "1px solid #eee" : "none",
+            }}
           >
-            Lọc Tìm Kiếm
-          </Typography>
+            {filterOpen && (
+              <Box sx={{ p: 3 }}>
+                {/* Desktop Close */}
+                <Box sx={{ textAlign: "right", mb: 2 }}>
+                  <IconButton onClick={() => setFilterOpen(false)}>
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
 
-          <Grid container spacing={2}>
+                {/* CITY */}
+                <Box sx={{ mb: 3 }}>
+                  <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                    Thành Phố
+                  </Typography>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>Chọn thành phố</InputLabel>
+                    <Select
+                      value={city}
+                      label="Chọn thành phố"
+                      onChange={(e) => handleChangeCity(e.target.value)}
+                    >
+                      <MenuItem value="">-- Chọn thành phố --</MenuItem>
+                      {Object.keys(dataAddress).map((c) => (
+                        <MenuItem key={c} value={c}>
+                          {c}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
 
-            {/* Thành phố */}
-            <Grid item xs={12} sm={6} md={2.5}>
-              <FormControl fullWidth size="small">
-                <InputLabel>Thành Phố</InputLabel>
-                <Select
-                  value={city}
-                  label="Thành Phố"
-                  onChange={(e) => setCity(e.target.value)}
-                  sx={{
-                    borderRadius: 2,
-                    bgcolor: "#fafafa",
-                    width: "170px"
-                  }}
+                {/* DISTRICT */}
+                <Box sx={{ mb: 3 }}>
+                  <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                    Quận/Huyện
+                  </Typography>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>Chọn quận/huyện</InputLabel>
+                    <Select
+                      value={district}
+                      label="Chọn quận/huyện"
+                      onChange={(e) => setDistrict(e.target.value)}
+                      disabled={!city}
+                    >
+                      <MenuItem value="">-- Chọn quận/huyện --</MenuItem>
+                      {districts.map((d, i) => (
+                        <MenuItem key={i} value={d}>
+                          {d}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+
+                {/* FIELD TYPE */}
+                <Box sx={{ mb: 3 }}>
+                  <Typography sx={{ mb: 1, fontWeight: "bold" }}>Loại Sân</Typography>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>Chọn loại sân</InputLabel>
+                    <Select
+                      value={fieldType}
+                      label="Chọn loại sân"
+                      onChange={(e) => setFieldType(e.target.value)}
+                    >
+                      <MenuItem value="">-- Chọn --</MenuItem>
+                      <MenuItem value="5v5">Sân 5v5</MenuItem>
+                      <MenuItem value="7v7">Sân 7v7</MenuItem>
+                      <MenuItem value="11v11">Sân 11v11</MenuItem>
+                      <MenuItem value="futsal">Sân Futsal</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+
+                <Button
+                  variant="contained"
+                  fullWidth
+                  sx={{ py: 1.5, fontWeight: "bold" }}
+                  onClick={handleSearch}
                 >
-                  <MenuItem value=""><em>-- Chọn --</em></MenuItem>
-                  <MenuItem value="Hà Nội">Hà Nội</MenuItem>
-                  <MenuItem value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</MenuItem>
-                  <MenuItem value="Đà Nẵng">Đà Nẵng</MenuItem>
-                  <MenuItem value="Hải Phòng">Hải Phòng</MenuItem>
-                  <MenuItem value="Cần Thơ">Cần Thơ</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+                  Tìm Kiếm
+                </Button>
+              </Box>
+            )}
+          </Box>
+        )}
 
-            {/* Loại sân */}
-            <Grid item xs={12} sm={6} md={2.5}>
-              <FormControl fullWidth size="small">
-                <InputLabel>Loại Sân</InputLabel>
-                <Select
-                  value={fieldType}
-                  label="Loại Sân"
-                  onChange={(e) => setFieldType(e.target.value)}
-                  sx={{
-                    borderRadius: 2,
-                    bgcolor: "#fafafa",
-                    width: "170px"
-                  }}
-                >
-                  <MenuItem value=""><em>-- Chọn --</em></MenuItem>
-                  <MenuItem value="5v5">Sân 5v5</MenuItem>
-                  <MenuItem value="7v7">Sân 7v7</MenuItem>
-                  <MenuItem value="11v11">Sân 11v11</MenuItem>
-                  <MenuItem value="futsal">Sân Futsal</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+        {/* TOGGLE BUTTON */}
+        {isDesktop && !filterOpen && (
+          <IconButton
+            onClick={() => setFilterOpen(true)}
+            sx={{
+              position: "fixed",
+              left: 16,
+              top: "50%",
+              transform: "translateY(-50%)",
+              backgroundColor: "primary.main",
+              color: "white",
+              zIndex: 1100,
+            }}
+          >
+            <ChevronRightIcon />
+          </IconButton>
+        )}
 
-            {/* Ngày */}
-            <Grid item xs={12} sm={6} md={2}>
-              <TextField
-                label="Ngày"
-                type="date"
-                size="small"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                sx={{
-                  borderRadius: 2,
-                  bgcolor: "#fafafa",
-                }}
-              />
-            </Grid>
-
-            {/* Từ giờ */}
-            <Grid item xs={12} sm={6} md={2}>
-              <TextField
-                label="Từ giờ"
-                type="time"
-                size="small"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={fromTime}
-                onChange={(e) => setFromTime(e.target.value)}
-                sx={{
-                  borderRadius: 2,
-                  bgcolor: "#fafafa",
-                }}
-              />
-            </Grid>
-
-            {/* Đến giờ */}
-            <Grid item xs={12} sm={6} md={2}>
-              <TextField
-                label="Đến giờ"
-                type="time"
-                size="small"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={toTime}
-                onChange={(e) => setToTime(e.target.value)}
-                sx={{
-                  borderRadius: 2,
-                  bgcolor: "#fafafa",
-                }}
-              />
-            </Grid>
-
-            {/* Nút tìm */}
-            <Grid item xs={12} sm={6} md={1.5}>
+        {/* RESULTS */}
+        <Box sx={{ flex: 1, p: 3, overflowY: "auto" }}>
+          {!isDesktop && (
+            <Box sx={{ mb: 3 }}>
               <Button
-                variant="contained"
-                fullWidth
-                onClick={getDaTaChuSan}
+                startIcon={<TuneIcon />}
+                onClick={() => setFilterOpen(true)}
                 sx={{
-                  height: "40px",
-                  fontWeight: 700,
+                  color: "primary.main",
+                  fontWeight: "bold",
+                  fontSize: "0.95rem",
                   textTransform: "none",
-                  borderRadius: 2,
                 }}
               >
-                Tìm kiếm
+                Lọc
               </Button>
-            </Grid>
+            </Box>
+          )}
 
-          </Grid>
-        </Box>
-
-
-        {/* Kết quả tìm kiếm */}
-        <Box>
-          <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold' }}>
+          <Typography variant="h6" sx={{ mb: 3, fontWeight: "bold" }}>
             Kết Quả Tìm Kiếm
           </Typography>
 
@@ -206,31 +239,39 @@ const BookingPage = () => {
               <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
                 <Card
                   sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    cursor: 'pointer',
-                    transition: 'transform 0.2s',
-                    '&:hover': { transform: 'scale(1.02)' },
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    cursor: "pointer",
+                    transition: "transform 0.2s",
+                    "&:hover": { transform: "scale(1.02)" },
                     maxWidth: 300,
-                    margin: 'auto',
-                    flexDirection: 'column',
+                    margin: "auto",
                   }}
                 >
                   <CardMedia
                     component="img"
                     height="200"
-                    image={'https://fpt123.net/uploads/images/san-co-nhan-tao/san-bong-5-nguoi.jpg'}
+                    image={
+                      "https://fpt123.net/uploads/images/san-co-nhan-tao/san-bong-5-nguoi.jpg"
+                    }
                     alt={`Sân bóng ${item.ten_san}`}
                   />
-                  <CardContent sx={{ flex: 1 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                  <CardContent>
+                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                       {item.ten_san}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                      {item.dia_chi}, {item.thanh_pho}
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ my: 1 }}
+                    >
+                      {item.dia_chi}, {item.quan_huyen}, {item.thanh_pho}
                     </Typography>
-                    <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'primary.main', mb: 1 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ fontWeight: "bold", color: "primary.main", mb: 1 }}
+                    >
                       Liên hệ: {item.so_dien_thoai}
                     </Typography>
                     <Button variant="outlined" fullWidth size="small">
@@ -242,7 +283,145 @@ const BookingPage = () => {
             ))}
           </Grid>
         </Box>
-      </Container>
+
+        {/* MOBILE DRAWER */}
+        <Drawer
+          anchor="bottom"
+          open={!isDesktop && filterOpen}
+          onClose={() => setFilterOpen(false)}
+          sx={{
+            "& .MuiDrawer-paper": {
+              borderRadius: "16px 16px 0 0",
+              maxHeight: "90vh",
+            },
+          }}
+        >
+          <Box sx={{ p: 3 }}>
+            {/* MOBILE TITLE */}
+            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                Lọc Tìm Kiếm
+              </Typography>
+              <IconButton onClick={() => setFilterOpen(false)}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+
+            {/* CITY */}
+            <Box sx={{ mb: 3 }}>
+              <Typography sx={{ mb: 1, fontWeight: "bold" }}>Thành Phố</Typography>
+              <FormControl fullWidth size="small">
+                <InputLabel>Chọn thành phố</InputLabel>
+                <Select
+                  value={city}
+                  label="Chọn thành phố"
+                  onChange={(e) => handleChangeCity(e.target.value)}
+                >
+                  <MenuItem value="">-- Chọn thành phố --</MenuItem>
+                  {Object.keys(dataAddress).map((c) => (
+                    <MenuItem key={c} value={c}>
+                      {c}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+
+            {/* DISTRICT */}
+            <Box sx={{ mb: 3 }}>
+              <Typography sx={{ mb: 1, fontWeight: "bold" }}>Quận/Huyện</Typography>
+              <FormControl fullWidth size="small">
+                <InputLabel>Chọn quận/huyện</InputLabel>
+                <Select
+                  value={district}
+                  label="Chọn quận/huyện"
+                  onChange={(e) => setDistrict(e.target.value)}
+                  disabled={!city}
+                >
+                  <MenuItem value="">-- Chọn quận/huyện --</MenuItem>
+                  {districts.map((d, i) => (
+                    <MenuItem key={i} value={d}>
+                      {d}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+
+            {/* FIELD TYPE */}
+            <Box sx={{ mb: 3 }}>
+              <Typography sx={{ mb: 1, fontWeight: "bold" }}>Loại Sân</Typography>
+              <FormControl fullWidth size="small">
+                <InputLabel>Chọn loại sân</InputLabel>
+                <Select
+                  value={fieldType}
+                  label="Chọn loại sân"
+                  onChange={(e) => setFieldType(e.target.value)}
+                >
+                  <MenuItem value="">-- Chọn --</MenuItem>
+                  <MenuItem value="5v5">Sân 5v5</MenuItem>
+                  <MenuItem value="7v7">Sân 7v7</MenuItem>
+                  <MenuItem value="11v11">Sân 11v11</MenuItem>
+                  <MenuItem value="futsal">Sân Futsal</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+
+            {/* Ngày */}
+            {/* <Box sx={{ mb: 3 }}>
+              <Typography sx={{ mb: 1, fontWeight: 'bold', fontSize: '0.9rem' }}>Ngày</Typography>
+              <TextField
+                label="Chọn ngày"
+                type="date"
+                size="small"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                sx={{ borderRadius: 1 }}
+              />
+            </Box> */}
+
+            {/* Từ giờ */}
+            {/* <Box sx={{ mb: 3 }}>
+              <Typography sx={{ mb: 1, fontWeight: 'bold', fontSize: '0.9rem' }}>Từ Giờ</Typography>
+              <TextField
+                label="Từ giờ"
+                type="time"
+                size="small"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={fromTime}
+                onChange={(e) => setFromTime(e.target.value)}
+                sx={{ borderRadius: 1 }}
+              />
+            </Box> */}
+
+            {/* Đến giờ  */}
+            {/* <Box sx={{ mb: 4 }}>
+              <Typography sx={{ mb: 1, fontWeight: 'bold', fontSize: '0.9rem' }}>Đến Giờ</Typography>
+              <TextField
+                label="Đến giờ"
+                type="time"
+                size="small"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={toTime}
+                onChange={(e) => setToTime(e.target.value)}
+                sx={{ borderRadius: 1 }}
+              />
+            </Box> */}
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ py: 1.5, fontWeight: "bold" }}
+              onClick={handleSearch}
+            >
+              Tìm Kiếm
+            </Button>
+          </Box>
+        </Drawer>
+      </Box>
     </ThemeProvider>
   );
 };
