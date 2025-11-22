@@ -115,7 +115,7 @@ function TotalYardManagementPage() {
     {
       field: "stt",
       headerName: "STT",
-      width: 60,
+width: 60,
       align: "center",
       headerAlign: "center",
       sortable: false,
@@ -233,7 +233,7 @@ function TotalYardManagementPage() {
         <Box>
           <Tooltip title="Sửa">
             <IconButton size="small" color="primary">
-              <EditIcon fontSize="small" />
+<EditIcon fontSize="small" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Xóa">
