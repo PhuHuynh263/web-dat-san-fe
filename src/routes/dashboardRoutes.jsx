@@ -24,7 +24,6 @@ import StadiumIcon from "@mui/icons-material/Stadium";
 import OverviewAdminPage from "../pages/Admin/OverViewAdminPage/OverviewAdminPage";
 // import PitchManagementPage from "../pages/Admin/PitchManagementPage/PitchManagementPage";
 // import BookingManagementPage from "../pages/Admin/TotalYardManagementPage/BookingManagementPage";
-import TotalYardManagementPage from "../pages/Admin/TotalYardManagementPage/TotalYardManagementPage";
 import AssessmentManagement from "../pages/Admin/AssessmentManagementPage/AssessmentManagementPage";
 import OwnerManagementPage from "../pages/Admin/OwnerManagementPage/OwnerManagementPage";
 import CustomerManagementPage from "../pages/Admin/CustomerManagementPage/CustomerManagementPage";
@@ -50,15 +49,6 @@ export const dashboardRoutes = [
     meta: {
       title: "TỔNG QUAN",
       icon: <DashboardIcon />,
-      roles: ["admin"],
-    },
-  },
-  {
-    path: "/admin/total-yards",
-    element: <TotalYardManagementPage />,
-    meta: {
-      title: "QUẢN LÝ TOÀN BỘ SÂN BÓNG",
-      icon: <StadiumIcon />,
       roles: ["admin"],
     },
   },
