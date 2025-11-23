@@ -50,7 +50,7 @@ const BookingPage = () => {
   // GET SÂN TỪ API
   const getDaTaChuSan = () => {
     axios
-      .get("http://127.0.0.1:8000/api/khach-hang/chu-san/data")
+      .get("http://127.0.0.1:8000/api/khach-hang/chu-san/data-open")
       .then((res) => {
         if (res.data.status) {
           setYard(res.data.data);
