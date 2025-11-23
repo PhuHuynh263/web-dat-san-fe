@@ -203,6 +203,7 @@ function Header() {
 
           {/* Menu */}
           <Box sx={{ flexGrow: 1 }} />
+<<<<<<< HEAD
           
           {/* Desktop Menu - Hidden on md and below */}
           <Box sx={{ display: { xs: 'none', [HAMBURGER_BREAKPOINT]: 'flex' }, alignItems: 'center' }}>
@@ -233,6 +234,25 @@ function Header() {
               </NavLink>
             ))}
           </Box>
+=======
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {/* Home */}
+            <Typography
+              variant="span"
+              component={NavLink}
+              to="/homepage"
+              sx={{
+                fontSize: "1rem",
+                fontWeight: "bold",
+                color: "primary.main",
+                cursor: "pointer",
+                textDecoration: "none",
+                "&:hover": { color: "primary.main" },
+              }}
+            >
+              Trang Chủ
+            </Typography>
+>>>>>>> 987d4f1
 
           {/* Hamburger Menu Icon - Shown only on md and below */}
           <Box sx={{ display: { xs: 'flex', [HAMBURGER_BREAKPOINT]: 'none' }, ml: 2 }}>
