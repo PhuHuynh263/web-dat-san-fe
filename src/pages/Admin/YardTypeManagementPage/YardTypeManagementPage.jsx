@@ -13,6 +13,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 // Icons
+import AddIcon from "@mui/icons-material/Add";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -129,7 +131,20 @@ function YardTypeManagementPage() {
           mb: 2,
           flexShrink: 0, // Không co lại
         }}
-      ></Box>
+      >
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Button
+            variant="outlined"
+            startIcon={<RefreshIcon />}
+            onClick={layDataChuSan}
+          >
+            Làm mới
+          </Button>
+          <Button variant="contained" startIcon={<AddIcon />}>
+            Thêm mới
+          </Button>
+        </Box>
+      </Box>
 
       {/* --- TABLE CONTAINER --- */}
       <Paper
