@@ -146,7 +146,7 @@ const ContactPage = () => {
           overflow: "hidden",
         }}
       >
-        <Container maxWidth="md">
+        <Container maxWidth={false}>
           <Typography
             variant="h2"
             sx={{
@@ -189,7 +189,7 @@ const ContactPage = () => {
             }}
           >
             {contactInfo.map((info, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
+              <Grid key={index} size={{ xs: 12, sm: 6, md: 4 }}>
                 <Card
                   sx={{
                     p: 4,
@@ -253,7 +253,7 @@ const ContactPage = () => {
         <Box sx={{ maxWidth: "1100px", mx: "auto" }}>
           <Grid container spacing={4} sx={{ alignItems: "stretch" }}>
             {/* Left Side - Contact Info */}
-            <Grid item xs={12} md={5}>
+            <Grid size={{ xs: 12, md: 5 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -265,7 +265,7 @@ const ContactPage = () => {
             </Grid>
 
             {/* Right Side - Contact Form */}
-            <Grid item xs={12} md={7}>
+            <Grid size={{ xs: 12, md: 7 }}>
               <Box
                 sx={{
                   background:
@@ -313,7 +313,7 @@ const ContactPage = () => {
                   }}
                 >
                   <Grid container spacing={5}>
-                    <Grid item xs={12} sm={6} sx={{ display: "flex" }}>
+                    <Grid size={{ xs: 12, sm: 6 }} sx={{ display: "flex" }}>
                       <TextField
                         fullWidth
                         name="name"
@@ -335,7 +335,7 @@ const ContactPage = () => {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6} sx={{ display: "flex" }}>
+                    <Grid size={{ xs: 12, sm: 6 }} sx={{ display: "flex" }}>
                       <TextField
                         fullWidth
                         name="email"
@@ -358,7 +358,7 @@ const ContactPage = () => {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                       <TextField
                         fullWidth
                         name="phone"
@@ -379,7 +379,7 @@ const ContactPage = () => {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                       <TextField
                         fullWidth
                         name="message"
@@ -404,8 +404,7 @@ const ContactPage = () => {
                       />
                     </Grid>
                     <Grid
-                      item
-                      xs={12}
+                      size={{ xs: 12 }}
                       sx={{
                         display: "flex",
                         justifyContent: "center",

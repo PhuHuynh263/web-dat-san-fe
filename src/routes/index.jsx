@@ -19,6 +19,7 @@ import NewsPage from "../pages/Client/NewsPage/NewsPage.jsx";
 import LoginAdminPage from "../pages/Admin/LoginAdminPage/LoginAdminPage.jsx";
 import LoginOwnerPage from "../pages/Owner/LoginOwnerPage/LoginOwnerPage.jsx";
 import SignUpOwnerPage from "../pages/Owner/SignUpOwnerPage/SignUpOwnerPage.jsx";
+import SelectedYard from "../pages/Client/SelectedYard/SelectedYard.jsx";
 
 // 1. IMPORT COMPONENT LOADING MỚI
 import PageLoading from "../components/common/Loading/PageLoading.jsx";
@@ -48,7 +49,7 @@ const withLoading = (Component) => (
 );
 
 const router = createBrowserRouter([
-  
+
 
   // --- Nhóm Route cho Client ---
   {
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
   {
     path: "/owner/signup",
     element: <SignUpOwnerPage />,
+  },
+  {
+    path: "/selectedYard",
+    element: <SelectedYard />,
   },
 ]);
 
