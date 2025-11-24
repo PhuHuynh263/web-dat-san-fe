@@ -27,13 +27,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { clientTheme } from "../../../clientTheme";
 import Header from "../../../components/Client/Header/Header";
-
-const dataAddress = {
-  "Hà Nội": ["Ba Đình", "Hoàn Kiếm", "Thanh Xuân", "Cầu Giấy"],
-  "Thành phố Hồ Chí Minh": ["Quận 1", "Quận 3", "Gò Vấp", "Tân Bình"],
-  "Đà Nẵng": ["Hải Châu", "Thanh Khê", "Liên Chiểu"],
-};
-
+import dataAddress from "./dataAddress.js";
+ 
 const BookingPage = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));

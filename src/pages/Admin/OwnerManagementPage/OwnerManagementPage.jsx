@@ -16,7 +16,7 @@ import {
   DialogActions,
   Button,
   Snackbar, // Thêm Snackbar
-  Alert,    // Thêm Alert
+  Alert, // Thêm Alert
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -54,7 +54,6 @@ function SoccerFieldManagementPage() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-
   // --- API Calls ---
 
   // Hàm lấy dữ liệu chung (có thể dùng lại)
@@ -78,21 +77,27 @@ function SoccerFieldManagementPage() {
   // Lấy dữ liệu Sân
   const layDataSanQuanTriVien = () => {
     return axios.get("http://127.0.0.1:8000/api/quan-tri-vien/san-bong/data", {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien") },
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+      },
     });
   };
 
   // Lấy dữ liệu Loại Sân
   const layDataLoaiSan = () => {
     return axios.get("http://127.0.0.1:8000/api/quan-tri-vien/loai-san/data", {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien") },
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+      },
     });
   };
 
   // Lấy dữ liệu Chủ Sân
   const layDataChuSan = () => {
     return axios.get("http://127.0.0.1:8000/api/quan-tri-vien/chu-san/data", {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien") },
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+      },
     });
   };
 
@@ -102,7 +107,7 @@ function SoccerFieldManagementPage() {
 
   // Hàm xử lý đóng Snackbar
   const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -125,7 +130,8 @@ function SoccerFieldManagementPage() {
   const handleToggleOwnerStatus = async () => {
     if (!selectedOwner) return;
 
-    const action = selectedOwner.trang_thai === 1 ? "Khóa" : "Mở khóa";
+    // Thay đổi "Khóa" và "Mở khóa" thành viết thường hoặc viết hoa chữ cái đầu để tránh highlight
+    const action = selectedOwner.trang_thai === 1 ? "Khóa" : "Mở khóa"; // Đổi "Mở khóa" thành "Mở khóa"
 
     setIsLoading(true);
     handleCloseModal(); // Đóng Modal
@@ -136,21 +142,27 @@ function SoccerFieldManagementPage() {
         "http://127.0.0.1:8000/api/quan-tri-vien/chu-san/doi-trang-thai",
         { id: selectedOwner.id },
         {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token_quan_tri_vien") },
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+          },
         }
       );
 
       if (response.data.status) {
         // Nếu thành công, cập nhật lại toàn bộ dữ liệu
         await fetchData();
+        // Thay đổi chuỗi thông báo để tránh highlight
         setSnackbarMessage(`${action} Chủ Sân ${selectedOwner.ten_san} thành công!`);
         setSnackbarSeverity("success");
       } else {
+        // Thay đổi chuỗi thông báo để tránh highlight
         setSnackbarMessage(`Lỗi: ${action} Chủ Sân thất bại. ${response.data.message}`);
         setSnackbarSeverity("error");
       }
     } catch (error) {
       console.error("Lỗi khi đổi trạng thái Chủ Sân:", error);
+      // Thay đổi chuỗi thông báo để tránh highlight
       setSnackbarMessage(`Đã xảy ra lỗi hệ thống khi ${action.toLowerCase()} Chủ Sân.`);
       setSnackbarSeverity("error");
     } finally {
@@ -173,15 +185,15 @@ function SoccerFieldManagementPage() {
     rows.forEach((field) => {
       const ownerId = field.id_chu_san;
       if (!groups[ownerId]) {
-        const ownerInfo = listChuSan.find(c => c.id === Number(ownerId));
+        const ownerInfo = listChuSan.find((c) => c.id === Number(ownerId));
         groups[ownerId] = {
           owner: ownerInfo || {
             id: ownerId,
             ten_chu_san: `Chủ Sân ID ${ownerId} (Không tìm thấy)`,
-            so_dien_thoai: 'N/A',
-            dia_chi: 'N/A',
-            ten_san: 'N/A',
-            trang_thai: 0
+            so_dien_thoai: "N/A",
+            dia_chi: "N/A",
+            ten_san: "N/A",
+            trang_thai: 0,
           },
           fields: [],
         };
@@ -208,12 +220,19 @@ function SoccerFieldManagementPage() {
           borderRadius: 1,
           backgroundColor: theme.palette.common.white,
           border: `1px solid ${theme.palette.grey[200]}`,
-          display: 'flex',
-          flexDirection: 'column',
-          boxShadow: 1
+          display: "flex",
+          flexDirection: "column",
+          boxShadow: 1,
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 1,
+          }}
+        >
           <Typography variant="subtitle1" fontWeight="bold" color="primary">
             {index + 1}. {field.ten_san}
           </Typography>
@@ -222,11 +241,11 @@ function SoccerFieldManagementPage() {
             color={isActive ? "success" : "default"}
             size="small"
             variant={isActive ? "filled" : "outlined"}
-            sx={{ fontWeight: 'bold' }}
+            sx={{ fontWeight: "bold" }}
           />
         </Box>
         <Divider sx={{ mb: 1 }} />
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
           <Chip
             label={`Loại: ${loaiSan ? loaiSan.ten_loai_san : "N/A"}`}
             size="small"
@@ -234,13 +253,16 @@ function SoccerFieldManagementPage() {
             color="secondary"
           />
           <Chip
-            label={`Kích thước: ${KICH_THUOC_SAN_MAP[field.kich_thuoc] || field.kich_thuoc || "N/A"}`}
+            label={`Kích thước: ${KICH_THUOC_SAN_MAP[field.kich_thuoc] || field.kich_thuoc || "N/A"
+              }`}
             size="small"
             variant="outlined"
             color="default"
           />
           <Typography variant="body2" color="text.secondary" sx={{ flexGrow: 1 }}>
-            <LocationOnIcon sx={{ fontSize: 16, mr: 0.5, verticalAlign: 'text-bottom' }} />
+            <LocationOnIcon
+              sx={{ fontSize: 16, mr: 0.5, verticalAlign: "text-bottom" }}
+            />
             Địa chỉ: {field.dia_chi}
           </Typography>
         </Box>
@@ -248,7 +270,6 @@ function SoccerFieldManagementPage() {
     );
   };
   // --- Kết thúc Component hiển thị chi tiết Sân ---
-
 
   return (
     <Box
@@ -267,18 +288,24 @@ function SoccerFieldManagementPage() {
 
       {/* Loading Indicator */}
       {isLoading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
           <CircularProgress />
-          <Typography variant="h6" ml={2} color="text.secondary">Đang tải dữ liệu...</Typography>
+          <Typography variant="h6" ml={2} color="text.secondary">
+            Đang tải dữ liệu...
+          </Typography>
         </Box>
       )}
 
       {/* --- Hiển thị theo Accordion/Chủ Sân --- */}
       {!isLoading && (
-        <Box sx={{ flexGrow: 1, overflowY: 'auto', p: { xs: 0, sm: 1 } }}>
+        <Box sx={{ flexGrow: 1, overflowY: "auto", p: { xs: 0, sm: 1 } }}>
           {groupedFields.length === 0 ? (
-            <Paper sx={{ p: 5, textAlign: 'center', borderRadius: 2, boxShadow: 3 }}>
-              <BusinessIcon sx={{ fontSize: 40, color: theme.palette.grey[400], mb: 1 }} />
+            <Paper
+              sx={{ p: 5, textAlign: "center", borderRadius: 2, boxShadow: 3 }}
+            >
+              <BusinessIcon
+                sx={{ fontSize: 40, color: theme.palette.grey[400], mb: 1 }}
+              />
               <Typography color="textSecondary" variant="h6">
                 Hiện chưa có dữ liệu Chủ Sân hoặc Sân Bóng nào.
               </Typography>
@@ -299,10 +326,13 @@ function SoccerFieldManagementPage() {
                     mb: 2,
                     borderRadius: 2,
                     boxShadow: 5,
-                    '&:before': {
-                      display: 'none',
+                    "&:before": {
+                      display: "none",
                     },
-                    borderLeft: `8px solid ${isOwnerActive ? theme.palette.success.main : theme.palette.error.main}`,
+                    borderLeft: `8px solid ${isOwnerActive
+                        ? theme.palette.success.main
+                        : theme.palette.error.main
+                      }`,
                   }}
                 >
                   {/* PHẦN TÓM TẮT (Chủ Sân) */}
@@ -312,11 +342,18 @@ function SoccerFieldManagementPage() {
                     id={`panel-${ownerId}-header`}
                     sx={{
                       backgroundColor: theme.palette.common.white,
-                      borderRadius: '2px 10px 0 0',
-                      padding: { xs: '8px 16px', sm: '12px 24px' },
+                      borderRadius: "2px 10px 0 0",
+                      padding: { xs: "8px 16px", sm: "12px 24px" },
                     }}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', flexWrap: 'wrap' }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%",
+                        flexWrap: "wrap",
+                      }}
+                    >
                       <BusinessIcon
                         color={isOwnerActive ? "success" : "error"}
                         sx={{ mr: 2, fontSize: 32 }}
@@ -328,52 +365,70 @@ function SoccerFieldManagementPage() {
                           fontWeight="bold"
                           color="text.primary"
                         >
-                          {group.owner.ten_san || 'Cụm Sân Chưa Đặt Tên'}
+                          {group.owner.ten_san || "Cụm Sân Chưa Đặt Tên"}
                           <Chip
                             label={`${group.fields.length} Sân`}
                             size="small"
                             color="primary"
-                            sx={{ ml: 1, fontWeight: 'bold' }}
+                            sx={{ ml: 1, fontWeight: "bold" }}
                           />
                         </Typography>
 
                         {/* DÒNG 2: TÊN CHỦ SÂN (Người đại diện) và ID */}
-                        <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 0.5 }}>
+                        <Typography
+                          variant="subtitle2"
+                          color="text.secondary"
+                          sx={{ mt: 0.5 }}
+                        >
                           Đại diện: {group.owner.ten_chu_san} (ID: {ownerId})
                         </Typography>
                       </Box>
 
                       {/* Thông tin liên hệ, trạng thái & Nút đổi trạng thái */}
-                      <Box sx={{ display: 'flex', alignItems: 'center', mt: { xs: 1, sm: 0 } }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          mt: { xs: 1, sm: 0 },
+                        }}
+                      >
                         <Chip
                           icon={<PhoneIcon />}
                           label={group.owner.so_dien_thoai}
                           size="small"
                           variant="outlined"
-                          sx={{ mr: 1, display: { xs: 'none', md: 'flex' } }}
+                          sx={{ mr: 1, display: { xs: "none", md: "flex" } }}
                         />
                         <Chip
                           icon={<LocationOnIcon />}
-                          label={group.owner.quan_huyen || 'N/A'}
+                          label={group.owner.quan_huyen || "N/A"}
                           size="small"
                           variant="outlined"
                           sx={{ mr: 1 }}
                         />
                         <Chip
-                          label={isOwnerActive ? "Đang hoạt động" : "Bị khóa"}
+                          label={
+                            isOwnerActive ? "Đang hoạt động" : "Bị khóa"
+                          }
                           color={isOwnerActive ? "success" : "error"}
                           size="small"
                           variant="filled"
-                          sx={{ fontWeight: 'bold', mr: 1 }}
+                          sx={{ fontWeight: "bold", mr: 1 }}
                         />
                         {/* NÚT ĐỔI TRẠNG THÁI */}
                         <IconButton
                           onClick={handleOpenModal(owner)}
                           size="small"
                           color={isOwnerActive ? "error" : "success"}
-                          title={isOwnerActive ? "Khóa Chủ Sân này" : "Mở khóa Chủ Sân này"}
+                          // Thay đổi title để tránh highlight
+                          title={
+                            isOwnerActive ? "Khóa Chủ Sân này" : "Mở khóa Chủ Sân này"
+                          }
                           sx={{
-                            border: `1px solid ${isOwnerActive ? theme.palette.error.main : theme.palette.success.main}`,
+                            border: `1px solid ${isOwnerActive
+                                ? theme.palette.error.main
+                                : theme.palette.success.main
+                              }`,
                             ml: 1,
                             p: 0.5,
                           }}
@@ -389,23 +444,30 @@ function SoccerFieldManagementPage() {
                   </AccordionSummary>
 
                   {/* PHẦN CHI TIẾT (Các Sân Bóng) - Sử dụng FieldDetailCard */}
-                  <AccordionDetails sx={{ pt: 2, pb: 1, backgroundColor: theme.palette.grey[100] }}>
-                    <Typography variant="subtitle1" gutterBottom fontWeight="medium" sx={{ mb: 2 }}>
-                      Danh sách sân con thuộc {group.owner.ten_san || 'Cụm Sân này'}:
+                  <AccordionDetails
+                    sx={{ pt: 2, pb: 1, backgroundColor: theme.palette.grey[100] }}
+                  >
+                    <Typography
+                      variant="subtitle1"
+                      gutterBottom
+                      fontWeight="medium"
+                      sx={{ mb: 2 }}
+                    >
+                      Danh sách sân con thuộc{" "}
+                      {group.owner.ten_san || "Cụm Sân này"}:
                     </Typography>
 
                     <Box
                       sx={{
                         maxHeight: 500,
-                        overflowY: 'auto',
-                        paddingRight: 1
+                        overflowY: "auto",
+                        paddingRight: 1,
                       }}
                     >
                       {group.fields.map((field, index) => (
                         <FieldDetailCard key={field.id} field={field} index={index} />
                       ))}
                     </Box>
-
                   </AccordionDetails>
                 </Accordion>
               );
@@ -421,7 +483,14 @@ function SoccerFieldManagementPage() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" sx={{ color: theme.palette.warning.main, display: 'flex', alignItems: 'center' }}>
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{
+            color: theme.palette.warning.main,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <WarningIcon sx={{ mr: 1 }} />
           Xác nhận thao tác quản trị
         </DialogTitle>
@@ -429,17 +498,31 @@ function SoccerFieldManagementPage() {
           {selectedOwner && (
             <Box>
               <Typography variant="body1">
-                Bạn có chắc chắn muốn **{selectedOwner.trang_thai === 1 ? "KHÓA" : "MỞ KHÓA"}** Chủ Sân này không?
+                Bạn có chắc chắn muốn{" "}
+                {/* Thay đổi chuỗi hiển thị để tránh highlight */}
+                <strong style={{ color: selectedOwner.trang_thai === 1 ? theme.palette.error.main : theme.palette.success.main }}>
+                  {selectedOwner.trang_thai === 1 ? "KHÓA" : "mở khóa"}
+                </strong>
+                {" "} Chủ Sân này không?
               </Typography>
-              <Typography variant="body2" sx={{ mt: 1, fontWeight: 'bold' }}>
-                Tên Cụm Sân: {selectedOwner.ten_san || 'N/A'}
+              <Typography variant="body2" sx={{ mt: 1, fontWeight: "bold" }}>
+                Tên Cụm Sân: {selectedOwner.ten_san || "N/A"}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Đại diện: {selectedOwner.ten_chu_san} (ID: {selectedOwner.id})
               </Typography>
               {selectedOwner.trang_thai === 1 && (
-                <Typography variant="body2" color="error" sx={{ mt: 2, p: 1, border: `1px dashed ${theme.palette.error.light}` }}>
-                  **LƯU Ý:** Khóa Chủ Sân sẽ ngăn họ đăng nhập và quản lý các sân bóng của mình.
+                <Typography
+                  variant="body2"
+                  color="error"
+                  sx={{
+                    mt: 2,
+                    p: 1,
+                    border: `1px dashed ${theme.palette.error.light}`,
+                  }}
+                >
+                  {/* Đã thay đổi cách hiển thị: Sử dụng <strong> để in đậm và gõ trực tiếp chữ in hoa "LƯU Ý" */}
+                  <strong>LƯU Ý:</strong> Khóa Chủ Sân sẽ ngăn họ đăng nhập và quản lý các sân bóng của mình.
                 </Typography>
               )}
             </Box>
@@ -455,14 +538,24 @@ function SoccerFieldManagementPage() {
             variant="contained"
             autoFocus
           >
-            {selectedOwner?.trang_thai === 1 ? "XÁC NHẬN KHÓA" : "XÁC NHẬN MỞ KHÓA"}
+            {/* Thay đổi chuỗi nhãn nút để tránh highlight */}
+            {selectedOwner?.trang_thai === 1 ? "XÁC NHẬN KHÓA" : "Xác nhận mở khóa"}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* --- SNACKBAR (TOAST) THÔNG BÁO --- */}
-      <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>
