@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Button, IconButton, Grid, Chip, Divider } from "@mui/material";
+import { Box, Typography, Button, IconButton, Grid, Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -82,7 +82,7 @@ const DetailPanel = ({ yard, onClose, onOpenMap, onBooking }) => {
                 </Typography>
 
                 <Grid container spacing={2}>
-                    <Grid size={{ xs: 12 }}>
+                    <Grid item xs={12}>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                             <PersonIcon color="action" sx={{ mr: 2 }} />
                             <Box>
@@ -95,7 +95,8 @@ const DetailPanel = ({ yard, onClose, onOpenMap, onBooking }) => {
                             </Box>
                         </Box>
                     </Grid>
-                    <Grid size={{ xs: 12 }}>
+
+                    <Grid item xs={12}>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                             <PhoneIcon color="action" sx={{ mr: 2 }} />
                             <Box>
@@ -108,7 +109,8 @@ const DetailPanel = ({ yard, onClose, onOpenMap, onBooking }) => {
                             </Box>
                         </Box>
                     </Grid>
-                    <Grid size={{ xs: 12 }}>
+
+                    <Grid item xs={12}>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                             <EmailIcon color="action" sx={{ mr: 2 }} />
                             <Box>
@@ -125,7 +127,6 @@ const DetailPanel = ({ yard, onClose, onOpenMap, onBooking }) => {
 
                 <Divider sx={{ my: 3 }} />
 
-                {/* Description or other info can go here */}
                 <Typography variant="body2" color="text.secondary" sx={{ fontStyle: "italic" }}>
                     * Vui lòng liên hệ trực tiếp hoặc đặt lịch online để giữ chỗ.
                 </Typography>
