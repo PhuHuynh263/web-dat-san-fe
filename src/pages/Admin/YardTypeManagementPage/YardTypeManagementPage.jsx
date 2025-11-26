@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  Typography,
   Paper,
   Chip,
   IconButton,
   Tooltip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -17,9 +21,10 @@ import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import BlockIcon from "@mui/icons-material/Block";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 function YardTypeManagementPage() {
-  // 1. Đổi tên state cho chuẩn: rows (dữ liệu) và setRows (hàm cập nhật)
   const [rows, setRows] = useState([]);
 
   const layDataChuSan = () => {
@@ -31,7 +36,6 @@ function YardTypeManagementPage() {
         },
       })
       .then((res) => {
-        // Giả sử res.data.data là mảng các object có chứa trường 'id'
         setRows(res.data.data);
       })
       .catch((err) => {
@@ -44,82 +48,52 @@ function YardTypeManagementPage() {
     layDataChuSan();
   }, []);
 
-  const columns = [
-    {
-      field: "stt",
-      headerName: "STT",
-      width: 80,
-      align: "center",
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-      renderCell: (params) =>
-        params.api.getRowIndexRelativeToVisibleRows(params.id) + 1,
-    },
-    {
-      field: "ten_loai_san",
-      headerName: "Tên loại sân",
-      flex: 1, // Tự động giãn
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "slug_loai_san",
-      headerName: "Slug (Đường dẫn)",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "trang_thai",
-      headerName: "Trạng thái",
-      width: 150,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        const isActive = params.value === 1;
-        return (
-          <Chip
-            label={isActive ? "Kích hoạt" : "Vô hiệu hóa"}
-            color={isActive ? "success" : "default"}
-            size="small"
-            variant={isActive ? "filled" : "outlined"}
-            sx={{ fontWeight: "bold", minWidth: 100 }}
-          />
-        );
-      },
-    },
-    {
-      field: "actions",
-      headerName: "Hành động",
-      width: 120,
-      headerAlign: "center",
-      align: "center",
-      sortable: false,
-      renderCell: (params) => (
-        <Box>
-          <Tooltip title="Chỉnh sửa">
-            <IconButton color="primary" size="small">
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Xóa">
-            <IconButton color="error" size="small">
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-  ];
+  // --- HÀM XỬ LÝ KHÓA / MỞ KHÓA ---
+  const handleBlock = (id, currentStatus) => {
+    // 1. Kiểm tra ID có tồn tại không
+    if (!id) {
+      toast.error("Lỗi: Không tìm thấy ID của loại sân này!");
+      console.error("Lỗi: ID bị undefined hoặc null");
+      return;
+    }
+
+    console.log("Đang gửi yêu cầu đổi trạng thái cho ID:", id); // Check log xem đúng ID sân 7 chưa
+
+    axios
+      .post(
+        "http://127.0.0.1:8000/api/quan-tri-vien/loai-san/doi-trang-thai",
+        { id: id }, // Chỉ gửi ID
+        {
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data.status) {
+          const msg = currentStatus === 1 ? "Đã khóa thành công!" : "Đã kích hoạt lại!";
+          toast.success(msg);
+          layDataChuSan();
+        } else {
+          toast.error(res.data.message || "Thao tác thất bại");
+        }
+      })
+      .catch((err) => {
+        console.error("Lỗi đổi trạng thái:", err);
+        toast.error("Có lỗi xảy ra khi đổi trạng thái!");
+      });
+  };
 
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%", // Chiếm 100% chiều cao container cha
+        height: "100%",
         width: "100%",
+        p: 2,
+        backgroundColor: "#f5f5f5"
       }}
     >
       {/* --- HEADER --- */}
@@ -128,8 +102,8 @@ function YardTypeManagementPage() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 2,
-          flexShrink: 0, // Không co lại
+          mb: 3,
+          flexShrink: 0,
         }}
       >
         <Box sx={{ display: "flex", gap: 1 }}>
@@ -137,6 +111,7 @@ function YardTypeManagementPage() {
             variant="outlined"
             startIcon={<RefreshIcon />}
             onClick={layDataChuSan}
+            sx={{ backgroundColor: "white" }}
           >
             Làm mới
           </Button>
@@ -147,47 +122,90 @@ function YardTypeManagementPage() {
       </Box>
 
       {/* --- TABLE CONTAINER --- */}
-      <Paper
+      <TableContainer
+        component={Paper}
         sx={{
-          flexGrow: 1, // Chiếm hết không gian còn lại
-          minHeight: 0, // Để scrollbar hoạt động
-          width: "100%",
+          flexGrow: 1,
           boxShadow: 3,
-          overflow: "hidden", // Bo góc cho đẹp
           borderRadius: 2,
+          overflow: "auto"
         }}
       >
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
-          }}
-          pageSizeOptions={[5, 10, 20]}
-          checkboxSelection
-          disableRowSelectionOnClick
-          rowHeight={60} // Chiều cao hàng thoáng hơn
-          sx={{
-            border: 0,
-            height: "100%",
-            // CSS cho Header
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#f5f7fa",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              fontSize: "0.85rem",
-            },
-            // CSS cho Cell
-            "& .MuiDataGrid-cell": {
-              borderBottom: "1px solid #f0f0f0",
-            },
-            // CSS khi focus (bỏ viền xanh)
-            "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-cell:focus": {
-              outline: "none",
-            },
-          }}
-        />
-      </Paper>
+        <Table stickyHeader aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" sx={{ fontWeight: 'bold', backgroundColor: '#f5f7fa', width: 80 }}>STT</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold', backgroundColor: '#f5f7fa' }}>Tên loại sân</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold', backgroundColor: '#f5f7fa' }}>Slug (Đường dẫn)</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold', backgroundColor: '#f5f7fa', width: 150 }}>Trạng thái</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold', backgroundColor: '#f5f7fa', width: 180 }}>Hành động</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows && rows.length > 0 ? (
+              rows.map((row, index) => {
+                const isActive = row.trang_thai === 1;
+                return (
+                  <TableRow
+                    key={row.id || index}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { backgroundColor: '#f9f9f9' } }}
+                  >
+                    <TableCell align="center" component="th" scope="row">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell align="center">{row.ten_loai_san}</TableCell>
+                    <TableCell align="center">{row.slug_loai_san}</TableCell>
+                    <TableCell align="center">
+                      <Chip
+                        label={isActive ? "Kích hoạt" : "Vô hiệu hóa"}
+                        color={isActive ? "success" : "default"}
+                        size="small"
+                        variant={isActive ? "filled" : "outlined"}
+                        sx={{ fontWeight: "bold", minWidth: 100 }}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+                        {/* Nút Sửa */}
+                        <Tooltip title="Chỉnh sửa">
+                          <IconButton color="primary" size="small">
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+
+                        {/* --- Nút Đổi trạng thái --- */}
+                        {/* Truyền trực tiếp ID và Status vào hàm handleBlock */}
+                        <Tooltip title={isActive ? "Khóa loại sân này" : "Kích hoạt lại"}>
+                          <IconButton
+                            color={isActive ? "warning" : "success"}
+                            size="small"
+                            onClick={() => handleBlock(row.id, row.trang_thai)}
+                          >
+                            {isActive ? <BlockIcon fontSize="small" /> : <CheckCircleIcon fontSize="small" />}
+                          </IconButton>
+                        </Tooltip>
+
+                        {/* Nút Xóa */}
+                        <Tooltip title="Xóa">
+                          <IconButton color="error" size="small">
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} align="center" sx={{ py: 3 }}>
+                  Chưa có dữ liệu
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 }

@@ -1,725 +1,356 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Button,
-  Modal,
   Box,
-  TextField,
-  Typography,
-  MenuItem,
+  Button,
   Paper,
+  Chip,
   IconButton,
   Tooltip,
-  Chip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Modal,
+  Typography,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+
 import axios from "axios";
 import { toast } from "react-toastify";
 
-// --- Icons ---
+// Icons
 import AddIcon from "@mui/icons-material/Add";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BlockIcon from "@mui/icons-material/Block";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
-// --- Danh sách cố định cho Kích thước Sân ---
-const KICH_THUOC_SAN = [
-  { value: '20x40', label: 'Sân 5 người', size_detail: '20m x 40m' },
-  { value: '30x50', label: 'Sân 7 người', size_detail: '30m x 50m' },
-  { value: '40x60', label: 'Sân 9 người', size_detail: '40m x 60m' },
-  { value: '50x90', label: 'Sân 11 người', size_detail: '50m x 90m' },
-];
-
-// --- Giá trị khởi tạo cho Form Thêm Mới ---
-const initialFormData = {
-  ten_san: '',
-  slug_san: '',
-  id_loai_san: '',
-  kich_thuoc: '',
-  dia_chi: '',
-};
-
-function SoccerFieldManagementPage() {
-  // --- State ---
-  const [openAddModal, setOpenAddModal] = useState(false);
-  const [openConfirmModal, setOpenConfirmModal] = useState(false); // Xóa
-  const [openStatusConfirmModal, setOpenStatusConfirmModal] = useState(false); // Trạng thái
-
-  const [deleteItem, setDeleteItem] = useState(null);
-  const [statusItem, setStatusItem] = useState(null); // Dữ liệu cho Modal Trạng thái
-
+function YardTypeManagementPage() {
   const [rows, setRows] = useState([]);
-  const [listChuSan, setListChuSan] = useState([]);
-  const [listLoaiSan, setListLoaiSan] = useState([]);
-  const [formData, setFormData] = useState(initialFormData);
 
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [currentEditId, setCurrentEditId] = useState(null);
+  // --- STATE KHUNG GIỜ ---
+  const [openModalTime, setOpenModalTime] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
-  // --- Handlers Modal ---
-  const handleOpenAdd = () => {
-    setFormData(initialFormData);
-    setIsEditMode(false);
-    setOpenAddModal(true);
-  };
-  const handleCloseAdd = () => setOpenAddModal(false);
+  // --- FORM THÊM KHUNG GIỜ ---
+  const [showAddTimeForm, setShowAddTimeForm] = useState(false);
+  const [newStart, setNewStart] = useState("");
+  const [newEnd, setNewEnd] = useState("");
 
-  const handleOpenEdit = (rowData) => {
-    setFormData({
-      ten_san: rowData.ten_san,
-      slug_san: rowData.slug_san,
-      id_loai_san: rowData.id_loai_san || '',
-      kich_thuoc: rowData.kich_thuoc || '',
-      dia_chi: rowData.dia_chi || '',
-    });
-    setCurrentEditId(rowData.id);
-    setIsEditMode(true);
-    setOpenAddModal(true);
-  };
-
-  const handleOpenConfirmDelete = (id, ten_san) => {
-    setDeleteItem({ id, ten_san });
-    setOpenConfirmModal(true);
-  };
-  const handleCloseConfirmDelete = () => {
-    setDeleteItem(null);
-    setOpenConfirmModal(false);
-  };
-
-  const handleOpenStatusConfirm = (rowData) => {
-    setStatusItem(rowData);
-    setOpenStatusConfirmModal(true);
-  };
-  const handleCloseStatusConfirm = () => {
-    setStatusItem(null);
-    setOpenStatusConfirmModal(false);
-  };
-
-  // --- Logic Slug ---
-  const toSluggg = useCallback((title) => {
-    if (!title) return '';
-    let slug = title.toLowerCase();
-    slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, "a");
-    slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, "e");
-    slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, "i");
-    slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, "o");
-    slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, "u");
-    slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, "y");
-    slug = slug.replace(/đ/gi, "d");
-    slug = slug.replace(
-      /\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi,
-      ""
-    );
-    slug = slug.replace(/ /gi, "-");
-    slug = slug.replace(/\-\-\-\-\-/gi, "-");
-    slug = slug.replace(/\-\-\-\-/gi, "-");
-    slug = slug.replace(/\-\-\-/gi, "-");
-    slug = slug.replace(/\-\-/gi, "-");
-    slug = "@" + slug + "@";
-    slug = slug.replace(/\@\-|\-\@|\@/gi, "");
-    return slug;
-  }, []);
-
-  const taoSlug = () => {
-    if (formData.ten_san) {
-      const newSlug = toSluggg(formData.ten_san);
-      setFormData((prev) => ({
-        ...prev,
-        slug_san: newSlug,
-      }));
-      toast.info("Slug đã được tạo/cập nhật.");
-    } else {
-      toast.warn("Vui lòng nhập Tên sân trước khi tạo Slug.");
-    }
-  };
-
-  // --- Handlers ---
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormData((prev) => {
-      let newFormData = { ...prev, [name]: value };
-
-      if (name === "ten_san" && prev.ten_san !== value) {
-        newFormData.slug_san = toSluggg(value);
-      }
-
-      return newFormData;
-    });
-  };
-
-  // --- API Calls ---
-  const layDataSanCuaToi = () => {
-    axios.get("http://127.0.0.1:8000/api/chu-san/san-bong/data-chu-san", {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token_chu_san") },
-    }).then((res) => setRows(res.data.data))
-      .catch((err) => console.error("Lỗi khi lấy data sân:", err));
-  };
+  // --- LIST KHUNG GIỜ TĨNH ---
+  const [khungGioList, setKhungGioList] = useState([
+    { id: 1, start: "07:00", end: "08:00", status: 1 },
+    { id: 2, start: "08:00", end: "09:00", status: 1 },
+    { id: 3, start: "09:00", end: "10:00", status: 1 },
+    { id: 4, start: "10:00", end: "11:00", status: 0 },
+    { id: 5, start: "11:00", end: "12:00", status: 1 },
+    { id: 6, start: "12:00", end: "13:00", status: 1 },
+    { id: 7, start: "13:00", end: "14:00", status: 1 },
+    { id: 8, start: "14:00", end: "15:00", status: 1 },
+    { id: 9, start: "15:00", end: "16:00", status: 1 },
+    { id: 10, start: "16:00", end: "17:00", status: 1 },
+    { id: 11, start: "17:00", end: "18:00", status: 0 },
+    { id: 12, start: "18:00", end: "19:00", status: 1 },
+    { id: 13, start: "19:00", end: "20:00", status: 1 },
+    { id: 14, start: "20:00", end: "21:00", status: 1 },
+    { id: 15, start: "21:00", end: "22:00", status: 1 },
+    { id: 16, start: "22:00", end: "23:00", status: 1 },
+  ]);
 
   const layDataChuSan = () => {
-    axios.get("http://127.0.0.1:8000/api/chu-san/data", {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token_chu_san") },
-    }).then((res) => setListChuSan(res.data.data))
-      .catch((err) => console.error("Lỗi khi lấy data chủ sân:", err));
-  };
-
-  const layDataLoaiSan = () => {
-    axios.get("http://127.0.0.1:8000/api/chu-san/loai-san/data", {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token_chu_san") },
-    }).then((res) => setListLoaiSan(res.data.data))
-      .catch((err) => console.error("Lỗi khi lấy data loại sân:", err));
-  };
-
-  const xoaSanBong = (id) => {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token_chu_san"),
-        'Content-Type': 'application/json'
-      }
-    };
-    const dataToSend = { id: id };
-
     axios
-      .post(`http://127.0.0.1:8000/api/chu-san/san-bong/delete`, dataToSend, config)
-      .then((res) => {
-        if (res.data.status) {
-          toast.success(res.data.message);
-          layDataSanCuaToi();
-          handleCloseConfirmDelete();
-        } else {
-          toast.error(res.data.message || "Không thể xóa sân.");
-        }
+      .get("http://127.0.0.1:8000/api/quan-tri-vien/loai-san/data", {
+        headers: {
+          Authorization:
+            "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+        },
       })
-      .catch(err => {
-        const errorMessage = err.response?.data?.message || "Lỗi kết nối khi xóa sân.";
-        toast.error("Lỗi: " + errorMessage);
-        console.error("Lỗi Axios Delete:", err);
-        handleCloseConfirmDelete();
-      });
-  };
-
-  const handleConfirmChangeStatus = (rowData) => {
-    const newStatus = rowData.trang_thai === 1 ? 0 : 1;
-    const action = newStatus === 1 ? "mở khóa" : "tạm khóa";
-
-    const config = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token_chu_san"),
-        'Content-Type': 'application/json'
-      }
-    };
-
-    axios
-      .post("http://127.0.0.1:8000/api/chu-san/san-bong/doi-trang-thai", { id: rowData.id, trang_thai: newStatus }, config)
       .then((res) => {
-        if (res.data.status) {
-          toast.success(res.data.message || `Đã ${action} sân thành công.`);
-          layDataSanCuaToi();
-          handleCloseStatusConfirm();
-        } else {
-          toast.error(res.data.message || `Không thể ${action} sân.`);
-        }
+        setRows(res.data.data);
       })
-      .catch(err => {
-        const errorMessage = err.response?.data?.message || `Lỗi kết nối khi ${action} sân.`;
-        toast.error("Lỗi: " + errorMessage);
-        console.error("Lỗi Axios Change Status:", err);
-        handleCloseStatusConfirm();
+      .catch((err) => {
+        console.error("Lỗi khi lấy data:", err);
+        toast.error("Không thể tải dữ liệu loại sân");
       });
-  };
-
-  const handleSubmitEdit = (e) => {
-    e.preventDefault();
-
-    const config = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token_chu_san"),
-        'Content-Type': 'application/json'
-      }
-    };
-
-    const dataToSend = { ...formData, id: currentEditId };
-
-    axios
-      .post("http://127.0.0.1:8000/api/chu-san/san-bong/update", dataToSend, config)
-      .then((res) => {
-        if (res.data.status) {
-          toast.success(res.data.message);
-          layDataSanCuaToi();
-          handleCloseAdd();
-        } else {
-          toast.error(res.data.message || "Đã xảy ra lỗi khi cập nhật sân.");
-        }
-      })
-      .catch(err => {
-        const errorMessage = err.response?.data?.message || "Không thể kết nối đến máy chủ.";
-        toast.error("Lỗi: " + errorMessage);
-        console.error("Lỗi Axios Update:", err);
-      });
-  };
-
-  const handleSubmitAdd = (e) => {
-    e.preventDefault();
-
-    const config = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token_chu_san"),
-        'Content-Type': 'application/json'
-      }
-    };
-
-    axios
-      .post("http://127.0.0.1:8000/api/chu-san/san-bong/create", formData, config)
-      .then((res => {
-        if (res.data.status) {
-          toast.success(res.data.message);
-          layDataSanCuaToi();
-          handleCloseAdd();
-        } else {
-          toast.error(res.data.message || "Đã xảy ra lỗi khi thêm sân.");
-        }
-      }))
-      .catch(err => {
-        const errorMessage = err.response?.data?.message
-          || "Không thể kết nối đến máy chủ.";
-        toast.error("Lỗi: " + errorMessage);
-        console.error("Lỗi Axios:", err);
-      });
-  };
-
-  const handleGeneralSubmit = (e) => {
-    if (isEditMode) {
-      handleSubmitEdit(e);
-    } else {
-      handleSubmitAdd(e);
-    }
   };
 
   useEffect(() => {
-    layDataSanCuaToi();
     layDataChuSan();
-    layDataLoaiSan();
   }, []);
 
-  // --- Styles & Columns ---
-  const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: { xs: "95%", md: "700px" },
-    bgcolor: "background.paper",
-    borderRadius: 2,
-    boxShadow: 24,
-    p: 4,
-    maxHeight: "90vh",
-    overflowY: "auto",
+  // --- KHÓA / MỞ KHÓA (GỬI NGUYÊN OBJECT) ---
+  const handleBlock = (row) => {
+    if (!row || !row.id) {
+      toast.error("Không tìm thấy ID!");
+      return;
+    }
+
+    axios
+      .post(
+        "http://127.0.0.1:8000/api/quan-tri-vien/loai-san/doi-trang-thai",
+        row,
+        {
+          headers: {
+            Authorization:
+              "Bearer " + localStorage.getItem("token_quan_tri_vien"),
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data.status) {
+          toast.success("Đổi trạng thái thành công!");
+          layDataChuSan();
+        } else {
+          toast.error(res.data.message || "Thao tác thất bại");
+        }
+      })
+      .catch((err) => {
+        console.error("Lỗi đổi trạng thái:", err);
+        toast.error("Có lỗi xảy ra!");
+      });
   };
 
-  const confirmModalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    borderRadius: 1,
-    boxShadow: 24,
-    p: 4,
+  // --- MỞ MODAL KHUNG GIỜ ---
+  const openTimeModal = (row) => {
+    setSelectedRow(row);
+    setOpenModalTime(true);
+    setShowAddTimeForm(false);
+    setNewStart("");
+    setNewEnd("");
   };
-
-  const columns = [
-    {
-      field: "stt",
-      headerName: "STT",
-      width: 70,
-      align: "center",
-      headerAlign: "center",
-      sortable: false,
-      renderCell: (params) =>
-        params.api.getRowIndexRelativeToVisibleRows(params.id) + 1,
-    },
-    {
-      field: "ten_san",
-      headerName: "Tên sân",
-      width: 180,
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Typography variant="body2" fontWeight="bold">
-          {params.value}
-        </Typography>
-      ),
-    },
-    {
-      field: "id_loai_san",
-      headerName: "Loại Sân",
-      width: 120,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => {
-        const loaiSan = listLoaiSan.find(
-          (l) => l.id === Number(params.row.id_loai_san)
-        );
-        return (
-          <Chip
-            label={loaiSan ? loaiSan.ten_loai_san : "N/A"}
-            size="small"
-            color="primary"
-            variant="outlined"
-          />
-        );
-      },
-    },
-    {
-      field: "kich_thuoc",
-      headerName: "Kích thước",
-      width: 120,
-      align: "right",
-      headerAlign: "right",
-    },
-    {
-      field: "dia_chi",
-      headerName: "Địa chỉ",
-      width: 200,
-      headerAlign: "center",
-      flex: 1
-    },
-    {
-      field: "trang_thai",
-      headerName: "Trạng thái",
-      width: 130,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => {
-        const isActive = params.row.trang_thai === 1;
-        return (
-          <Chip
-            label={isActive ? "Hoạt động" : "Tạm khóa"}
-            color={isActive ? "success" : "default"}
-            size="small"
-            variant={isActive ? "filled" : "outlined"}
-          />
-        );
-      },
-    },
-    {
-      field: "actions",
-      headerName: "Hành động",
-      width: 120,
-      align: "center",
-      headerAlign: "center",
-      sortable: false,
-      renderCell: (params) => (
-        <Box>
-          <Tooltip title="Sửa">
-            <IconButton
-              size="small"
-              color="primary"
-              onClick={() => handleOpenEdit(params.row)}
-            >
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Xóa">
-            <IconButton
-              size="small"
-              color="error"
-              onClick={() => handleOpenConfirmDelete(params.row.id, params.row.ten_san)}
-            >
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={params.row.trang_thai === 1 ? "Tạm khóa" : "Mở khóa"}>
-            <IconButton
-              size="small"
-              color={params.row.trang_thai === 1 ? "warning" : "success"}
-              onClick={() => handleOpenStatusConfirm(params.row)}
-            >
-              <BlockIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      ),
-    },
-  ];
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        width: "100%",
-      }}
-    >
-      {/* --- Header (Nút Thêm Sân) --- */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-          flexShrink: 0,
-        }}
-      >
+    <Box sx={{ p: 2, backgroundColor: "#f5f5f5", height: "100%" }}>
+      {/* HEADER */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
         <Box sx={{ display: "flex", gap: 1 }}>
           <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleOpenAdd}
+            variant="outlined"
+            startIcon={<RefreshIcon />}
+            onClick={layDataChuSan}
           >
-            Thêm sân
+            Làm mới
+          </Button>
+          <Button variant="contained" startIcon={<AddIcon />}>
+            Thêm mới
           </Button>
         </Box>
       </Box>
 
-      {/* --- DataGrid --- */}
-      <Paper
-        sx={{
-          flexGrow: 1,
-          width: "100%",
-          overflow: "hidden",
-          boxShadow: 2,
-          minHeight: 0,
-          borderRadius: 2,
-        }}
-      >
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
-          pageSizeOptions={[10, 20, 50]}
-          disableRowSelectionOnClick
-          rowHeight={70}
-          getRowId={(row) => row.id}
-          sx={{
-            border: 0,
-            height: "100%",
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#f5f7fa",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              fontSize: "0.85rem",
-              color: "#555",
-              alignItems: "center",
-              justifyContent: "center",
-            },
-            "& .MuiDataGrid-cell": {
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderBottom: "1px solid #f0f0f0",
-            },
-            "& .MuiDataGrid-columnHeader:focus, & .MuiDataGrid-cell:focus": {
-              outline: "none",
-            },
-          }}
-        />
-      </Paper>
+      {/* TABLE */}
+      <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 3 }}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                STT
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                Tên loại sân
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                Slug
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                Trạng thái
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                Hành động
+              </TableCell>
+            </TableRow>
+          </TableHead>
 
-      {/* --- Modal Thêm/Sửa Sân --- */}
-      <Modal
-        open={openAddModal}
-        onClose={handleCloseAdd}
-        aria-labelledby="add-modal-title"
-        aria-describedby="add-modal-description"
-      >
-        <Box sx={modalStyle} component="form" onSubmit={handleGeneralSubmit}>
-          <Typography
-            variant="h6"
-            mb={3}
-            fontWeight="bold"
-            color={isEditMode ? "warning" : "primary"}
-            align="center"
-          >
-            {isEditMode ? `CẬP NHẬT SÂN: ${formData.ten_san}` : "THÊM SÂN BÓNG MỚI"}
-          </Typography>
+          <TableBody>
+            {rows.length > 0 ? (
+              rows.map((row, index) => {
+                const isActive = row.trang_thai === 1;
 
-          <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
-            {/* 1. Tên Sân */}
-            <TextField
-              fullWidth
-              label="Tên sân"
-              name="ten_san"
-              value={formData.ten_san || ""}
-              onChange={handleChange}
-              size="small"
-              required
-            />
+                return (
+                  <TableRow key={row.id}>
+                    <TableCell align="center">{index + 1}</TableCell>
+                    <TableCell align="center">{row.ten_loai_san}</TableCell>
+                    <TableCell align="center">{row.slug_loai_san}</TableCell>
 
-            {/* 2. Loại Sân */}
-            <TextField
-              select
-              fullWidth
-              label="Loại sân"
-              name="id_loai_san"
-              value={formData.id_loai_san || ""}
-              onChange={handleChange}
-              size="small"
-              required
-            >
-              {listLoaiSan.map((loai) => (
-                <MenuItem key={loai.id} value={loai.id}>
-                  {loai.ten_loai_san}
-                </MenuItem>
-              ))}
-            </TextField>
+                    <TableCell align="center">
+                      <Chip
+                        label={isActive ? "Kích hoạt" : "Vô hiệu hóa"}
+                        color={isActive ? "success" : "default"}
+                      />
+                    </TableCell>
 
-            {/* 3. Kích Thước Sân */}
-            <TextField
-              select
-              fullWidth
-              label="Kích thước"
-              name="kich_thuoc"
-              value={formData.kich_thuoc || ""}
-              onChange={handleChange}
-              size="small"
-              required
-            >
-              {KICH_THUOC_SAN.map((size) => (
-                <MenuItem key={size.value} value={size.value}>
-                  {size.label} ({size.size_detail})
-                </MenuItem>
-              ))}
-            </TextField>
+                    <TableCell align="center">
+                      <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+                        {/* KHUNG GIỜ */}
+                        <Tooltip title={isActive ? "Khung giờ" : "Sân đang khóa"}>
+                          <span>
+                            <IconButton
+                              color="secondary"
+                              size="small"
+                              onClick={() => {
+                                if (!isActive) {
+                                  toast.warning(
+                                    "Sân đang khóa, không thể chỉnh khung giờ"
+                                  );
+                                  return;
+                                }
+                                openTimeModal(row);
+                              }}
+                              disabled={!isActive}
+                            >
+                              <AccessTimeIcon />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
 
-            {/* 4. Slug (URL) */}
-            <Box display="flex" gap={1} alignItems="flex-start">
-              <TextField
-                fullWidth
-                label="Slug (URL)"
-                name="slug_san"
-                value={formData.slug_san || ""}
-                onChange={handleChange}
-                size="small"
-                helperText="Tự động điền hoặc tạo/chỉnh sửa"
-                required
-              />
-              <Tooltip title="Tạo slug từ Tên sân">
-                <Button
-                  variant="contained"
-                  onClick={taoSlug}
-                  size="small"
-                  sx={{ flexShrink: 0, mt: '6px' }}
-                >
-                  Tạo Slug
-                </Button>
-              </Tooltip>
-            </Box>
-          </Box>
+                        <Tooltip title="Chỉnh sửa">
+                          <IconButton color="primary" size="small">
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
 
-          {/* 5. Địa chỉ chi tiết */}
-          <TextField
-            fullWidth
-            label="Địa chỉ chi tiết"
-            name="dia_chi"
-            value={formData.dia_chi || ""}
-            onChange={handleChange}
-            margin="normal"
-            size="small"
-            multiline
-            rows={2}
-            required
-          />
+                        <Tooltip title={isActive ? "Khóa" : "Kích hoạt"}>
+                          <IconButton
+                            color={isActive ? "warning" : "success"}
+                            size="small"
+                            onClick={() => handleBlock(row)}
+                          >
+                            {isActive ? (
+                              <BlockIcon fontSize="small" />
+                            ) : (
+                              <CheckCircleIcon fontSize="small" />
+                            )}
+                          </IconButton>
+                        </Tooltip>
 
-          <Box mt={3} display="flex" justifyContent="flex-end" gap={1}>
-            <Button onClick={handleCloseAdd} variant="outlined" color="inherit">
-              Hủy bỏ
-            </Button>
-            <Button variant="contained" type="submit" size="large" color={isEditMode ? "warning" : "primary"}>
-              {isEditMode ? "Lưu Cập Nhật" : "Lưu thông tin"}
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
-
-      {/* --- Modal Xác Nhận Xóa --- */}
-      <Modal
-        open={openConfirmModal}
-        onClose={handleCloseConfirmDelete}
-        aria-labelledby="confirm-delete-title"
-        aria-describedby="confirm-delete-description"
-      >
-        <Box sx={confirmModalStyle}>
-          <Typography id="confirm-delete-title" variant="h6" component="h2" color="error">
-            Xác nhận xóa sân
-          </Typography>
-          <Typography id="confirm-delete-description" sx={{ mt: 2 }}>
-            Bạn có chắc chắn muốn
-
-            {/* THAY ĐỔI Ở ĐÂY: Highlight chữ "xóa" */}
-            <Typography component="strong" color="error" fontWeight="bold" display="inline">
-              {" "}XÓA{" "}
-            </Typography>
-
-            sân bóng
-            <Typography component="strong" color="error" fontWeight="bold" display="inline">
-              {" "}"{deleteItem?.ten_san}"{" "}
-            </Typography>
-            không? Hành động này không thể hoàn tác.
-          </Typography>
-          <Box mt={3} display="flex" justifyContent="flex-end" gap={1}>
-            <Button onClick={handleCloseConfirmDelete} variant="outlined" color="inherit">
-              Hủy bỏ
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => xoaSanBong(deleteItem.id)}
-            >
-              Xác nhận Xóa
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
-
-      {/* --- Modal Xác Nhận Đổi Trạng thái --- */}
-      <Modal
-        open={openStatusConfirmModal}
-        onClose={handleCloseStatusConfirm}
-        aria-labelledby="confirm-status-title"
-      >
-        <Box sx={confirmModalStyle}>
-          <Typography id="confirm-status-title" variant="h6" component="h2" color="warning">
-            Xác nhận Đổi Trạng thái
-          </Typography>
-          <Typography sx={{ mt: 2 }}>
-            {statusItem && statusItem.trang_thai === 1 ? (
-              <>
-                Bạn có chắc chắn muốn
-                <Typography component="strong" color="warning" fontWeight="bold" display="inline">
-                  {" "}TẠM KHÓA{" "}
-                </Typography>
-                sân bóng
-                <Typography component="strong" color="primary" fontWeight="bold" display="inline">
-                  "{statusItem.ten_san}"
-                </Typography>
-                không?
-              </>
+                        <Tooltip title="Xóa">
+                          <IconButton color="error" size="small">
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             ) : (
-              <>
-                Bạn có chắc chắn muốn
-                <Typography component="strong" color="success" fontWeight="bold" display="inline">
-                  {" "}MỞ KHÓA{" "}
-                </Typography>
-                sân bóng
-                <Typography component="strong" color="primary" fontWeight="bold" display="inline">
-                  "{statusItem?.ten_san}"
-                </Typography>
-                để hoạt động lại không?
-              </>
+              <TableRow>
+                <TableCell colSpan={5} align="center">
+                  Không có dữ liệu
+                </TableCell>
+              </TableRow>
             )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* ================= MODAL KHUNG GIỜ ================= */}
+      <Modal open={openModalTime} onClose={() => setOpenModalTime(false)}>
+        <Box
+          sx={{
+            width: 650,
+            bgcolor: "white",
+            p: 3,
+            borderRadius: 2,
+            mx: "auto",
+            mt: "10vh",
+            boxShadow: 4,
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
+            Khung giờ của: {selectedRow?.ten_loai_san}
           </Typography>
-          <Box mt={3} display="flex" justifyContent="flex-end" gap={1}>
-            <Button onClick={handleCloseStatusConfirm} variant="outlined" color="inherit">
-              Hủy bỏ
-            </Button>
+
+          {/* NÚT THÊM KHUNG GIỜ */}
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 1 }}>
             <Button
               variant="contained"
-              color={statusItem && statusItem.trang_thai === 1 ? "warning" : "success"}
-              onClick={() => handleConfirmChangeStatus(statusItem)}
+              size="small"
+              onClick={() => setShowAddTimeForm(!showAddTimeForm)}
             >
-              {statusItem && statusItem.trang_thai === 1 ? "Xác nhận Tạm khóa" : "Xác nhận Mở khóa"}
+              Thêm khung giờ
             </Button>
+          </Box>
+
+          {/* FORM THÊM KHUNG GIỜ */}
+          {showAddTimeForm && (
+            <Box sx={{ display: "flex", gap: 1, mb: 2, alignItems: "center" }}>
+              <input
+                type="time"
+                value={newStart}
+                onChange={(e) => setNewStart(e.target.value)}
+              />
+              <input
+                type="time"
+                value={newEnd}
+                onChange={(e) => setNewEnd(e.target.value)}
+              />
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  if (!newStart || !newEnd) {
+                    toast.error("Vui lòng nhập đầy đủ giờ bắt đầu và kết thúc");
+                    return;
+                  }
+                  setKhungGioList([
+                    ...khungGioList,
+                    {
+                      id: Date.now(),
+                      start: newStart,
+                      end: newEnd,
+                      status: 1,
+                    },
+                  ]);
+                  setShowAddTimeForm(false);
+                  setNewStart("");
+                  setNewEnd("");
+                  toast.success("Đã thêm khung giờ mới");
+                }}
+              >
+                Thêm
+              </Button>
+            </Box>
+          )}
+
+          {/* GRID KHUNG GIỜ */}
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+              gap: 1.5,
+              maxHeight: "420px",
+              overflowY: "auto",
+            }}
+          >
+            {khungGioList.map((kg) => (
+              <Box
+                key={kg.id}
+                sx={{
+                  p: 1.5,
+                  borderRadius: 2,
+                  border: "1px solid #ddd",
+                  textAlign: "center",
+                  backgroundColor: "#fafafa",
+                }}
+              >
+                <Typography sx={{ fontSize: "15px", fontWeight: "bold" }}>
+                  {kg.start} - {kg.end}
+                </Typography>
+
+                <Chip
+                  label={kg.status === 1 ? "Hoạt động" : "Khóa"}
+                  color={kg.status === 1 ? "success" : "default"}
+                  size="small"
+                  sx={{ mt: 1 }}
+                />
+              </Box>
+            ))}
+          </Box>
+
+          <Box sx={{ textAlign: "right", mt: 2 }}>
+            <Button onClick={() => setOpenModalTime(false)}>Đóng</Button>
           </Box>
         </Box>
       </Modal>
@@ -727,4 +358,4 @@ function SoccerFieldManagementPage() {
   );
 }
 
-export default SoccerFieldManagementPage;
+export default YardTypeManagementPage;
