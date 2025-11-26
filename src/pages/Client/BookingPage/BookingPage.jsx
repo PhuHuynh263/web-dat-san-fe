@@ -100,6 +100,7 @@ const BookingPage = () => {
               transition: "width 0.3s ease",
               overflow: "hidden",
               borderRight: filterOpen ? "1px solid #eee" : "none",
+              
             }}
           >
             {filterOpen && (

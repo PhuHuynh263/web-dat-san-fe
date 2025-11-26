@@ -1,90 +1,90 @@
-import Box from '@mui/material/Box';
-import Header from '../../../components/Client/Header/Header';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import images from '../../../assets/images/images';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import Button from '@mui/material/Button';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { CssBaseline } from '@mui/material';
-import { ThemeProvider } from '@emotion/react';
-import { clientTheme } from '../../../clientTheme';
+import Box from "@mui/material/Box";
+import Header from "../../../components/Client/Header/Header";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import images from "../../../assets/images/images";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider } from "@emotion/react";
+import { clientTheme } from "../../../clientTheme";
 
 const HomePage = () => {
   const sportNames = [
-    { label: 'Sân 5 người', key: 5 },
-    { label: 'Sân 7 người', key: 7 },
-    { label: 'Sân 9 người', key: 9 },
-    { label: 'Sân 11 người', key: 11 },
+    { label: "Sân 5 người", key: 5 },
+    { label: "Sân 7 người", key: 7 },
+    { label: "Sân 9 người", key: 9 },
+    { label: "Sân 11 người", key: 11 },
   ];
 
   const districtNames = [
-    { label: 'Quận Hải Châu' },
-    { label: 'Quận Cẩm Lệ' },
-    { label: 'Quận Liên Chiểu' },
-    { label: 'Quận Ngũ Hành Sơn' },
-    { label: 'Quận Sơn Trà' },
-    { label: 'Quận Thanh Khê' },
-    { label: 'Huyện Hòa Vang' },
-    { label: 'Huyện Hoàng Sa' },
+    { label: "Quận Hải Châu" },
+    { label: "Quận Cẩm Lệ" },
+    { label: "Quận Liên Chiểu" },
+    { label: "Quận Ngũ Hành Sơn" },
+    { label: "Quận Sơn Trà" },
+    { label: "Quận Thanh Khê" },
+    { label: "Huyện Hòa Vang" },
+    { label: "Huyện Hoàng Sa" },
   ];
 
   const STYLE_AUTOCOMPLETE = {
     flexGrow: 1,
-    display: { xs: 'none', md: 'block' },
-    '& .MuiInputLabel-root': {
-      color: 'primary.main', // Đơn giản hóa
-      '&.Mui-focused': {
-        color: 'primary.main', // Đơn giản hóa
+    display: { xs: "none", md: "block" },
+    "& .MuiInputLabel-root": {
+      color: "primary.main", // Đơn giản hóa
+      "&.Mui-focused": {
+        color: "primary.main", // Đơn giản hóa
       },
     },
-    '& .MuiOutlinedInput-root': {
+    "& .MuiOutlinedInput-root": {
       fontSize: 14,
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'primary.main', // Đơn giản hóa
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "primary.main", // Đơn giản hóa
       },
-      '&:hover .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'primary.main', // Đơn giản hóa
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: "primary.main", // Đơn giản hóa
       },
-      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'primary.main', // Đơn giản hóa
+      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: "primary.main", // Đơn giản hóa
       },
     },
   };
 
   const STYLE_DATEPICKER = {
     flexGrow: 1,
-    display: { xs: 'none', md: 'block' },
-    '& .MuiInputLabel-root': {
-      color: 'primary.main', // Đơn giản hóa
-      '&.Mui-focused': {
-        color: 'primary.main', // Đơn giản hóa
+    display: { xs: "none", md: "block" },
+    "& .MuiInputLabel-root": {
+      color: "primary.main", // Đơn giản hóa
+      "&.Mui-focused": {
+        color: "primary.main", // Đơn giản hóa
       },
     },
-    '& .MuiOutlinedInput-root': {
+    "& .MuiOutlinedInput-root": {
       // Sửa lại class cho DatePicker
       fontSize: 14,
-      '& .MuiOutlinedInput-notchedOutline': {
+      "& .MuiOutlinedInput-notchedOutline": {
         // Sửa lại class cho DatePicker
-        borderColor: 'primary.main', // Đơn giản hóa
+        borderColor: "primary.main", // Đơn giản hóa
       },
-      '&:hover .MuiOutlinedInput-notchedOutline': {
+      "&:hover .MuiOutlinedInput-notchedOutline": {
         // Sửa lại class cho DatePicker
-        borderColor: 'primary.main', // Đơn giản hóa
+        borderColor: "primary.main", // Đơn giản hóa
       },
-      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
         // Sửa lại class cho DatePicker
-        borderColor: 'primary.main', // Đơn giản hóa
+        borderColor: "primary.main", // Đơn giản hóa
       },
-      '& .MuiOutlinedInput-input': {
+      "& .MuiOutlinedInput-input": {
         // Sửa lại class cho DatePicker
-        color: 'primary.main', // Đơn giản hóa
+        color: "primary.main", // Đơn giản hóa
       },
-      '& .MuiIconButton-root': {
-        color: 'primary.main', // Đơn giản hóa
+      "& .MuiIconButton-root": {
+        color: "primary.main", // Đơn giản hóa
       },
     },
   };
@@ -98,71 +98,71 @@ const HomePage = () => {
         {/* Section 1 */}
         <Box
           sx={{
-            width: '100%',
-            height: '60vh',
+            width: "100%",
+            height: "60vh",
           }}
         >
           <Box
             sx={{
-              width: '100%',
-              height: '60vh',
+              width: "100%",
+              height: "60vh",
               backgroundImage: `url(${images.banner})`,
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              position: 'relative',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             <Container
               sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <Box sx={{ display: 'flex', width: '100%', height: '300px' }}>
+              <Box sx={{ display: "flex", width: "100%", height: "300px" }}>
                 <Box
                   sx={{
-                    width: '30%',
-                    height: '100%',
+                    width: "30%",
+                    height: "100%",
                   }}
                 >
                   <img
                     src={images.ballSvg}
                     style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain', // Hoặc 'contain'
-                      borderRadius: '8px',
-                      color: 'white',
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain", // Hoặc 'contain'
+                      borderRadius: "8px",
+                      color: "white",
                     }}
                   ></img>
                 </Box>
                 <Box
                   sx={{
                     flex: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'left',
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "left",
                   }}
                 >
-                  <Typography variant='h1' sx={{ color: 'white' }}>
+                  <Typography variant="h1" sx={{ color: "white" }}>
                     <Typography
-                      variant='span'
+                      variant="span"
                       sx={{
-                        color: 'primary.main',
-                        fontWeight: 'bold',
+                        color: "primary.main",
+                        fontWeight: "bold",
                       }}
                     >
                       Hi5port
-                    </Typography>{' '}
+                    </Typography>{" "}
                     - Ứng dụng đặt sân tập thể thao hàng đầu tại Việt Nam.
                   </Typography>
-                  <Typography variant='span' sx={{ color: '#ccc' }}>
+                  <Typography variant="span" sx={{ color: "#ccc" }}>
                     Mang đến trải nghiệm đặt sân trực tuyến thuận tiện và linh
                     hoạt cho người chơi.
                   </Typography>
@@ -171,42 +171,42 @@ const HomePage = () => {
             </Container>
             <Container
               sx={{
-                position: 'absolute',
-                bottom: '-160px',
-                left: '50%',
-                transform: 'translateX(-50%)',
+                position: "absolute",
+                bottom: "-160px",
+                left: "50%",
+                transform: "translateX(-50%)",
               }}
             >
               <Box
                 sx={{
                   p: 1,
                   borderRadius: 4,
-                  backgroundColor: 'white',
-                  height: 'auto',
+                  backgroundColor: "white",
+                  height: "auto",
                   boxShadow: 3,
                 }}
               >
                 <Box
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
+                    display: "flex",
+                    flexDirection: "column",
                     m: 2,
-                    gap: '10px',
+                    gap: "10px",
                   }}
                 >
                   <Typography
-                    variant='h2'
+                    variant="h2"
                     sx={{
-                      color: 'primary.main',
-                      fontWeight: 'bold',
+                      color: "primary.main",
+                      fontWeight: "bold",
                     }}
                   >
                     Đặt sân thể thao ngay
                   </Typography>
                   <Typography
-                    variant='p'
+                    variant="p"
                     sx={{
-                      color: 'text.secondary',
+                      color: "text.secondary",
                     }}
                   >
                     Tìm kiếm sân chơi thể thao, thi đấu khắp cả nước
@@ -214,9 +214,9 @@ const HomePage = () => {
                 </Box>
                 <Box
                   sx={{
-                    display: 'flex',
-                    flexDirection: { xs: 'column', md: 'row' },
-                    alignItems: 'stretch', // Giúp các item có cùng chiều cao khi ở dạng 'row'
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    alignItems: "stretch", // Giúp các item có cùng chiều cao khi ở dạng 'row'
                     gap: 2, // Dùng đơn vị spacing của theme (2 = 16px)
                     p: 2, // Dùng padding thay cho margin để kiểm soát không gian bên trong tốt hơn
                     borderRadius: 2,
@@ -228,7 +228,7 @@ const HomePage = () => {
                     // flexGrow: 1 để các Autocomplete tự chia đều không gian còn lại
                     sx={STYLE_AUTOCOMPLETE}
                     renderInput={(params) => (
-                      <TextField {...params} label='Loại sân' />
+                      <TextField {...params} label="Loại sân" />
                     )}
                   />
                   <Autocomplete
@@ -236,18 +236,18 @@ const HomePage = () => {
                     options={districtNames}
                     sx={STYLE_AUTOCOMPLETE}
                     renderInput={(params) => (
-                      <TextField {...params} label='Quận/Huyện' />
+                      <TextField {...params} label="Quận/Huyện" />
                     )}
                   />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker label='Chọn ngày' sx={STYLE_DATEPICKER} />
+                    <DatePicker label="Chọn ngày" sx={STYLE_DATEPICKER} />
                   </LocalizationProvider>
                   <Button
-                    variant='contained'
-                    color='primary'
+                    variant="contained"
+                    color="primary"
                     sx={{
                       flexShrink: 0,
-                      width: { xs: '100%', md: 'auto' },
+                      width: { xs: "100%", md: "auto" },
                       px: 3,
                     }}
                   >

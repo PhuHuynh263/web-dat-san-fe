@@ -62,7 +62,9 @@ const AboutPage = () => {
       {/* Hero Section - Combined with Who Are We */}
       <Box
         sx={{
-          background: "linear-gradient(135deg, #df1b3f 0%, #c41535 100%)",
+          backgroundImage: `url(https://www.shutterstock.com/image-vector/red-background-special-football-silhouettes-260nw-2468462239.jpg)`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           color: "white",
           py: { xs: 4, md: 6 },
           textAlign: "center",
