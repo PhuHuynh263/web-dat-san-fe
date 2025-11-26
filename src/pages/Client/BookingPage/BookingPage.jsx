@@ -85,11 +85,11 @@ const BookingPage = () => {
     console.log("Thông tin search:", searchData);
     axios
       .post("http://127.0.0.1:8000/api/khach-hang/tim-kiem", searchData)
-      .then((res => {
+      .then((res) => {
         if (res.data.status) {
           setYard(res.data.data);
         }
-      }))
+      });
     if (!isDesktop) setFilterOpen(false);
   };
 
@@ -110,7 +110,7 @@ const BookingPage = () => {
   const handleCloseDetail = () => {
     setSelectedYard(null);
     // Optionally reopen filter if desired, or leave it closed
-    // setFilterOpen(true); 
+    // setFilterOpen(true);
   };
 
   const handleOpenMap = () => {
@@ -133,16 +133,17 @@ const BookingPage = () => {
             sx={{
               width: filterOpen || selectedYard ? "30vw" : 0,
               backgroundColor: "white",
-              boxShadow: (filterOpen || selectedYard) ? 3 : 0,
+              boxShadow: filterOpen || selectedYard ? 3 : 0,
               transition: "width 0.3s ease",
               overflow: "hidden",
-              borderRight: (filterOpen || selectedYard) ? "1px solid #eee" : "none",
-              position: "relative", // Ensure content stays within
+              borderRight: filterOpen ? "1px solid #eee" : "none",
             }}
           >
             {/* FILTER CONTENT */}
             {filterOpen && (
-              <Box sx={{ p: 3, width: "30vw" }}> {/* Fixed width to prevent squashing during transition */}
+              <Box sx={{ p: 3, width: "30vw" }}>
+                {" "}
+                {/* Fixed width to prevent squashing during transition */}
                 {/* Desktop Controls */}
                 <Box
                   sx={{
@@ -164,7 +165,6 @@ const BookingPage = () => {
                     <CloseIcon />
                   </IconButton>
                 </Box>
-
                 {/* CITY */}
                 <Box sx={{ mb: 3 }}>
                   <Typography sx={{ mb: 1, fontWeight: "bold" }}>
@@ -186,7 +186,6 @@ const BookingPage = () => {
                     </Select>
                   </FormControl>
                 </Box>
-
                 {/* DISTRICT */}
                 <Box sx={{ mb: 3 }}>
                   <Typography sx={{ mb: 1, fontWeight: "bold" }}>
@@ -209,10 +208,11 @@ const BookingPage = () => {
                     </Select>
                   </FormControl>
                 </Box>
-
                 {/* FIELD TYPE */}
                 <Box sx={{ mb: 3 }}>
-                  <Typography sx={{ mb: 1, fontWeight: "bold" }}>Loại Sân</Typography>
+                  <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                    Loại Sân
+                  </Typography>
                   <FormControl fullWidth size="small">
                     <InputLabel>Chọn loại sân</InputLabel>
                     <Select
@@ -228,7 +228,6 @@ const BookingPage = () => {
                     </Select>
                   </FormControl>
                 </Box>
-
                 <Button
                   variant="contained"
                   fullWidth
@@ -379,7 +378,9 @@ const BookingPage = () => {
         >
           <Box sx={{ p: 3 }}>
             {/* MOBILE TITLE */}
-            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+            >
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                 Lọc Tìm Kiếm
               </Typography>
@@ -390,7 +391,9 @@ const BookingPage = () => {
 
             {/* CITY */}
             <Box sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1, fontWeight: "bold" }}>Thành Phố</Typography>
+              <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                Thành Phố
+              </Typography>
               <FormControl fullWidth size="small">
                 <InputLabel>Chọn thành phố</InputLabel>
                 <Select
@@ -410,7 +413,9 @@ const BookingPage = () => {
 
             {/* DISTRICT */}
             <Box sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1, fontWeight: "bold" }}>Quận/Huyện</Typography>
+              <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                Quận/Huyện
+              </Typography>
               <FormControl fullWidth size="small">
                 <InputLabel>Chọn quận/huyện</InputLabel>
                 <Select
@@ -431,7 +436,9 @@ const BookingPage = () => {
 
             {/* FIELD TYPE */}
             <Box sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1, fontWeight: "bold" }}>Loại Sân</Typography>
+              <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                Loại Sân
+              </Typography>
               <FormControl fullWidth size="small">
                 <InputLabel>Chọn loại sân</InputLabel>
                 <Select
@@ -505,9 +512,12 @@ const BookingPage = () => {
         <MapModal
           open={mapOpen}
           onClose={() => setMapOpen(false)}
-          address={selectedYard ? `${selectedYard.dia_chi}, ${selectedYard.quan_huyen}, ${selectedYard.thanh_pho}` : ""}
+          address={
+            selectedYard
+              ? `${selectedYard.dia_chi}, ${selectedYard.quan_huyen}, ${selectedYard.thanh_pho}`
+              : ""
+          }
         />
-
       </Box>
     </ThemeProvider>
   );
