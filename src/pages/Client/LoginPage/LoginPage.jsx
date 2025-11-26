@@ -232,19 +232,17 @@ function LoginPage() {
               <Typography
                 variant="body2"
                 component={NavLink}
-                to="/admin/login"
+                to="/owner/login"
                 color="white"
                 sx={{ mx: 1, cursor: "pointer" }}
               >
                 Bạn là chủ sân
               </Typography>
-              <Typography variant="body2" color="white">
-                
-              </Typography>
+              <Typography variant="body2" color="white"></Typography>
               <Typography
                 variant="body2"
                 component={NavLink}
-                to="/owner/login"
+                to="/admin/login"
                 color="white"
                 sx={{ mx: 1, cursor: "pointer" }}
               >
