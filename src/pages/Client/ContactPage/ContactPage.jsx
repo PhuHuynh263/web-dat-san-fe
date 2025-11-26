@@ -267,7 +267,7 @@ const ContactPage = () => {
             </Grid>
 
             {/* Right Side - Contact Form */}
-            <Grid size={{ xs: 12, md: 7 }}>
+            <Grid>
               <Box
                 sx={{
                   background:
