@@ -240,7 +240,7 @@ const BookingPage = () => {
 
           <Grid container spacing={3}>
             {yard.map((item) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
+              <Grid key={item.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                 <ReUseableCard
                   id={item.id}
                   name={item.ten_san}
