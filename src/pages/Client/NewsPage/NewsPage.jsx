@@ -107,7 +107,7 @@ const NewsPage = () => {
 
         <Grid container spacing={5}>
           {newsItems.map((item, index) => (
-            <Grid item xs={12} sm={6} md={6} key={item.id}>
+            <Grid key={item.id} size={{ xs: 12, sm: 6, md: 6 }}>
               <Card
                 sx={{
                   height: "100%",

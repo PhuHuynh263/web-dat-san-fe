@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   CssBaseline,
@@ -27,11 +28,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { clientTheme } from "../../../clientTheme";
 import Header from "../../../components/Client/Header/Header";
+import DetailPanel from "./DetailPanel";
+import MapModal from "./MapModal";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import SearchIcon from "@mui/icons-material/Search";
 import dataAddress from "./dataAddress.js";
- 
+
 const BookingPage = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const navigate = useNavigate();
 
   const [yard, setYard] = useState([]);
   const [filterOpen, setFilterOpen] = useState(true);
@@ -41,6 +47,9 @@ const BookingPage = () => {
   const [district, setDistrict] = useState("");
   const [districts, setDistricts] = useState([]);
   const [fieldType, setFieldType] = useState("");
+
+  const [selectedYard, setSelectedYard] = useState(null);
+  const [mapOpen, setMapOpen] = useState(false);
 
   // GET SÂN TỪ API
   const getDaTaChuSan = () => {
@@ -76,12 +85,40 @@ const BookingPage = () => {
     console.log("Thông tin search:", searchData);
     axios
       .post("http://127.0.0.1:8000/api/khach-hang/tim-kiem", searchData)
-      .then((res => {
+      .then((res) => {
         if (res.data.status) {
           setYard(res.data.data);
         }
-      }))
+      });
     if (!isDesktop) setFilterOpen(false);
+  };
+
+  const handleResetFilters = () => {
+    setCity("");
+    setDistrict("");
+    setDistricts([]);
+    setFieldType("");
+    getDaTaChuSan();
+  };
+
+  // Handlers for Detail Panel
+  const handleCardClick = (item) => {
+    setSelectedYard(item);
+    setFilterOpen(false); // Close filter when opening detail
+  };
+
+  const handleCloseDetail = () => {
+    setSelectedYard(null);
+    // Optionally reopen filter if desired, or leave it closed
+    // setFilterOpen(true);
+  };
+
+  const handleOpenMap = () => {
+    setMapOpen(true);
+  };
+
+  const handleBooking = () => {
+    navigate("/selectedYard");
   };
 
   return (
@@ -90,28 +127,44 @@ const BookingPage = () => {
       <Header />
 
       <Box sx={{ display: "flex", minHeight: "calc(100vh - 73px)" }}>
-        {/* FILTER DESKTOP */}
+        {/* LEFT PANEL: FILTER or DETAIL (Desktop) */}
         {isDesktop && (
           <Box
             sx={{
-              width: filterOpen ? "30vw" : 0,
+              width: filterOpen || selectedYard ? "30vw" : 0,
               backgroundColor: "white",
-              boxShadow: filterOpen ? 3 : 0,
+              boxShadow: filterOpen || selectedYard ? 3 : 0,
               transition: "width 0.3s ease",
               overflow: "hidden",
               borderRight: filterOpen ? "1px solid #eee" : "none",
-              
             }}
           >
+            {/* FILTER CONTENT */}
             {filterOpen && (
-              <Box sx={{ p: 3 }}>
-                {/* Desktop Close */}
-                <Box sx={{ textAlign: "right", mb: 2 }}>
+              <Box sx={{ p: 3, width: "30vw" }}>
+                {" "}
+                {/* Fixed width to prevent squashing during transition */}
+                {/* Desktop Controls */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 2,
+                  }}
+                >
+                  <Button
+                    startIcon={<RotateLeftIcon />}
+                    color="primary"
+                    onClick={handleResetFilters}
+                    sx={{ textTransform: "none", fontWeight: "bold" }}
+                  >
+                    Đặt lại
+                  </Button>
                   <IconButton onClick={() => setFilterOpen(false)}>
                     <CloseIcon />
                   </IconButton>
                 </Box>
-
                 {/* CITY */}
                 <Box sx={{ mb: 3 }}>
                   <Typography sx={{ mb: 1, fontWeight: "bold" }}>
@@ -133,7 +186,6 @@ const BookingPage = () => {
                     </Select>
                   </FormControl>
                 </Box>
-
                 {/* DISTRICT */}
                 <Box sx={{ mb: 3 }}>
                   <Typography sx={{ mb: 1, fontWeight: "bold" }}>
@@ -156,10 +208,11 @@ const BookingPage = () => {
                     </Select>
                   </FormControl>
                 </Box>
-
                 {/* FIELD TYPE */}
                 <Box sx={{ mb: 3 }}>
-                  <Typography sx={{ mb: 1, fontWeight: "bold" }}>Loại Sân</Typography>
+                  <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                    Loại Sân
+                  </Typography>
                   <FormControl fullWidth size="small">
                     <InputLabel>Chọn loại sân</InputLabel>
                     <Select
@@ -175,22 +228,34 @@ const BookingPage = () => {
                     </Select>
                   </FormControl>
                 </Box>
-
                 <Button
                   variant="contained"
                   fullWidth
                   sx={{ py: 1.5, fontWeight: "bold" }}
+                  startIcon={<SearchIcon />}
                   onClick={handleSearch}
                 >
                   Tìm Kiếm
                 </Button>
               </Box>
             )}
+
+            {/* DETAIL PANEL CONTENT */}
+            {selectedYard && !filterOpen && (
+              <Box sx={{ height: "100%", width: "30vw" }}>
+                <DetailPanel
+                  yard={selectedYard}
+                  onClose={handleCloseDetail}
+                  onOpenMap={handleOpenMap}
+                  onBooking={handleBooking}
+                />
+              </Box>
+            )}
           </Box>
         )}
 
-        {/* TOGGLE BUTTON */}
-        {isDesktop && !filterOpen && (
+        {/* TOGGLE BUTTON (Only show if both Filter and Detail are closed) */}
+        {isDesktop && !filterOpen && !selectedYard && (
           <IconButton
             onClick={() => setFilterOpen(true)}
             sx={{
@@ -232,8 +297,9 @@ const BookingPage = () => {
 
           <Grid container spacing={3}>
             {yard.map((item) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
+              <Grid key={item.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                 <Card
+                  onClick={() => handleCardClick(item)}
                   sx={{
                     height: "100%",
                     display: "flex",
@@ -241,7 +307,6 @@ const BookingPage = () => {
                     cursor: "pointer",
                     transition: "transform 0.2s",
                     "&:hover": { transform: "scale(1.02)" },
-                    maxWidth: 300,
                     margin: "auto",
                   }}
                 >
@@ -253,14 +318,28 @@ const BookingPage = () => {
                     }
                     alt={`Sân bóng ${item.ten_san}`}
                   />
-                  <CardContent>
+                  <CardContent
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      flexGrow: 1,
+                    }}
+                  >
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                       {item.ten_san}
                     </Typography>
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ my: 1 }}
+                      title={`${item.dia_chi}, ${item.quan_huyen}, ${item.thanh_pho}`}
+                      sx={{
+                        my: 1,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        minHeight: 48,
+                      }}
                     >
                       {item.dia_chi}, {item.quan_huyen}, {item.thanh_pho}
                     </Typography>
@@ -270,7 +349,12 @@ const BookingPage = () => {
                     >
                       Liên hệ: {item.so_dien_thoai}
                     </Typography>
-                    <Button variant="outlined" fullWidth size="small">
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      size="small"
+                      sx={{ mt: "auto" }}
+                    >
                       Xem Chi Tiết
                     </Button>
                   </CardContent>
@@ -280,7 +364,7 @@ const BookingPage = () => {
           </Grid>
         </Box>
 
-        {/* MOBILE DRAWER */}
+        {/* MOBILE DRAWER - FILTER */}
         <Drawer
           anchor="bottom"
           open={!isDesktop && filterOpen}
@@ -294,7 +378,9 @@ const BookingPage = () => {
         >
           <Box sx={{ p: 3 }}>
             {/* MOBILE TITLE */}
-            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+            >
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                 Lọc Tìm Kiếm
               </Typography>
@@ -305,7 +391,9 @@ const BookingPage = () => {
 
             {/* CITY */}
             <Box sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1, fontWeight: "bold" }}>Thành Phố</Typography>
+              <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                Thành Phố
+              </Typography>
               <FormControl fullWidth size="small">
                 <InputLabel>Chọn thành phố</InputLabel>
                 <Select
@@ -325,7 +413,9 @@ const BookingPage = () => {
 
             {/* DISTRICT */}
             <Box sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1, fontWeight: "bold" }}>Quận/Huyện</Typography>
+              <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                Quận/Huyện
+              </Typography>
               <FormControl fullWidth size="small">
                 <InputLabel>Chọn quận/huyện</InputLabel>
                 <Select
@@ -346,7 +436,9 @@ const BookingPage = () => {
 
             {/* FIELD TYPE */}
             <Box sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1, fontWeight: "bold" }}>Loại Sân</Typography>
+              <Typography sx={{ mb: 1, fontWeight: "bold" }}>
+                Loại Sân
+              </Typography>
               <FormControl fullWidth size="small">
                 <InputLabel>Chọn loại sân</InputLabel>
                 <Select
@@ -363,60 +455,69 @@ const BookingPage = () => {
               </FormControl>
             </Box>
 
-            {/* Ngày */}
-            {/* <Box sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1, fontWeight: 'bold', fontSize: '0.9rem' }}>Ngày</Typography>
-              <TextField
-                label="Chọn ngày"
-                type="date"
-                size="small"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                sx={{ borderRadius: 1 }}
-              />
-            </Box> */}
-
-            {/* Từ giờ */}
-            {/* <Box sx={{ mb: 3 }}>
-              <Typography sx={{ mb: 1, fontWeight: 'bold', fontSize: '0.9rem' }}>Từ Giờ</Typography>
-              <TextField
-                label="Từ giờ"
-                type="time"
-                size="small"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={fromTime}
-                onChange={(e) => setFromTime(e.target.value)}
-                sx={{ borderRadius: 1 }}
-              />
-            </Box> */}
-
-            {/* Đến giờ  */}
-            {/* <Box sx={{ mb: 4 }}>
-              <Typography sx={{ mb: 1, fontWeight: 'bold', fontSize: '0.9rem' }}>Đến Giờ</Typography>
-              <TextField
-                label="Đến giờ"
-                type="time"
-                size="small"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={toTime}
-                onChange={(e) => setToTime(e.target.value)}
-                sx={{ borderRadius: 1 }}
-              />
-            </Box> */}
-            <Button
-              variant="contained"
-              fullWidth
-              sx={{ py: 1.5, fontWeight: "bold" }}
-              onClick={handleSearch}
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                mt: 1,
+                width: "100%",
+              }}
             >
-              Tìm Kiếm
-            </Button>
+              <Button
+                variant="contained"
+                startIcon={<SearchIcon />}
+                sx={{ py: 1.5, fontWeight: "bold", flexGrow: 1 }}
+                onClick={handleSearch}
+              >
+                Tìm Kiếm
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<RotateLeftIcon />}
+                sx={{
+                  py: 1.5,
+                  fontWeight: "bold",
+                  width: "20vw",
+                  minWidth: "120px",
+                }}
+                onClick={handleResetFilters}
+              >
+                Đặt lại
+              </Button>
+            </Box>
           </Box>
         </Drawer>
+
+        {/* MOBILE DRAWER - DETAIL */}
+        <Drawer
+          anchor="bottom"
+          open={!isDesktop && !!selectedYard}
+          onClose={handleCloseDetail}
+          sx={{
+            "& .MuiDrawer-paper": {
+              borderRadius: "16px 16px 0 0",
+              height: "85vh", // Taller for details
+            },
+          }}
+        >
+          <DetailPanel
+            yard={selectedYard}
+            onClose={handleCloseDetail}
+            onOpenMap={handleOpenMap}
+            onBooking={handleBooking}
+          />
+        </Drawer>
+
+        {/* MAP MODAL */}
+        <MapModal
+          open={mapOpen}
+          onClose={() => setMapOpen(false)}
+          address={
+            selectedYard
+              ? `${selectedYard.dia_chi}, ${selectedYard.quan_huyen}, ${selectedYard.thanh_pho}`
+              : ""
+          }
+        />
       </Box>
     </ThemeProvider>
   );
