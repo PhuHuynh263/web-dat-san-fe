@@ -111,7 +111,7 @@ const router = createBrowserRouter([
     element: <SignUpOwnerPage />,
   },
   {
-    path: "/selectedYard",
+    path: "/selected-yard/:ownerSlug/:yardId",
     element: <SelectedYard />,
   },
 ]);
