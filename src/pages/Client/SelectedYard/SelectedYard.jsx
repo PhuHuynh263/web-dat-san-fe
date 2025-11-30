@@ -31,10 +31,10 @@ import PaymentIcon from '@mui/icons-material/Payment';
 // 🚨 LƯU Ý: Thay thế import này bằng đường dẫn thực tế của bạn
 import { clientTheme } from '../../../clientTheme';
 import Header from '../../../components/Client/Header/Header';
+import { use } from 'react';
 
 const SelectedYard = () => {
-    const { yardId } = useParams();
-
+    const { yardName, yardId } = useParams();
     // --- STATE DATA ---
     const [subYards, setSubYards] = useState([]);
     const [dates, setDates] = useState([]);
@@ -50,6 +50,7 @@ const SelectedYard = () => {
     const [openConfirmModal, setOpenConfirmModal] = useState(false);
     const [isBooking, setIsBooking] = useState(false);
     const [note, setNote] = useState('');
+    const [yardType, setYardType] = useState('');
 
     // 🚀 STATE PHƯƠNG THỨC THANH TOÁN
     const [paymentMethod, setPaymentMethod] = useState('0'); // Mặc định '0' (Tiền mặt)
@@ -77,6 +78,7 @@ const SelectedYard = () => {
             }
         }).catch(err => console.error("Lỗi lấy sân con:", err));
 
+        getDataType();
     }, [yardId]);
 
     // --- 2. LẤY DATA MA TRẬN ---
@@ -127,6 +129,23 @@ const SelectedYard = () => {
     }, [selectedDate, subYards]);
 
     // --- 3. LOGIC TOGGLE SLOT ---
+    const getDataType = () => {
+        axios
+            .get("http://127.0.0.1:8000/api/khach-hang/loai-san/data", {
+                headers: {
+                    Authorization:
+                        "Bearer " + localStorage.getItem("token_khach_hang"),
+                },
+            })
+            .then((res) => {
+                setYardType(res.data.data);
+            })
+            .catch((err) => {
+                console.error("Lỗi khi lấy data:", err);
+                toast.error("Không thể tải dữ liệu loại sân");
+            });
+    };
+
     const handleToggleSlot = (san, gio) => {
         // Chỉ cho phép chọn nếu trạng thái == 1 (1: Còn trống)
         if (gio.trang_thai !== 1) return;
@@ -221,6 +240,15 @@ const SelectedYard = () => {
             });
     };
 
+    const yardToType = (payload) => {
+        // Kiểm tra an toàn: Nếu yardType không phải mảng hoặc chưa có dữ liệu thì trả về rỗng
+        if (!Array.isArray(yardType) || yardType.length === 0) return '';
+
+        // Logic cũ của bạn
+        const loaiSan = yardType.find(item => item.id === payload);
+        return loaiSan ? loaiSan.ten_loai_san : '';
+    }
+
     return (
         <ThemeProvider theme={clientTheme}>
             <CssBaseline />
@@ -229,6 +257,9 @@ const SelectedYard = () => {
 
                 {/* 1. THANH CHỌN NGÀY */}
                 <Paper elevation={0} sx={{ p: 2, mb: 3, borderRadius: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        {"Tên sân: " + yardName}
+                    </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                         <CalendarMonthIcon color="action" sx={{ mr: 1 }} />
                         <Typography variant="subtitle1" fontWeight="bold">Chọn ngày thi đấu:</Typography>
@@ -291,11 +322,13 @@ const SelectedYard = () => {
                                     {/* Cột Tên Sân */}
                                     <Box sx={{
                                         width: { xs: '100%', md: 200 }, bgcolor: '#f5f5f5', p: 2,
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        display: 'flex',flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                                         borderRight: { xs: 'none', md: '1px solid #e0e0e0' },
                                         borderBottom: { xs: '1px solid #e0e0e0', md: 'none' }
                                     }}>
-                                        <Typography fontWeight="bold" variant="h6">{san.ten_san}</Typography>
+                                        <Typography fontWeight="bold" sx={{m : 0, p : 0, fontSize: '2.1rem',fontWeight: '800'}}>{san.ten_san}</Typography>
+                                        <Typography fontStyle="italic" sx={{m : 0, p : 0}}>{yardToType(san.id)}</Typography>
+                                        
                                     </Box>
 
                                     {/* Cột Khung Giờ */}

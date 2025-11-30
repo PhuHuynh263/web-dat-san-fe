@@ -120,7 +120,7 @@ const BookingPage = () => {
   const handleBooking = () => {
     if (selectedYard) {
       // Sử dụng trực tiếp tên chủ sân, react-router-dom sẽ tự động mã hóa URL
-      navigate(`/selected-yard/${selectedYard.ten_chu_san}/${selectedYard.id}`, {
+      navigate(`/selected-yard/${selectedYard.ten_chu_san}/${selectedYard.ten_san}/${selectedYard.id}`, {
         state: { yard: selectedYard },
       });
     }
