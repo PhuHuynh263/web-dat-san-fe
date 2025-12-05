@@ -20,6 +20,7 @@ import LoginAdminPage from "../pages/Admin/LoginAdminPage/LoginAdminPage.jsx";
 import LoginOwnerPage from "../pages/Owner/LoginOwnerPage/LoginOwnerPage.jsx";
 import SignUpOwnerPage from "../pages/Owner/SignUpOwnerPage/SignUpOwnerPage.jsx";
 import SelectedYard from "../pages/Client/SelectedYard/SelectedYard.jsx";
+import BookingShopPage from "../pages/Client/BookingShopPage/BookingShopPage.jsx";
 
 // 1. IMPORT COMPONENT LOADING MỚI
 import PageLoading from "../components/common/Loading/PageLoading.jsx";
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
   {
     path: "/booking",
     element: <BookingPage />,
+  },
+  {
+    path: "/booking-shop",
+    element: <BookingShopPage />,
   },
   {
     path: "/news",
